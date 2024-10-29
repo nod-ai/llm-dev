@@ -54,7 +54,7 @@ ITL: Average time between each new token generated in decode phase (second token
 (MI300X GPU, SPX Mode, (TTFT, ITL) Time in ms)
 |Item                                      | 10/25/24 | 11/1/24 | 11/8/24 | 11/15/24 | Target(vLLM-PyTorch)|
 |------------------------------------------|----------|---------|---------|----------|---------------------|
-| llama3.1-8B-FP16      | (t1, t2)  |
+| llama3.1-8B-FP16      | (6012, 488)  |
 | llama3.1-70B-FP16      |   |
 | llama3.1-405B-FP16  |   |
 | llama3.1-8B-FP8   |   |
