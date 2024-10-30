@@ -29,6 +29,7 @@ ITL: Average time between each new token generated in decode phase (second token
 | Release Packaging/testing | | Have a test release with 8B FP16 @chris | test release with 8B FP8 @chris
 
 # Status-Numerics 
+## decomposed
 
 (MI300X GPU, SPX Mode)
 |Item                                      | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
@@ -41,6 +42,11 @@ ITL: Average time between each new token generated in decode phase (second token
 | llama3.1-8B-FP8-decomposed   |PASS [TP1 mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/native_fp8_e4m3fnuz_llama3_8b.mlir) [irpa](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/native_fp8_e4m3fnuz_llama3_8b.irpa) | Fails in iree, [patch](https://github.com/iree-org/iree/pull/18890)
 | llama3.1-70B-FP8-decomposed  |PASS [TP1 mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/native_fp8_e4m3fnuz_llama3_70b.mlir) [irpa](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/native_fp8_e4m3fnuz_llama3_8_70b.irpa) |Fails in iree, [patch](https://github.com/iree-org/iree/pull/18890)
 | llama3.1-405B-FP8-decomposed |   |
+
+## non decomposed
+(MI300X GPU, SPX Mode)
+|Item                                      | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
+|------------------------------------------|---------------|-----------------|-----------------|--------------|-----------------|
 | llama3.1-8B-FP16      |PASS [mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_8b/8b_f16_nondecomposed.mlir)   | Fails in iree, [patch](https://github.com/iree-org/iree/pull/18890)
 | llama3.1-70B-FP16      |PASS [mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_70b/70b_f16_nondecomposed.mlir)   |Fails in iree, [patch](https://github.com/iree-org/iree/pull/18890)
 | llama3.1-405B-FP16  |   |
@@ -49,6 +55,18 @@ ITL: Average time between each new token generated in decode phase (second token
 | llama3.1-405B-FP8 |FAIL qkv must have same data type   |
 | llama-toy-size-FP32-TP2-CPU | PASS | PASS |
 
+## decodeposed 
+(only decode is decomposed)
+(MI300X GPU, SPX Mode)
+|Item                                      | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
+|------------------------------------------|---------------|-----------------|-----------------|--------------|-----------------|
+| llama3.1-8B-FP16      |   | 
+| llama3.1-70B-FP16      |   |
+| llama3.1-405B-FP16  |   |
+| llama3.1-8B-FP8   |   |
+| llama3.1-70B-FP8  |   |
+| llama3.1-405B-FP8 |   |
+| llama-toy-size-FP32-TP2-CPU |  |  |
 # Status-Benchmark 
 
 (MI300X GPU, SPX Mode, (TTFT, ITL) Time in ms)
