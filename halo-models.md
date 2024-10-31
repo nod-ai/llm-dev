@@ -30,6 +30,8 @@ ITL: Average time between each new token generated in decode phase (second token
 
 # Status-Numerics 
 ## decomposed
+To generate, on SharkMI300x, follow sharktank setup instructions, then:
+`python -m sharktank.examples.export_paged_llm_v1 --irpa-file=/data/llama-3.1/8b/llama8b_f16.irpa --output-mlir f16_dc.mlir  --bs=1  --attention-kernel=decomposed`
 
 (MI300X GPU, SPX Mode)
 |Item                                      | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
