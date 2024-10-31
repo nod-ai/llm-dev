@@ -50,7 +50,7 @@ ITL: Average time between each new token generated in decode phase (second token
 | llama3.1-8B-FP16      |PASS [mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_8b/8b_f16_nondecomposed.mlir)   | Fails in iree, [patch](https://github.com/iree-org/iree/pull/18890)
 | llama3.1-70B-FP16      |PASS [mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_70b/70b_f16_nondecomposed.mlir)   |Fails in iree, [patch](https://github.com/iree-org/iree/pull/18890)
 | llama3.1-405B-FP16  |   |
-| llama3.1-8B-FP8   |FAIL qkv must have same data type   |
+| llama3.1-8B-FP8   |Pass [mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/f8_ndc.mlir)    | 
 | llama3.1-70B-FP8  |FAIL qkv must have same data type   |
 | llama3.1-405B-FP8 |FAIL qkv must have same data type   |
 | llama-toy-size-FP32-TP2-CPU | PASS | PASS |
@@ -60,7 +60,7 @@ ITL: Average time between each new token generated in decode phase (second token
 (MI300X GPU, SPX Mode)
 |Item                                      | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
 |------------------------------------------|---------------|-----------------|-----------------|--------------|-----------------|
-| llama3.1-8B-FP16      |   | 
+| llama3.1-8B-FP16      | Pass [mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/f8_half_ndc.mlir) | Fail (attention, Dan currently looking into this)
 | llama3.1-70B-FP16      |   |
 | llama3.1-405B-FP16  |   |
 | llama3.1-8B-FP8   |   |
