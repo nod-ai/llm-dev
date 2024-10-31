@@ -60,10 +60,10 @@ ITL: Average time between each new token generated in decode phase (second token
 (MI300X GPU, SPX Mode)
 |Item                                      | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
 |------------------------------------------|---------------|-----------------|-----------------|--------------|-----------------|
-| llama3.1-8B-FP16      | Pass [mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/f8_half_ndc.mlir) | Fail (attention, Dan currently looking into this)
+| llama3.1-8B-FP16      |  | 
 | llama3.1-70B-FP16      |   |
 | llama3.1-405B-FP16  |   |
-| llama3.1-8B-FP8   |   |
+| llama3.1-8B-FP8   | Pass [mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/f8_half_ndc.mlir) | Fail (attention, Dan currently looking into this) |
 | llama3.1-70B-FP8  |   |
 | llama3.1-405B-FP8 |   |
 | llama-toy-size-FP32-TP2-CPU |  |  |
