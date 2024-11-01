@@ -2,9 +2,8 @@
 # Introduction
 This page is project tracker to get halo models like llama3, grok1 etc. working on one or more MI3xx using shark/iree. 
 
-# November 20, 2024 Release Goals
-- llama3.1 405B sharded across 8 MI300x GPUs producing correct numeical results (P0)
-- llama3.1 405B sharded across 8 MI300x GPUs performant at level of vLLM PyTorch (Fused Ops Eager Mode) (P1)
+# December, 2024 Release Goals
+- llama3.1 405B sharded across 8 MI300x GPUs performant at level of vLLM PyTorch (Fused Ops Eager Mode) (P0)
 
 (Note: Use llama3.1 8B or 70B to develop and test)
 
@@ -29,9 +28,14 @@ ITL: Average time between each new token generated in decode phase (second token
 | Release Packaging/testing | | Have a test release with 8B FP16 @chris | test release with 8B FP8 @chris
 
 # Status-Numerics 
+Naming convention on SharkMI300x (and other similar machines should rsync the same structure)
+Sharded Weights: /data/<model_name>/weights/<model_size>/<model_name>_<model_size>_<data_type>.irpa (Example: /data/llama-3.1/weights/405b/fp16/llama3.1_405b_fp16.irpa)
+Unsharded Weights: /data/<model_name>/weights/<model_size>/<shard_size>/<model_name>_<model_size>_<data_type>.irpa (Example: /data/llama-3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank0.irpa)
+Artifacts: /data/<model_name>/artifacts/<model_size>/<model_name>_<model_size>_<data_type>_<attention_kind>_<sharding>_<batch_size>.<extension> (Example: /data/llama-3.1/artifacts/405b/llama3.1_405b_fp16_nondecomposed_tp8_bs4.mlir)
+
 ## decomposed
-To generate, on SharkMI300x, follow sharktank [setup instructions](https://gist.github.com/stbaione/be38bfb214d990a4b765804223d6b948), then:
-`python -m sharktank.examples.export_paged_llm_v1 --irpa-file=/data/llama-3.1/8b/llama8b_f16.irpa --output-mlir f16_dc.mlir  --bs=1  --attention-kernel=decomposed`
+To generate artifacts, on SharkMI300x, follow sharktank [setup instructions](https://gist.github.com/stbaione/be38bfb214d990a4b765804223d6b948), then:
+`python -m sharktank.examples.export_paged_llm_v1 --irpa-file=/data/llama-3.1/weights/8b/fp16/llama3.1_8b_fp16.irpa --output-mlir f16_dc.mlir  --bs=1  --attention-kernel=decomposed`
 
 (MI300X GPU, SPX Mode)
 |Item                                      | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
