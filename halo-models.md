@@ -66,10 +66,10 @@ To generate artifacts, on SharkMI300x, follow sharktank [setup instructions](htt
 |------------------------------------------|---------------|-----------------|-----------------|--------------|-----------------|
 | llama3.1-8B-FP16      |PASS [mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_8b/8b_f16_nondecomposed.mlir)   | Fails in iree, [patch](https://github.com/iree-org/iree/pull/18890)
 | llama3.1-70B-FP16      |PASS [mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_70b/70b_f16_nondecomposed.mlir)   |Fails in iree, [patch](https://github.com/iree-org/iree/pull/18890)
-| llama3.1-405B-FP16  |   |
+| llama3.1-405B-FP16  |  ETA: 11/1 |
 | llama3.1-8B-FP8   |PASS [mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/f8_ndc.mlir)    | 
-| llama3.1-70B-FP8  |TBD   |
-| llama3.1-405B-FP8 |TBD   |
+| llama3.1-70B-FP8  |ETA: 11/1   |
+| llama3.1-405B-FP8 |ETA: 11/5   |
 | llama-toy-size-FP32-TP2-CPU | PASS | PASS |
 
 ## decodeposed 
@@ -85,16 +85,16 @@ To generate artifacts, on SharkMI300x, follow sharktank [setup instructions](htt
 | llama3.1-405B-FP8 |   |
 | llama-toy-size-FP32-TP2-CPU |  |  |
 # Status-Benchmark 
-
+Put "non-decomposed, decodeposed, decomposewd" in () next to model name to indicate which kind of attention was used.  
 (MI300X GPU, SPX Mode, (TTFT, ITL) Time in ms)
-|Item                                      | 10/25/24 | 11/1/24 | 11/8/24 | 11/15/24 | Target(vLLM-PyTorch)|
-|------------------------------------------|----------|---------|---------|----------|---------------------|
-| llama3.1-8B-FP16      | (6012, 488)  |
-| llama3.1-70B-FP16      |   |
-| llama3.1-405B-FP16  |   |
-| llama3.1-8B-FP8   |   |
-| llama3.1-70B-FP8  |   |
-| llama3.1-405B-FP8 |   |
+|Item                                    | Current (11/1/24) | Target(vLLM-PyTorch)|
+|----------------------------------------|-------------------|---------------------|
+| llama3.1-8B-FP16 (decomposed)          | (6012, 488)       |
+| llama3.1-70B-FP16                      |                   |
+| llama3.1-405B-FP16                     |                   |
+| llama3.1-8B-FP8                        |                   |
+| llama3.1-70B-FP8                       |                   |
+| llama3.1-405B-FP8                      |                   |
 
 # Issues
 | category | issue link | assigned to | status |
@@ -162,47 +162,10 @@ Follow the steps [here](https://gist.github.com/stbaione/2843eced1b8c1042127bec3
 (Note: Do not update this one)
 |Models | compile | inference (SPX mode) | tracy |
 |---|---|---|---|
-|llama3.1-8b-FP16| PASS | prefill (1746 ms), decode (71.8 ms), [commands](https://gist.github.com/aviator19941/f10b5b7a7c3975de4363450b4d7ec68f) | [prefill](https://sharkpublic.blob.core.windows.net/sharkpublic/avi/llama8b_f16_prefill.tracy) [decode](https://sharkpublic.blob.core.windows.net/sharkpublic/avi/llama8b_f16_decode.tracy) |
 |llama3.1-8b-Q4_1| PASS | prefill (1817 ms), decode (57.3 ms), [commands](https://gist.github.com/aviator19941/f10b5b7a7c3975de4363450b4d7ec68f) | [prefill](https://sharkpublic.blob.core.windows.net/sharkpublic/avi/llama8b_q4_1_prefill_v2.tracy) [decode](https://sharkpublic.blob.core.windows.net/sharkpublic/avi/llama8b_q4_1_decode_v2.tracy) |
 |llama3.1-8b-Q4_k| PASS | | |
 |llama3.1-70b-Q4_1| PASS | prefill (3543 ms), decode (213 ms), [commands](https://gist.github.com/aviator19941/79ee5afc39c225ec7469030320014fa3) | [prefill](https://sharkpublic.blob.core.windows.net/sharkpublic/avi/llama70b_q4_1_prefill.tracy) [decode](https://sharkpublic.blob.core.windows.net/sharkpublic/avi/llama70b_q4_1_decode.tracy) |
-|llama2-7b-FP8| [FAIL](https://github.com/iree-org/iree/issues/18367)| | |
 |grok-1-Q4_1| PASS | FAIL, out of memory | [prefill](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/grok-1/grok-1-q4_1-rocm-prefill.tracy) [decode](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/grok-1/grok-1-q4_1-rocm-decode.tracy) |
-
-
-## Goals (Old)
-(Note: No longer updated)
-- [ ] Attention Compiler Work
-  - [ ] Dynamic sequence length
-  - [ ] Causal Masking
-  - [ ] Flex attention compilation
-- [ ] LLaMa 8b prefill and decode
-  - [x] validated numerically correct 
-  - [ ] export
-  - [ ] compiled
-  - [ ] benchmarked
-  - [ ] replicate for larger variants
-- [ ] Mixtral prefill and decode
-  - [ ] validated numerically correct 
-  - [ ] export
-  - [ ] compiled
-  - [ ] benchmarked
-- [ ] Grok prefill and decode
-  - [x] validated numerically correct 
-  - [x] export
-  - [x] compiled
-  - [ ] benchmarked
-
-## Tasks and Issues (Old)
-(Scheduled for deprecation, move any relevant to Schedule table at top)
-task      | owner      | status | next actions
-:-------: | :--------: |:-------: | :------:
-Sharded LLaMa | boian | In progress | Landing first sharded tests
-Export/Compile LLaMa | kyle | blocked on `torch.aten.complex` | rob is authoring fix
-LLaMa 8 prefill comparison | rob | layerwise comparison for prefill is normal | handing off tooling to Avi
-LLaMa 8 decode comparison | avi | still investigating cause of numeric issue | reuse rob's tooling to investigate
-FP8 quantized model | dan | finishing results from quark | following up with Giuseppe on new `fp8 quantization
-Model evaluation tooling | archana | Perplexity CI nightly running in eager mode | working on getting perplexity with vmfb
 
 ## Artifacts (Old)
 (Note: Update Schedule-Numerics table for llama3.1 artifacts instead of this table (10/20/2024 onwards))
@@ -223,12 +186,4 @@ llama3-70b | [mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev
 llama3-405b | [mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_405b/llama3.1_405b_fp16_TP1.mlir) [gguf](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_405b/llama405b_fp16.gguf) | | [mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_405b/llama405b_q4_1.mlir) [gguf](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_405b/llama405b_q4_1.gguf) | [mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_405b/llama405b_q4_k.mlir) [gguf](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_405b/llama405b_q4_k.gguf) |
 grok-1 | [mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/grok.mlir) [gguf](https://sharkpublic.blob.core.windows.net/sharkpublic/llm-dev/grok_1/grok-1-f16.gguf) |NA | [mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/grok-1/grok-1-q4_1-irpa.mlir) [gguf](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/grok-1/grok-1-q4_1.gguf) | [gguf](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/grok-1/grok-1-q4_k.gguf) |
 
-
-## TP8
-Models           |     FP16        |   FP8           |     Q4_1 |  Q4_K
-:--------------: | :-------------: |:----------------:|:----------------:| :----------------:
-llama3.1-8b | | | 
-llama3.1-70b | | |
-llama3.1-405b | | |
-grok-1 | | |
 
