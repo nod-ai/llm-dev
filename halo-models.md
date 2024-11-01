@@ -66,7 +66,7 @@ To generate artifacts, on SharkMI300x, follow sharktank [setup instructions](htt
 |------------------------------------------|---------------|-----------------|-----------------|--------------|-----------------|
 | llama3.1-8B-FP16      |PASS [mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_8b/8b_f16_nondecomposed.mlir)   | Fails in iree, [patch](https://github.com/iree-org/iree/pull/18890)
 | llama3.1-70B-FP16      |PASS [mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_70b/70b_f16_nondecomposed.mlir)   |Fails in iree, [patch](https://github.com/iree-org/iree/pull/18890)
-| llama3.1-405B-FP16  |  ETA: 11/1 |
+| llama3.1-405B-FP16  |  PASS [mlir_tp8](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_405b/405b_f16_tp8_nondecomposed_bs4.mlir) |
 | llama3.1-8B-FP8   |PASS [mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/f8_ndc.mlir)    | 
 | llama3.1-70B-FP8  |ETA: 11/1   |
 | llama3.1-405B-FP8 |ETA: 11/5   |
