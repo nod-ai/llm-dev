@@ -3,9 +3,7 @@
 This page is project tracker to get halo models like llama3, grok1 etc. working on one or more MI3xx using shark/iree. 
 
 # December, 2024 Release Goals
-- llama3.1 405B sharded across 8 MI300x GPUs performant at level of vLLM PyTorch (Fused Ops Eager Mode) (P0)
-
-(Note: Use llama3.1 8B or 70B to develop and test)
+- llama3.1 405B sharded across 8 MI300x GPUs performant at level of vLLM PyTorch (Fused Ops Eager Mode)
 
 # Glossary
 TPn: Tensor Parallel using n GPUs where a large tensor is sharded across multiple GPUs using sharktank and scatter/gather to/from GPUs is done in single MLIR
@@ -14,24 +12,37 @@ ITL: Average time between each new token generated in decode phase (second token
 
 # Schedule
 (Model is assumed to be llama3.1 in the following table, e.g. "8B FP8" means "llama3.1 8B FP8 model")
-|Item                          | 10/18/24      | 10/25/24       | 11/1/24       | 11/8/24      | 11/15/24     |
-|------------------------------|---------------|----------------|---------------|--------------|--------------|
-| Machine and Storage          | two 8x MI300x SPX mode ensured working with how to use info added to [Nod AI Lab](https://confluence.amd.com/display/ENGIT/Nod.AI+Lab) @saienduri <br>(**Done:10/17**)|-Install 60TB storage on SharkMi300X **(Done:10/21)** <br>-setup one more 8x air-cooled MI300 machine (SharkMi300X-3) with 60TB added **(Done:10/24)**@saienduri |-Setup one more 8X MI300 air-cooled machine (SharkMi300X-4) with 60TB @saienduri (ETA: 11/1)
-| Sharktank Modeling | IREE-compilable 8B FP8 MLIR @dan garvey <br>(**Done:10/17**)| -Get 8B 70B FP8 MLIR **(Done:10/23)** <br>-Wire up Perlexity flow to run vmfb using iree-run-module **(Done ETA:10/29)** @archana, <br>-Debug 70B running OOM on 1 MI300 @kyle (iree [issue](https://github.com/iree-org/iree/issues/18864) **(Done ETA: 10/29)** <br>-Quantized sharding support (ETA:10/30) @Ian | Re-enerate and Verify decodeposed MLIR for 8B, 70B, 405B for FP16 @kyle (ETA: 11/1) Debug eager execution and add presubmit tests to prevent future regressions @Dan (ETA 10/31) <br>- Generate and compile 405B TP8 non-decomposed @Kyle (ETA 10/30) | Genereate 405B FP8 MLIR (ETA:11/1) <br>-Add perplexity test for eager mode (pytorch run) 8B Fp16 and refresh MLIR in table @dan <br>- Perplexity test for vmfb for 8B FP16 (ETA: 11/1) @archana <br>-Make progres son generating decodeposed MLIRs and keep table updated @kyle
-| Sharding | 8 CPU core sharded FP16 numerically verified @boian. [PR](https://github.com/nod-ai/SHARK-Platform/pull/394) (Wrong numerics?) ETA:11/1 | Complete sharding support to allow 8x sharding @Rob **(Done)** | 
-| IREE codegeneration | | 8B FP16 attention ahead with dynamic shape generating valid vmfb **(Done:10/29)** @mahesh, FP8 Attention (use Intrinsic for FP8 effectively) (ETA:10/25) @stanley | Paged Attention @kunwar/@manupa | Perf Tuning (all)
-| Inference Profiling| Tracy profile 8B FP16 w/ decoposition @kyle **(Done:10/17)** |Tracy profile for 8B FP8 w/ and w/o decomposition @kyle, <br>- Tracy profile 405B with 3 attention blocks w/ decomposition @Avi |
-| Shortfin Serving | |llama3.1 8B FP16 iree compiled working using shortfin @xida (in-debug async wait issue/prefill issue with bad attn mask, ETA: 10/28), <br>- SDXL have basic scheduler implemented and pulling into sharktank @ean **(Done: 10/29)** | Benchmarking and throughput support for sdxl @ean (ETA 10/29) Focus on getting any size prompt to sork with 8B (ETA: 11/1) @xida
-| W/ Serving Inference Performance | | llama3.1 8B Fp16 iree compiled working using shortfin performance numbers @avi | Performance tuning for sharding @boin/@rob |
-| Test Automation |-8B FP16 prefill attnhead, decode atttnhead, & full model IREE-compiled perf tests in sharktank CI @avi <br>-8B FP16 IREE-compiled numerics tested using Perlexity @archana |-8B FP8 prefill attnhead, decode atttnhead, full model IREE-compiled perf test in sharktank CI @avi <br>-8B FP8 IREE-compiled numerics tested using Perlexity @archana <br>-8 CPU core sharded 8B FP16 numeric test added [PR](https://github.com/nod-ai/SHARK-Platform/pull/394) under review @boian (ETA 11/04) | 8 GPU sharded 8B FP8 test added @boin |
-| Report dashboard| |  Show currently runnning all perf and numeric llama3.1 component and full model test reports on a page @saienduri |
-| Release Packaging/testing | | Have a test release with 8B FP16 @chris | test release with 8B FP8 @chris
+|Item                          | Current Week (Nov 4-8)       | Next Week (Nov 11-15)   |
+|------------------------------|------------------------------|-------------------------|
+| Machine and Storage          |- @saienduri: Setup one more 8X MI300 air-cooled machine (SharkMi300X-4) with 60TB (ETA: 11/5) |
+| Sharktank Modeling           |- @kyle: Generate, verify, compile-to-vmfb 405B TP8 fp16 non-decomposed MLIR (ETA 11/1) <br>- @dan: Add perplexity test for eager mode (pytorch run) 8B fp16 and refresh MLIR in table and on SharkMi300X machine (ETA: 11/1) <br>- @archana: Add Perplexity test for vmfb for 8B FP16 (ETA: 11/4) |
+| Sharding                     |- @boian: 8 CPU core sharded FP16 numerically verified [PR](https://github.com/nod-ai/SHARK-Platform/pull/394) (Wrong numerics issue) ETA:11/4 | 
+| Performance Tuning           |- @rob: Reduce IR size and complexity (ETA:11/4) | 
+| IREE codegeneration          |- @mahesh support for non deocmposed decode (ETA: 11/5) | - @stan: FP8 attention (ETA: 11/15) |
+| Serving                      |- @xida: Fix the KV Cache corruption issue for large prompt (ETA: 11/1) <br> - @xida: Get shortfin working for llama 3.18b fp16 on MI300 (ETA: 11/4) <br>- @ean Instructions to  (ETA: 11/4)| 
+| Test Automation              |- @avi: Finish 8B Fp16 automation (ETA: 11/1) <br> - Have automaation dashboard showing llama3.1 tests running (ETA:11/5) |
+
 
 # Status-Numerics 
-Naming convention on SharkMI300x (and other similar machines should rsync the same structure)
-Sharded Weights: /data/<model_name>/weights/<model_size>/<model_name>_<model_size>_<data_type>.irpa (Example: /data/llama-3.1/weights/405b/fp16/llama3.1_405b_fp16.irpa)
-Unsharded Weights: /data/<model_name>/weights/<model_size>/<shard_size>/<model_name>_<model_size>_<data_type>.irpa (Example: /data/llama-3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank0.irpa)
-Artifacts: /data/<model_name>/artifacts/<model_size>/<model_name>_<model_size>_<data_type>_<attention_kind>_<sharding>_<batch_size>.<extension> (Example: /data/llama-3.1/artifacts/405b/llama3.1_405b_fp16_nondecomposed_tp8_bs4.mlir)
+Following naming convention should be used for weights and artifacts (on SharkMI300x and other similar machines)
+
+**UnSharded Weights:** 
+
+/data/<model_name>/weights/<model_size>/<modelname_modelsize_datatype>.irpa
+
+Example: /data/llama-3.1/weights/405b/fp16/llama3.1_405b_fp16.irpa
+
+**Sharded Weights:** 
+
+/data/<model_name>/weights/<model_size>/<shard_size>/<modelname_modelsize_shardsize_ranksuffix>.irpa
+
+Example: /data/llama-3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank0.irpa
+
+**Artifacts:** 
+
+/data/<model_name>/artifacts/<model_size>/<model_name>\_<model_size>\_<data_type>\_<attention_kind>\_<sharding>\_<batch_size>.[mlir | vmfb]
+
+Example: /data/llama-3.1/artifacts/405b/llama3.1_405b_fp16_nondecomposed_tp8_bs4.mlir
 
 ## decomposed
 To generate artifacts, on SharkMI300x, follow sharktank [setup instructions](https://gist.github.com/stbaione/be38bfb214d990a4b765804223d6b948), then:
