@@ -17,7 +17,7 @@ ITL: Average time between each new token generated in decode phase (second token
 (Model is assumed to be llama3.1 in the following table, e.g. "8B FP8" means "llama3.1 8B FP8 model")
 |Item                          | 10/18/24      | 10/25/24       | 11/1/24       | 11/8/24      | 11/15/24     |
 |------------------------------|---------------|----------------|---------------|--------------|--------------|
-| Machine and Storage          | two 8x MI300x SPX mode ensured working with how to use info added to [Nod AI Lab](https://confluence.amd.com/display/ENGIT/Nod.AI+Lab) @saienduri <br>(**Done:10/17**)|-Install 60TB storage on SharkMi300X **(Done:10/21)** <br>-setup one more 8x air-cooled MI300 machine (SharkMi300X-3) with 60TB added **(Done:10/24)**@saienduri |-Setup one more 8X MI300 air-cooled machine (SharkMi300X-4) with 60TB @saienduri <br>-Add 30 TB to each of SharkMi300X and SharkMi300X-3 @saienduri
+| Machine and Storage          | two 8x MI300x SPX mode ensured working with how to use info added to [Nod AI Lab](https://confluence.amd.com/display/ENGIT/Nod.AI+Lab) @saienduri <br>(**Done:10/17**)|-Install 60TB storage on SharkMi300X **(Done:10/21)** <br>-setup one more 8x air-cooled MI300 machine (SharkMi300X-3) with 60TB added **(Done:10/24)**@saienduri |-Setup one more 8X MI300 air-cooled machine (SharkMi300X-4) with 60TB @saienduri
 | Sharktank Modeling | IREE-compilable 8B FP8 MLIR @dan garvey <br>(**Done:10/17**)| -verify numerics using quant-dequant on cpu vs run on MI300 for 8B FP8 @dan <br>-Get 8B 70B **(Done:10/23)** and 405B FP8 MLIR (ETA:10/25) and verify(CPU vs MI300) numerics for 70B @dan, <br>-Wire up Perlexity flow to run vmfb using iree-run-module **(Done ETA:10/29)** @archana, <br>-Debug 70B running OOM on 1 MI300 @kyle (debug completed, an iree  [issue](https://github.com/iree-org/iree/issues/18864) <br>-Quantized sharding support (ETA:10/25) @Ian | Re-enerate and Verify MLIR without decomposition of SDPA for 8B, 70B, 405B for FP16 @kyle Debug eager execution and add presubmit tests to prevent future regressions @Dan (ETA 10:30) <br>- Generate and compile 405B TP8 non-decomposed @Kyle (ETA 10:29) |
 | Sharding | 8 CPU core sharded FP16 numerically verified @boian. [PR](https://github.com/nod-ai/SHARK-Platform/pull/394) (Wrong numerics?) ETA:>10/31 | 8 GPU sharding for FP16 and FP8 compiling for MI300 @rob/@Ian sharding verified on CPU, compilation fails (completed, Kyle to use it to generate sharded MLIR for 405B) | 8 GPU sharding for FP16 and FP8 numerics verified for MI300 @boian/@rob <br>-Help debug sharding in perplexity scripts @boian (ETA 10/30)
 | IREE codegeneration | | 8B FP16 attention ahead with dynamic shape generating valid vmfb ETA:10/24 @mahesh, FP8 Attention (use Intrinsic for FP8 effectively) (ETA:10/25) @stanley | Paged Attention @kunwar/@manupa | Perf Tuning (all)
@@ -30,7 +30,7 @@ ITL: Average time between each new token generated in decode phase (second token
 
 # Status-Numerics 
 ## decomposed
-To generate, on SharkMI300x, follow sharktank setup instructions, then:
+To generate, on SharkMI300x, follow sharktank [setup instructions](https://gist.github.com/stbaione/be38bfb214d990a4b765804223d6b948), then:
 `python -m sharktank.examples.export_paged_llm_v1 --irpa-file=/data/llama-3.1/8b/llama8b_f16.irpa --output-mlir f16_dc.mlir  --bs=1  --attention-kernel=decomposed`
 
 (MI300X GPU, SPX Mode)
