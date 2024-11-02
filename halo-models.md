@@ -89,7 +89,7 @@ Put "non-decomposed, decodeposed, decomposewd" in () next to model name to indic
 (MI300X GPU, SPX Mode, (TTFT, ITL) Time in ms)
 |Item                                    | Current (11/1/24) | Target(vLLM-PyTorch)|
 |----------------------------------------|-------------------|---------------------|
-| llama3.1-8B-FP16 (decomposed)          | (6012, 488)       |
+| llama3.1-8B-FP16 (decomposed, bs4)     | (5493, 457)       |
 | llama3.1-70B-FP16                      |                   |
 | llama3.1-405B-FP16                     |                   |
 | llama3.1-8B-FP8                        |                   |
