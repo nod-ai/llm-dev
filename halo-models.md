@@ -104,6 +104,7 @@ iree-compile 405b_f16_tp8_decomposed.mlir --iree-hip-target=gfx942 --iree-hal-ta
 | llama3.1-405B-FP8 |   |
 | llama-toy-size-FP32-TP2-CPU |  |  |
 # Status-Benchmark 
+## TTFT-ITL
 Put "non-decomposed, decodeposed, decomposewd" in () next to model name to indicate which kind of attention was used.  
 (MI300X GPU, SPX Mode, (TTFT, ITL) Time in ms)
 |Item                                    | Current (11/1/24) | Target(vLLM-PyTorch)|
@@ -115,6 +116,11 @@ Put "non-decomposed, decodeposed, decomposewd" in () next to model name to indic
 | llama3.1-8B-FP8                        |  NOT RUN          |
 | llama3.1-70B-FP8                       |  NOT RUN          |
 | llama3.1-405B-FP8                      |  NOT RUN          |
+
+## llama3.1 405B Latency
+(MI300X GPU, SPX Mode, FP16, nondecomposed, Time in ms, Batch Size=4)
+|Input #Tokens | Output #Tokens | Prefill Latency (TTFT) | Decode Latency (ITL) | E2E Latency |
+|--------------|----------------|------------------------|-----|----|
 
 # Issues
 | category | issue link | assigned to | status |
