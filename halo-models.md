@@ -109,6 +109,7 @@ Put "non-decomposed, decodeposed, decomposewd" in () next to model name to indic
 |Item                                    | Current (11/1/24) | Target(vLLM-PyTorch)|
 |----------------------------------------|-------------------|---------------------|
 | llama3.1-8B-FP16 (decomposed, bs4)     | (5493, 457)       |
+| llama3.1-8B-FP16 (non-decomposed, bs4) | NOT RUN           |
 | llama3.1-70B-FP16                      |  FAIL  ([compile error](https://gist.github.com/aviator19941/73468660ecef16b03b37e9afa2e6d075))  |
 | llama3.1-405B-FP16                     |  FAIL             |
 | llama3.1-8B-FP8                        |  NOT RUN          |
