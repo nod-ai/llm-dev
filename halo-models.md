@@ -85,7 +85,7 @@ iree-compile 405b_f16_tp8_decomposed.mlir --iree-hip-target=gfx942 --iree-hal-ta
 |------------------------------------------|---------------|-----------------|-----------------|--------------|-----------------|
 | llama3.1-8B-FP16      |PASS [mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_8b/8b_f16_nondecomposed.mlir)   | Fails in iree, [patch](https://github.com/iree-org/iree/pull/18890)
 | llama3.1-70B-FP16      |PASS [mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_70b/70b_f16_nondecomposed.mlir)   |Fails in iree, [patch](https://github.com/iree-org/iree/pull/18890)
-| llama3.1-405B-FP16  |  PASS [mlir_tp8](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_405b/405b_f16_tp8_nondecomposed_bs4.mlir) |
+| llama3.1-405B-FP16  |  PASS [mlir_tp8](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_405b/405b_f16_tp8_nondecomposed_bs4.mlir) | [FAIL](https://github.com/iree-org/iree/issues/19021)
 | llama3.1-8B-FP8   |PASS [mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/f8_ndc.mlir)    | 
 | llama3.1-70B-FP8  |ETA: 11/1   |
 | llama3.1-405B-FP8 |ETA: 11/5   |
@@ -98,7 +98,7 @@ iree-compile 405b_f16_tp8_decomposed.mlir --iree-hip-target=gfx942 --iree-hal-ta
 |------------------------------------------|---------------|-----------------|-----------------|--------------|-----------------|
 | llama3.1-8B-FP16      |PASS [mlir_tp1](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/llama8b_f16_tp1_decodeposed_bs4.mlir)  | 
 | llama3.1-70B-FP16      |   |
-| llama3.1-405B-FP16  |PASS [mlir_tp8](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_405b/llama3_405b_f16_tp8_decodeposed.mlir)   |
+| llama3.1-405B-FP16  |PASS [mlir_tp8](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_405b/llama3_405b_f16_tp8_decodeposed.mlir)   | 
 | llama3.1-8B-FP8   | PASS [mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/f8_half_ndc.mlir) | Fail (attention, Dan currently looking into this) |
 | llama3.1-70B-FP8  |   |
 | llama3.1-405B-FP8 |   |
@@ -120,7 +120,7 @@ Put "non-decomposed, decodeposed, decomposewd" in () next to model name to indic
 |---|---|---|---|
 |iree codegen | [18864](https://github.com/iree-org/iree/issues/18864)| unassigned | OOM for 70B |
 |quark quantization | [QUARK-71](https://jira.xilinx.com/browse/QUARK-71) | unassigned | FP8 matmul should be used in attention|
-|register count overflow | [18923](https://github.com/iree-org/iree/issues/18923) | unassigned | Register count overflow for 405b on 8 devices |
+|MMAIntrinsicAttr | [19021](https://github.com/iree-org/iree/issues/18923) | unassigned | storage uniquer isn't initialized |
 
 # AMD GPU Machines
 [MI300](https://confluence.amd.com/display/ENGIT/Nod.AI+Lab#Nod.AILab-MI300NodAIMachines)
