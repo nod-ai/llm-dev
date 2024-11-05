@@ -48,6 +48,25 @@ Example: /data/llama-3.1/artifacts/405b/llama3.1_405b_fp16_nondecomposed_tp8_bs4
 To generate artifacts, on SharkMI300x, follow sharktank [setup instructions](https://gist.github.com/stbaione/be38bfb214d990a4b765804223d6b948), then:
 `python -m sharktank.examples.export_paged_llm_v1 --irpa-file=/data/llama-3.1/weights/8b/fp16/llama3.1_8b_fp16.irpa --output-mlir f16_dc.mlir  --bs=1  --attention-kernel=decomposed`
 
+## 405B TP8 commands
+1. Shard irpa file:
+
+`
+python3 -m sharktank.examples.sharding.shard_llm_dataset --gguf-file llama3_405b_f16.gguf --output-irpa test.irpa --tensor-parallelism-size 8
+`
+
+2. Export to MLIR:
+
+`
+python3 -m sharktank.examples.export_paged_llm_v1 --irpa-file=test.irpa --output-mlir=405b_f16_tp8_decomposed.mlir --output-config=405b_f16_tp8_decomposed.json --bs=4 --attention-kernel decomposed
+`
+
+3. Compile (FAIL [compile error](https://gist.github.com/aviator19941/73468660ecef16b03b37e9afa2e6d075)):
+
+`
+iree-compile 405b_f16_tp8_decomposed.mlir --iree-hip-target=gfx942 --iree-hal-target-backends=rocm -o=405b_f16_tp8_decomposed.vmfb --iree-hal-target-device=hip[0] --iree-hal-target-device=hip[1] --iree-hal-target-device=hip[2] --iree-hal-target-device=hip[3] --iree-hal-target-device=hip[4] --iree-hal-target-device=hip[5] --iree-hal-target-device=hip[6] --iree-hal-target-device=hip[7]
+`
+
 (MI300X GPU, SPX Mode)
 |Item                                      | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
 |------------------------------------------|---------------|-----------------|-----------------|--------------|-----------------|
@@ -90,11 +109,11 @@ Put "non-decomposed, decodeposed, decomposewd" in () next to model name to indic
 |Item                                    | Current (11/1/24) | Target(vLLM-PyTorch)|
 |----------------------------------------|-------------------|---------------------|
 | llama3.1-8B-FP16 (decomposed, bs4)     | (5493, 457)       |
-| llama3.1-70B-FP16                      |                   |
-| llama3.1-405B-FP16                     |                   |
-| llama3.1-8B-FP8                        |                   |
-| llama3.1-70B-FP8                       |                   |
-| llama3.1-405B-FP8                      |                   |
+| llama3.1-70B-FP16                      |  FAIL  ([compile error](https://gist.github.com/aviator19941/73468660ecef16b03b37e9afa2e6d075))  |
+| llama3.1-405B-FP16                     |  FAIL             |
+| llama3.1-8B-FP8                        |  NOT RUN          |
+| llama3.1-70B-FP8                       |  NOT RUN          |
+| llama3.1-405B-FP8                      |  NOT RUN          |
 
 # Issues
 | category | issue link | assigned to | status |
