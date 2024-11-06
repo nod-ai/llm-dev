@@ -64,7 +64,7 @@ python3 -m sharktank.examples.export_paged_llm_v1 --irpa-file=test.irpa --output
 3. Compile (FAIL [compile error](https://gist.github.com/aviator19941/73468660ecef16b03b37e9afa2e6d075)):
 
 `
-iree-compile 405b_f16_tp8_decomposed.mlir --iree-hip-target=gfx942 --iree-hal-target-backends=rocm -o=405b_f16_tp8_decomposed.vmfb --iree-hal-target-device=hip[0] --iree-hal-target-device=hip[1] --iree-hal-target-device=hip[2] --iree-hal-target-device=hip[3] --iree-hal-target-device=hip[4] --iree-hal-target-device=hip[5] --iree-hal-target-device=hip[6] --iree-hal-target-device=hip[7]
+iree-compile 405b_f16_tp8_decomposed.mlir --iree-hip-target=gfx942 --iree-hal-target-backends=rocm -o=405b_f16_tp8_decomposed.vmfb --iree-hal-target-device=hip[0] --iree-hal-target-device=hip[1] --iree-hal-target-device=hip[2] --iree-hal-target-device=hip[3] --iree-hal-target-device=hip[4] --iree-hal-target-device=hip[5] --iree-hal-target-device=hip[6] --iree-hal-target-device=hip[7] --iree-hal-force-indirect-command-buffers=true --iree-stream-resource-memory-model=discrete --iree-hip-legacy-sync=false
 `
 
 (MI300X GPU, SPX Mode)
