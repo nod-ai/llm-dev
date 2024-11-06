@@ -70,39 +70,39 @@ iree-compile 405b_f16_tp8_decomposed.mlir --iree-hip-target=gfx942 --iree-hal-ta
 (MI300X GPU, SPX Mode)
 |Item                                      | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
 |------------------------------------------|---------------|-----------------|-----------------|--------------|-----------------|
-| llama3.1-8B-FP16-decomposed      |PASS [TP1 mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/f16_dc.mlir) [gguf](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_8b/llama8b_f16.gguf) [irpa](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_8b/8b_f16.irpa)  |PASS [vmfb](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_8b/8b_f16.vmfb) | PASS
-| llama3.1-8B-FP16-decomposed-TP8 | PASS ([MLIR](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_8b/llama3.1_8b_fp16_decomposed_tp8.mlir)) | PASS | PASS | FAIL (probably) |
-| llama3.1-70B-FP16-decomposed      |PASS [TP1 mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_70b/llama70b_f16.mlir) [gguf](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_70b/llama70b_f16.gguf) [irpa](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_70b/70b_f16.irpa) |PASS [vmfb](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_70b/70b_f16.vmfb) | FAIL [OOM](https://github.com/iree-org/iree/issues/18864) |
-| llama3.1-405B-FP16-decomposed  |PASS [TP1 mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_405b/llama3.1_405b_fp16_TP1.mlir) [gguf](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_405b/llama405b_fp16.gguf)  |
-| llama3.1-405B-FP16-decomposed-TP8 | PASS [MLIR](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_405b/llama3.1_405b_f16_tp8.mlir) | PASS [vmfb](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_405b/llama3.1_405b_f16_tp8.vmfb) | FAIL [Registers](https://github.com/iree-org/iree/issues/18923) |
-| llama3.1-8B-FP8-decomposed   |PASS [TP1 mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/native_fp8_e4m3fnuz_llama3_8b.mlir) [irpa](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/native_fp8_e4m3fnuz_llama3_8b.irpa) | Fails in iree, [patch](https://github.com/iree-org/iree/pull/18890)
-| llama3.1-70B-FP8-decomposed  |PASS [TP1 mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/native_fp8_e4m3fnuz_llama3_70b.mlir) [irpa](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/native_fp8_e4m3fnuz_llama3_8_70b.irpa) |Fails in iree, [patch](https://github.com/iree-org/iree/pull/18890)
-| llama3.1-405B-FP8-decomposed |   |
+| llama3.1-8B-FP16-decomposed      |PASS [TP1 mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/f16_dc.mlir) [gguf](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_8b/llama8b_f16.gguf) [irpa](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/ llama3_8b/8b_f16.irpa)  |PASS [vmfb](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_8b/8b_f16.vmfb) | PASS | tbd | tbd
+| llama3.1-8B-FP16-decomposed-TP8 | PASS ([MLIR](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_8b/llama3.1_8b_fp16_decomposed_tp8.mlir)) | PASS | PASS | FAIL (probably)  | tbd
+| llama3.1-70B-FP16-decomposed      |PASS [TP1 mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_70b/llama70b_f16.mlir) [gguf](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_70b/llama70b_f16.gguf) [irpa](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_70b/70b_f16.irpa) |PASS [vmfb](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_70b/70b_f16.vmfb) | FAIL [OOM](https://github.com/iree-org/iree/issues/18864)  | tbd | tbd
+| llama3.1-405B-FP16-decomposed  |PASS [TP1 mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_405b/llama3.1_405b_fp16_TP1.mlir) [gguf](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_405b/llama405b_fp16.gguf)   | tbd | tbd | tbd | tbd
+| llama3.1-405B-FP16-decomposed-TP8 | PASS [MLIR](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_405b/llama3.1_405b_f16_tp8.mlir) | PASS [vmfb](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_405b/llama3.1_405b_f16_tp8.vmfb) | FAIL [Registers](https://github.com/iree-org/iree/issues/18923)  | tbd | tbd
+| llama3.1-8B-FP8-decomposed   |PASS [TP1 mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/native_fp8_e4m3fnuz_llama3_8b.mlir) [irpa](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/native_fp8_e4m3fnuz_llama3_8b.irpa) | Fails in iree, [patch](https://github.com/iree-org/iree/pull/18890) | tbd | tbd | tbd
+| llama3.1-70B-FP8-decomposed  |PASS [TP1 mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/native_fp8_e4m3fnuz_llama3_70b.mlir) [irpa](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/native_fp8_e4m3fnuz_llama3_8_70b.irpa) |Fails in iree, [patch](https://github.com/iree-org/iree/pull/18890) | tbd | tbd | tbd
+| llama3.1-405B-FP8-decomposed  | tbd | tbd | tbd | tbd | tbd
 
 ## non decomposed
 (MI300X GPU, SPX Mode)
 |Item                                      | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
 |------------------------------------------|---------------|-----------------|-----------------|--------------|-----------------|
-| llama3.1-8B-FP16      |PASS [mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_8b/8b_f16_nondecomposed.mlir)   | Fails in iree, [patch](https://github.com/iree-org/iree/pull/18890)
-| llama3.1-70B-FP16      |PASS [mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_70b/70b_f16_nondecomposed.mlir)   |Fails in iree, [patch](https://github.com/iree-org/iree/pull/18890)
-| llama3.1-405B-FP16  |  PASS [mlir_tp8](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_405b/405b_f16_tp8_nondecomposed_bs4.mlir) | [FAIL](https://github.com/iree-org/iree/issues/19021)
-| llama3.1-8B-FP8   |PASS [mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/f8_ndc.mlir)    | 
-| llama3.1-70B-FP8  |ETA: 11/1   |
-| llama3.1-405B-FP8 |ETA: 11/5   |
-| llama-toy-size-FP32-TP2-CPU | PASS | PASS |
+| llama3.1-8B-FP16      |PASS [mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_8b/8b_f16_nondecomposed.mlir)   | Fails in iree, [patch](https://github.com/iree-org/iree/pull/18890) | tbd | tbd | tbd
+| llama3.1-70B-FP16      |PASS [mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_70b/70b_f16_nondecomposed.mlir)   |Fails in iree, [patch](https://github.com/iree-org/iree/pull/18890) | tbd | tbd | tbd
+| llama3.1-405B-FP16  |  PASS [mlir_tp8](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_405b/405b_f16_tp8_nondecomposed_bs4.mlir) | PASS | FAIL [OOM](https://github.com/iree-org/iree/issues/18864) | tbd | tbd
+| llama3.1-8B-FP8   |PASS [mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/f8_ndc.mlir)    | tbd | tbd | tbd | tbd
+| llama3.1-70B-FP8  |ETA: 11/1   | tbd | tbd | tbd | tbd
+| llama3.1-405B-FP8 |ETA: 11/5   | tbd | tbd | tbd | tbd
+| llama-toy-size-FP32-TP2-CPU | PASS | PASS | tbd | tbd | tbd
 
 ## decodeposed 
 (only decode is decomposed)
 (MI300X GPU, SPX Mode)
 |Item                                      | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
 |------------------------------------------|---------------|-----------------|-----------------|--------------|-----------------|
-| llama3.1-8B-FP16      |PASS [mlir_tp1](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/llama8b_f16_tp1_decodeposed_bs4.mlir)  | 
-| llama3.1-70B-FP16      |   |
-| llama3.1-405B-FP16  |PASS [mlir_tp8](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_405b/llama3_405b_f16_tp8_decodeposed.mlir)   | 
-| llama3.1-8B-FP8   | PASS [mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/f8_half_ndc.mlir) | Fail (attention, Dan currently looking into this) |
-| llama3.1-70B-FP8  |   |
-| llama3.1-405B-FP8 |   |
-| llama-toy-size-FP32-TP2-CPU |  |  |
+| llama3.1-8B-FP16      |PASS [mlir_tp1](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/llama8b_f16_tp1_decodeposed_bs4.mlir)   | tbd | tbd | tbd | tbd
+| llama3.1-70B-FP16      | tbd | tbd | tbd | tbd | tbd
+| llama3.1-405B-FP16  |PASS [mlir_tp8](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_405b/llama3_405b_f16_tp8_decodeposed.mlir)    | tbd | tbd | tbd | tbd
+| llama3.1-8B-FP8   | PASS [mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/f8_half_ndc.mlir) | Fail (attention, Dan currently looking into this) | tbd | tbd | tbd
+| llama3.1-70B-FP8  | tbd  | tbd | tbd | tbd | tbd
+| llama3.1-405B-FP8  | tbd | tbd | tbd | tbd | tbd
+| llama-toy-size-FP32-TP2-CPU  | tbd | tbd | tbd | tbd | tbd
 # Status-Benchmark 
 ## TTFT-ITL
 Put "non-decomposed, decodeposed, decomposewd" in () next to model name to indicate which kind of attention was used.  
