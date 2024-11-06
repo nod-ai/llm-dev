@@ -52,7 +52,7 @@ To generate artifacts, on SharkMI300x, follow sharktank [setup instructions](htt
 1. Shard irpa file:
 
 `
-python3 -m sharktank.examples.sharding.shard_llm_dataset --gguf-file llama3_405b_f16.gguf --output-irpa test.irpa --tensor-parallelism-size 8
+python3 -m sharktank.examples.sharding.shard_llm_dataset --irpa-file llama3_405b_f16.irpa --output-irpa test.irpa --tensor-parallelism-size 8
 `
 
 2. Export to MLIR:
