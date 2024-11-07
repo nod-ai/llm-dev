@@ -115,7 +115,7 @@ iree-compile 405b_f16_tp8_decomposed.mlir --iree-hip-target=gfx942 --iree-hal-ta
 [MI300](https://confluence.amd.com/display/ENGIT/Nod.AI+Lab#Nod.AILab-MI300NodAIMachines)
 
 # Test Reports
-TBD: Sai please put link to nightly tests that test any of component or full model of llama3
+[Llama Status](https://nod-ai.github.io/SHARK-Platform/?sort=result)
 
 
 ## MLIR generation and Compilation
