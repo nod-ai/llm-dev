@@ -15,12 +15,12 @@ ITL: Average time between each new token generated in decode phase (second token
 |Item                          | Current Week (Nov 4-8)       | Next Week (Nov 11-15)   |
 |------------------------------|------------------------------|-------------------------|
 | Machine and Storage          |- @saienduri: Setup one more 8X MI300 air-cooled machine (SharkMi300X-4) with 60TB (ETA: 11/5) |
-| Sharktank Modeling           |- @kyle: Generate, verify, compile-to-vmfb 405B TP8 fp16 non-decomposed MLIR (ETA 11/1) <br>- @dan: Add perplexity test for eager mode (pytorch run) 8B fp16 and refresh MLIR in table and on SharkMi300X machine (ETA: 11/1) <br>- @Dan Get quark fp8 attention model (ETA: 11/8) <br>- @archana: Debug Perplexity test numerics for vmfb for 8B FP16 (ETA: 11/5) <br>- @Ian Add VAE support in sharktank (ETA 11/8) <br>- @George Add CLIP support through sharktank (ETA: 11/6) <br>- @Kyle Add mmdit for flux through sharktank (ETA: 11/15)|
+| Sharktank Modeling           |- @kyle: Generate, verify, compile-to-vmfb 405B TP8 fp16 non-decomposed MLIR (ETA 11/1) <br>- @dan: Add perplexity test for eager mode (pytorch run) 8B fp16 and refresh MLIR in table and on SharkMi300X machine (ETA: 11/1) <br>- @Dan Get quark fp8 attention model (ETA: 11/8) <br>- @archana: Debug Perplexity test numerics for vmfb for 8B FP16 (ETA: 11/5) <br>- @Ian Add VAE support in sharktank (ETA 11/8) <br>- @George Add CLIP support through sharktank (ETA: 11/6) <br>- @Kyle Add mmdit for flux through sharktank (ETA: 11/15) <br>- @Boian T5XXL implementation through sharktank (ETA: 11/15) |
 | Sharding                     |- @boian: 8 CPU core sharded FP16 numerically verified [PR](https://github.com/nod-ai/SHARK-Platform/pull/394) (Wrong numerics issue) ETA:11/4 | 
 | Performance Tuning           |- @rob: Reduce IR size and complexity (ETA:11/4) | 
 | IREE codegeneration          |- @mahesh support for non deocmposed decode (ETA: 11/5) | - @stan: FP8 attention (ETA: 11/15) |
 | Serving                      |- @xida: Fix the KV Cache corruption issue for large prompt (DONE: 11/1) <br> - @xida: Get shortfin working for llama 3.18b fp16 on MI300 (ETA: 11/4) <br>- @ean Instructions to run sdxl shortfin (Done: 11/4) <br>- @Stephen Landing integration (ETA: 11/5) <br>- @Stephen batch size shortfin benchmark tests with sglang gpu (ETA: 11/5)  <br>- @xida: add some search algorithm (beam search) beyond greedy to improve chatbot output (ETA: ) <br>- @ean fix and get batching working properly (ETA: 11/6) | 
-| Test Automation              |- @avi: Finish 8B Fp16 automation (ETA: 11/1) <br> - Have automaation dashboard showing llama3.1 tests running (ETA:11/5) |
+| Test Automation              |- @avi: Finish 8B Fp16 automation (ETA: 11/1) <br> - Have automaation dashboard showing llama3.1 tests running (Done:11/5) |
 
 
 # Status-Numerics 
