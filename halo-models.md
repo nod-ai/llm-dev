@@ -181,6 +181,10 @@ Follow the steps [here](https://gist.github.com/stbaione/2843eced1b8c1042127bec3
 | `image`     | Pass image as part of multi-modal prompt | No | Multi-Modal not supported by SF | [sgl.image Docs](https://sgl-project.github.io/frontend/frontend.html#multi-modality) |
 | `regex`     | Specify regular expression as decoding constraint | No | Only supported for local models | [Regex Docs](https://sgl-project.github.io/frontend/frontend.html#constrained-decoding) |
 
+## SGLang Benchmark Results
+
+The latest benchmark results for the SGLang integration can be found [here](https://amdcloud-my.sharepoint.com/:x:/g/personal/stbaione_amd_com/ERoJJXU4qthAqzqIKCk0oBcBYdYVsXWhUa6Mm6hMdyUAdw?e=h9pbr3)
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Archive
 ## Status (Old)
