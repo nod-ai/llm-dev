@@ -117,7 +117,7 @@ iree-compile 405b_f16_tp8_decomposed.mlir --iree-hip-target=gfx942 --iree-hal-ta
 |---|---|---|---|
 |iree codegen | [18864](https://github.com/iree-org/iree/issues/18864)| unassigned | OOM for 70B |
 |quark quantization | [QUARK-71](https://jira.xilinx.com/browse/QUARK-71) | unassigned | FP8 matmul should be used in attention|
-|MMAIntrinsicAttr | [19021](https://github.com/iree-org/iree/issues/18923) | unassigned | storage uniquer isn't initialized |
+|Negative Memory | [19077](https://github.com/iree-org/iree/issues/19077) | unassigned | op uses -131072 bytes of shared memory
 
 # AMD GPU Machines
 [MI300](https://confluence.amd.com/display/ENGIT/Nod.AI+Lab#Nod.AILab-MI300NodAIMachines)
