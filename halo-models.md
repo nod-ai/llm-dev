@@ -16,7 +16,12 @@ ITL: Average time between each new token generated in decode phase (second token
 # Nightly Test Reports
 See latest [Nightly Laama Test Report](https://nod-ai.github.io/SHARK-Platform/?sort=result). Use [Nod.AI Lab](https://confluence.amd.com/pages/viewpage.action?spaceKey=ENGIT&title=Nod.AI+Lab) page to ssh into machine SharkMi300X to find logs and artifacts to triage the failures. File an issue (if not already filed/listed) and add to [# Issues](https://github.com/nod-ai/llm-dev/edit/main/halo-models.md#issues)
 
-
+# Issues
+| category | issue link | assigned to | status |
+|---|---|---|---|
+|quark quantization | [QUARK-71](https://jira.xilinx.com/browse/QUARK-71) | Bowen Bow | FP8 matmul should be used in attention|
+|iree codegen | [18864](https://github.com/iree-org/iree/issues/18864)| Ian Wood | OOM for 70B |
+|iree Negative Memory | [19077](https://github.com/iree-org/iree/issues/19077) | unassigned | op uses -131072 bytes of shared memory
 
 # Schedule
 (Model is assumed to be llama3.1 in the following table, e.g. "8B FP8" means "llama3.1 8B FP8 model")
@@ -111,14 +116,6 @@ iree-compile 405b_f16_tp8_decomposed.mlir --iree-hip-target=gfx942 --iree-hal-ta
 | llama3.1-70B-FP8  | tbd  | tbd | tbd | tbd | tbd
 | llama3.1-405B-FP8  | tbd | tbd | tbd | tbd | tbd
 | llama-toy-size-FP32-TP2-CPU  | tbd | tbd | tbd | tbd | tbd
-
-# Issues
-| category | issue link | assigned to | status |
-|---|---|---|---|
-|quark quantization | [QUARK-71](https://jira.xilinx.com/browse/QUARK-71) | Bowen Bow | FP8 matmul should be used in attention|
-|iree codegen | [18864](https://github.com/iree-org/iree/issues/18864)| Ian Wood | OOM for 70B |
-|iree Negative Memory | [19077](https://github.com/iree-org/iree/issues/19077) | unassigned | op uses -131072 bytes of shared memory
-
 
 # AMD GPU Machines
 [MI300](https://confluence.amd.com/display/ENGIT/Nod.AI+Lab#Nod.AILab-MI300NodAIMachines)
