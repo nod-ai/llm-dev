@@ -175,8 +175,8 @@ Follow the steps [here](https://gist.github.com/stbaione/2843eced1b8c1042127bec3
 | ----------- | ----------- | ---------- | ----------------------- | ------------ |
 | `gen`       | Generate shortfin completion, given a prompt | Yes | Enabled | [Shortfin Implementation](https://github.com/stbaione/sglang/blob/main/python/sglang/lang/backend/shortfin.py#L47) |
 | `streaming` | Stream shortfin completion, given a prompt | Yes | Enabled | [Shortfin Implementation](https://github.com/stbaione/sglang/blob/main/python/sglang/lang/backend/shortfin.py#L68) |
-| `run_batch` | Run batch of disjoint requests with continous batching | No | https://github.com/nod-ai/SHARK-Platform/issues/428 | [Batch Docs](https://sgl-project.github.io/frontend/frontend.html#batching) |
-| `fork`      | Launch parallel prompts | No | https://github.com/nod-ai/SHARK-Platform/issues/428 | [Fork Docs](https://sgl-project.github.io/frontend/frontend.html#parallelism) |
+| `run_batch` | Run batch of disjoint requests with continous batching | Yes | Enabled | [Batch Docs](https://sgl-project.github.io/frontend/frontend.html#batching) |
+| `fork`      | Launch parallel prompts | Yes | Enabled | [Fork Docs](https://sgl-project.github.io/frontend/frontend.html#parallelism) |
 | `choices`   | Given set of choices, generate response based on best log probs | No | Should work with greedy. Needs backend implementation | [Greedy Token Selection](https://sgl-project.github.io/references/choices_methods.html#greedy-token-selection) [OpenAI Implementation](https://github.com/sgl-project/sglang/blob/main/python/sglang/lang/backend/openai.py#L295) |
 | `image`     | Pass image as part of multi-modal prompt | No | Multi-Modal not supported by SF | [sgl.image Docs](https://sgl-project.github.io/frontend/frontend.html#multi-modality) |
 | `regex`     | Specify regular expression as decoding constraint | No | Only supported for local models | [Regex Docs](https://sgl-project.github.io/frontend/frontend.html#constrained-decoding) |
