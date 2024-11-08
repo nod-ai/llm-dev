@@ -28,7 +28,7 @@ See latest [Nightly Laama Test Report](https://nod-ai.github.io/SHARK-Platform/?
 | Performance Tuning           |- @rob: Reduce IR size and complexity (ETA:11/4) | 
 | IREE codegeneration          |- @mahesh support for non deocmposed decode (ETA: 11/5) | - @stan: FP8 attention (ETA: 11/15) |
 | Serving                      |- @xida: Fix the KV Cache corruption issue for large prompt (DONE: 11/1) <br> - @xida: Get shortfin working for llama 3.18b fp16 on MI300 (ETA: 11/4) <br>- @ean Instructions to run sdxl shortfin (Done: 11/4) <br>- @Stephen Landing integration (ETA: 11/5) <br>- @Stephen batch size shortfin benchmark tests with sglang gpu (ETA: 11/5)  <br>- @xida: add some search algorithm (beam search) beyond greedy to improve chatbot output (ETA: ) <br>- @ean fix and get batching working properly (ETA: 11/6) | 
-| Test Automation              |- @avi: Finish 8B Fp16 automation (ETA: 11/1) <br> - Have automaation dashboard showing llama3.1 tests running (Done:11/5) |
+| Test Automation              |- @avi: Finish 8B Fp16 automation (ETA: 11/1) <br> - Have automation dashboard showing llama3.1 tests running (Done:11/5) |
 
 
 # Status-Numerics 
@@ -115,9 +115,10 @@ iree-compile 405b_f16_tp8_decomposed.mlir --iree-hip-target=gfx942 --iree-hal-ta
 # Issues
 | category | issue link | assigned to | status |
 |---|---|---|---|
-|iree codegen | [18864](https://github.com/iree-org/iree/issues/18864)| unassigned | OOM for 70B |
-|quark quantization | [QUARK-71](https://jira.xilinx.com/browse/QUARK-71) | unassigned | FP8 matmul should be used in attention|
-|Negative Memory | [19077](https://github.com/iree-org/iree/issues/19077) | unassigned | op uses -131072 bytes of shared memory
+|quark quantization | [QUARK-71](https://jira.xilinx.com/browse/QUARK-71) | Bowen Bow | FP8 matmul should be used in attention|
+|iree codegen | [18864](https://github.com/iree-org/iree/issues/18864)| Ian Wood | OOM for 70B |
+|iree Negative Memory | [19077](https://github.com/iree-org/iree/issues/19077) | unassigned | op uses -131072 bytes of shared memory
+
 
 # AMD GPU Machines
 [MI300](https://confluence.amd.com/display/ENGIT/Nod.AI+Lab#Nod.AILab-MI300NodAIMachines)
