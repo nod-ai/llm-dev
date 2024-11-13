@@ -2,8 +2,9 @@
 # Introduction
 This page is project tracker to get halo models like llama3, grok1 etc. working on one or more MI3xx using shark/iree. 
 
-# December, 2024 Release Goals
-- llama3.1 405B sharded across 8 MI300x GPUs performant at level of vLLM PyTorch (Fused Ops Eager Mode)
+# 2024 Release Goals
+- V1 (Nov 2024) SDXL on MI300X for SPX mode and claims on 8x MI300X CPX mode 
+- V2 (Dec 2024) llama3.1 405B sharded across 8 MI300x GPUs performant at level of vLLM PyTorch (Fused Ops Eager Mode)
 
 # Glossary
 
@@ -13,6 +14,10 @@ TTFT: Time To First Token (time taken from processing of prompt to first token g
 
 ITL: Average time between each new token generated in decode phase (second token onwards)
 
+# Run Instructions
+- [shortfin SDXL](https://github.com/nod-ai/SHARK-Platform/tree/main/shortfin/python/shortfin_apps/sd)
+- [sglang-shortfin llama3.1](https://github.com/stbaione/SHARK-Platform/blob/sglang-user-doc/docs/shortfin/llm/user/shortfin_with_sglang_frontend_language.md)
+  
 # Nightly Test Reports
 See latest [Nightly Laama Test Report](https://nod-ai.github.io/SHARK-Platform/?sort=result). Use [Nod.AI Lab](https://confluence.amd.com/pages/viewpage.action?spaceKey=ENGIT&title=Nod.AI+Lab) page to ssh into machine SharkMi300X to find logs and artifacts to triage the failures. File an issue (if not already filed/listed) and add to [# Issues](https://github.com/nod-ai/llm-dev/edit/main/halo-models.md#issues)
 
