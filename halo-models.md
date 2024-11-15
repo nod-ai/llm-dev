@@ -2,9 +2,10 @@
 # Introduction
 This page is project tracker to get halo models like llama3, grok1 etc. working on one or more MI3xx using shark/iree. 
 
-# 2024 Release Goals
+# Release Goals
 - V1 (Nov 2024) SDXL on MI300X for SPX mode and claims on 8x MI300X CPX mode 
 - V2 (Dec 2024) llama3.1 405B sharded across 8 MI300x GPUs performant at level of vLLM PyTorch (Fused Ops Eager Mode)
+- V3 (?) Flux
 
 # Glossary
 
