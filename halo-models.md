@@ -124,6 +124,11 @@ iree-compile 405b_f16_tp8_decomposed.mlir --iree-hip-target=gfx942 --iree-hal-ta
 | llama3.1-405B-FP8  | tbd | tbd | tbd | tbd | tbd
 | llama-toy-size-FP32-TP2-CPU  | tbd | tbd | tbd | tbd | tbd
 
+## ONNX model 
+|Item              | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
+|------------------|---------------|-----------------|-----------------|--------------|-----------------|
+| Flux1.dev      |tbd | tbd | tbd | tbd | tbd
+
 # AMD GPU Machines
 [MI300](https://confluence.amd.com/display/ENGIT/Nod.AI+Lab#Nod.AILab-MI300NodAIMachines)
 
