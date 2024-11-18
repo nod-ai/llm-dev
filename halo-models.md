@@ -31,8 +31,8 @@ See latest [Nightly Laama Test Report](https://nod-ai.github.io/SHARK-Platform/?
 
 # Schedule
 (Model is assumed to be llama3.1 in the following table, e.g. "8B FP8" means "llama3.1 8B FP8 model")
-|Item                          | Current Week (Nov 4-8)       | Next Week (Nov 11-15)   |
-|------------------------------|------------------------------|-------------------------|
+|Item                          | Week (Nov 4-8)       | Last Week (Nov 11-15)   | Current Week (Nov 18-22)
+|------------------------------|------------------------------|-------------------------|---------------------------|
 | Machine and Storage          |- @saienduri: Setup one more 8X MI300 air-cooled machine (SharkMi300X-4) with 60TB (ETA: 11/5) |
 | Sharktank Modeling           |- @kyle: Generate, verify, compile-to-vmfb 405B TP8 fp16 non-decomposed MLIR (ETA 11/1) <br>- @dan: Add perplexity test for eager mode (pytorch run) 8B fp16 and refresh MLIR in table and on SharkMi300X machine (ETA: 11/1) <br>- @Dan Get quark fp8 attention model (ETA: 11/8) <br>- @archana: Debug Perplexity test numerics for vmfb for 8B FP16 (Done: 11/7) <br>- @Ian Add VAE support in sharktank (ETA 11/8) <br>- @George Add CLIP support through sharktank (ETA: 11/6) <br>- @Kyle Add mmdit for flux through sharktank (ETA: 11/15) <br>- @Boian T5XXL implementation through sharktank (under code revie)(ETA: 11/18) <br>- T5XXL export to MLIR and numerics comparison to eager (ETA: 11/19) | @Dan Debugging numeric fp8 issue (ETA: 11/11) <br> - @Stephen Debug Python 3.11/12 issues in sharktank (ETA: 11/13)
 | Sharding                     |- @boian: 8 CPU core sharded FP16 numerically verified [PR](https://github.com/nod-ai/SHARK-Platform/pull/394) (Wrong numerics issue) ETA:11/4 | 
