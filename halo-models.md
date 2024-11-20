@@ -129,6 +129,13 @@ iree-compile 405b_f16_tp8_decomposed.mlir --iree-hip-target=gfx942 --iree-hal-ta
 |------------------|---------------|-----------------|-----------------|--------------|-----------------|
 | Flux1.dev      |tbd | tbd | tbd | tbd | tbd
 
+### T5 Encoder (part of FLUX)
+(MI300X GPU, SPX Mode)
+|Item                                      | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
+|------------------------------------------|---------------|-----------------|-----------------|--------------|-----------------|
+| t5-v1.1-small-encoder-fp32      |PASS [mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/t5/small/google__t5_v1_1_small_encoder_fp32.mlir) [gguf](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/t5/small/google__t5-v1_1-small_fp32.gguf) [irpa](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/t5/small/google__t5_v1_1_small_encoder_fp32.irpa)  | PASS | PASS | PASS `tol < (atol=1e-4, rtol=1.5e-3)` | tbd
+| t5-v1.1-xxl-encoder-fp32      |PASS [mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/t5/xxl/google__t5_v1_1_xxl_encoder_fp32.mlir) [gguf](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/t5/xxl/google__t5-v1_1-xxl_fp32.gguf) [irpa](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/t5/xxl/google__t5_v1_1_xxl_encoder_fp32.irpa)  | PASS | PASS | PASS `tol < (atol=1e-4, rtol=1.5e-3)` | tbd
+
 # AMD GPU Machines
 [MI300](https://confluence.amd.com/display/ENGIT/Nod.AI+Lab#Nod.AILab-MI300NodAIMachines)
 
