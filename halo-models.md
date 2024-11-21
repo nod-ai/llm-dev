@@ -77,9 +77,13 @@ python3 -m sharktank.examples.sharding.shard_llm_dataset --irpa-file llama3_405b
 `
 
 2. Export to MLIR:
-
+Prefill Nondecomposed
 `
-python3 -m sharktank.examples.export_paged_llm_v1 --irpa-file=test.irpa --output-mlir=405b_f16_tp8_decomposed.mlir --output-config=405b_f16_tp8_decomposed.json --bs=4 --attention-kernel decomposed
+python3 -m sharktank.examples.export_paged_llm_v1 --irpa-file=test.irpa --output-mlir=405b_f16_tp8_decomposed.mlir --output-config=405b_f16_tp8_decomposed.json --bs=4 --attention-kernel torch --skip-decode
+`
+Prefill + Decode Nondecomposed
+`
+python3 -m sharktank.examples.export_paged_llm_v1 --irpa-file=test.irpa --output-mlir=405b_f16_tp8_decomposed.mlir --output-config=405b_f16_tp8_decomposed.json --bs=4 --attention-kernel torch
 `
 
 3. Compile (FAIL [compile error](https://gist.github.com/aviator19941/73468660ecef16b03b37e9afa2e6d075), seems related to this [PR](https://github.com/iree-org/iree/pull/18663)):
