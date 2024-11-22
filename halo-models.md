@@ -212,11 +212,13 @@ az storage blob download --account-name sharkpublic --container-name sharkpublic
 
 ## Export With `sharktank` and Server with `shortfin`:
 
-Follow the steps [here](https://gist.github.com/stbaione/be38bfb214d990a4b765804223d6b948).
+Follow the steps [here](https://github.com/nod-ai/shark-ai/blob/main/docs/shortfin/llm/user/e2e_llama8b_mi300x.md).
 
 ## Setup SGLang With Shortfin
 
-Follow the steps [here](https://gist.github.com/stbaione/2843eced1b8c1042127bec3ca8774d9e)
+TODO: Currently in PR. Will update link once it is merged.
+
+Follow the steps [here](https://github.com/stbaione/SHARK-Platform/blob/sglang-user-doc/docs/shortfin/llm/user/shortfin_with_sglang_frontend_language.md)
 
 ## SGLang/Shortfin Feature Enablement
 
@@ -232,7 +234,7 @@ Follow the steps [here](https://gist.github.com/stbaione/2843eced1b8c1042127bec3
 
 ## SGLang Benchmark Results
 
-The latest benchmark results for the SGLang integration can be found [here](https://amdcloud-my.sharepoint.com/:x:/g/personal/stbaione_amd_com/ERoJJXU4qthAqzqIKCk0oBcBYdYVsXWhUa6Mm6hMdyUAdw?e=h9pbr3)
+The latest benchmark results for the SGLang integration can be found [here](https://amdcloud-my.sharepoint.com/:x:/g/personal/stbaione_amd_com/EX255KFtxHRMqTW8rBQTmuEBkC4hA8PVYpMTgeOtsxiYxQ?e=VajHh4)
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Archive
