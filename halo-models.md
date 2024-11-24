@@ -1,11 +1,10 @@
 
 # Introduction
-This page is project tracker to get halo models like llama3, grok1 etc. working on one or more MI3xx using shark/iree. 
+This page is project tracker to get halo models like llama3, Flux.1, Mistral etc. working on one or more MI3xx using shark/iree. 
 
 # Release Goals
-- V1 (Nov 2024) SDXL on MI300X for SPX mode and claims on 8x MI300X CPX mode 
-- V2 (Dec 2024) llama3.1 405B sharded across 8 MI300x GPUs performant at level of vLLM PyTorch (Fused Ops Eager Mode)
-- V3 (?) Flux
+- Shark V3.1 (Jan 2025) llama3.1 405B sharded across 8 MI300x GPUs performant at level of vLLM PyTorch (Fused Ops Eager Mode)
+- Shark V3.2 (Feb 2025) Flux.1dev and Mistral 8x7B performant
 
 # Glossary
 
@@ -20,7 +19,7 @@ ITL: Average time between each new token generated in decode phase (second token
 - [sglang-shortfin llama3.1](https://github.com/stbaione/SHARK-Platform/blob/sglang-user-doc/docs/shortfin/llm/user/shortfin_with_sglang_frontend_language.md)
   
 # Nightly Test Reports
-See latest [Nightly Laama Test Report](https://nod-ai.github.io/SHARK-Platform/?sort=result). Use [Nod.AI Lab](https://confluence.amd.com/pages/viewpage.action?spaceKey=ENGIT&title=Nod.AI+Lab) page to ssh into machine SharkMi300X to find logs and artifacts to triage the failures. File an issue (if not already filed/listed) and add to [# Issues](https://github.com/nod-ai/llm-dev/edit/main/halo-models.md#issues)
+See latest [CI/Nightly Test Report](https://nod-ai.github.io/shark-ai/). Use [Nod.AI Lab](https://confluence.amd.com/pages/viewpage.action?spaceKey=ENGIT&title=Nod.AI+Lab) page to ssh into machine SharkMi300X to find logs and artifacts to triage the failures. File an issue (if not already filed/listed) and add to [# Issues](https://github.com/nod-ai/llm-dev/edit/main/halo-models.md#issues)
 
 # Issues
 | category | issue link | assigned to | status |
@@ -31,17 +30,13 @@ See latest [Nightly Laama Test Report](https://nod-ai.github.io/SHARK-Platform/?
 
 # Schedule
 (Model is assumed to be llama3.1 in the following table, e.g. "8B FP8" means "llama3.1 8B FP8 model")
-|Item                          | Week (Nov 4-8)       | Last Week (Nov 11-15)   | Current Week (Nov 18-22)
-|------------------------------|------------------------------|-------------------------|---------------------------|
-| Machine and Storage          |- @saienduri: Setup one more 8X MI300 air-cooled machine (SharkMi300X-4) with 60TB (ETA: 11/5) |
-| Sharktank Modeling           |- @kyle: Generate, verify, compile-to-vmfb 405B TP8 fp16 non-decomposed MLIR (ETA 11/1) <br>- @dan: Add perplexity test for eager mode (pytorch run) 8B fp16 and refresh MLIR in table and on SharkMi300X machine (ETA: 11/1) <br>- @Dan Get quark fp8 attention model (ETA: 11/8) <br>- @archana: Debug Perplexity test numerics for vmfb for 8B FP16 (Done: 11/7) <br>- @Ian Add VAE support in sharktank (ETA 11/8) <br>- @George Add CLIP support through sharktank (ETA: 11/6) <br>- @Kyle Add mmdit for flux through sharktank (ETA: 11/15) <br>- @Boian T5XXL implementation through sharktank ([PR](https://github.com/nod-ai/shark-ai/pull/550) under review)(ETA: 11/20) | @Dan Debugging numeric fp8 issue (ETA: 11/11) <br> - @Stephen Debug Python 3.11/12 issues in sharktank (ETA: 11/13) | <br> - @Kyle MMDIT debugging (ETA: 11/18) <br> - @Kyle Flux model with single stream (ETA: 11/20) <br> - @Dan found fp8 eager numerics issue, working to fix now (ETA: 11/18) <br> - @Dan work through fp8 attention model (ETA: 11/19) <br> - @Boian T5XXL export to MLIR and numerics comparison to eager [PR](https://github.com/nod-ai/shark-ai/pull/573) (ETA: 11/22) <br> - @Boian Add CLIP encoder to sharktank (ETA: 11/27)
-| Sharding                     |- @boian: 8 CPU core sharded FP16 numerically verified [PR](https://github.com/nod-ai/SHARK-Platform/pull/394) (Wrong numerics issue) ETA:11/4 | 
-| Performance Tuning           |- @rob: Reduce IR size and complexity (ETA:11/4) | 
-| IREE codegeneration          |- @mahesh support for non deocmposed decode (ETA: 11/5) | - @stan: FP8 attention (ETA: 11/15) | 
-| Serving | - @ean Instructions to run sdxl shortfin (Done: 11/4) <br>- @ean fix and get batching working properly (ETA: 11/6) <br>- @Ean get multi gpu working (ETA: 11/13) <br>- @Avi Help find SDXL shortfin multi-gpu config for perf (ETA: 11/13) <br>- @Ean Finalizing SDXL release (ETA: 11/18) |
-| **Shortfin LLM Serving (Stephen)** | - @Stephen Landing integration (ETA: 11/5) <br>- @Stephen batch size shortfin benchmark tests with sglang gpu (ETA: 11/5) <br>- @Stephen Select gpu with llama shortfin (Done:11/12) |
-| **Shortfin LLM Serving (Xida)** | - @xida: Fix the KV Cache corruption issue for large prompt (DONE: 11/1) <br>- @xida: Get shortfin working for llama 3.18b fp16 on MI300 (done) <br>- @xida: add some search algorithm (beam search) beyond greedy to improve chatbot output (ETA: unknown; waiting for dependencies) <br>- @Xida debug shortfin numerics (Done) <br>- @Xida rectify config's for sharktank and shortfin (PR in. Testing.) <br>- @xida verify numeric issue is within shortfin or sharktank (ETA: Done) <br>- @Xida Write interface for kv cache sharing schemes (draft PR in, need to modify decode invocation / possibly decode kernel export) |
-| Test Automation              |- @avi: Finish 8B Fp16 automation (ETA: 11/1) <br> - Have automation dashboard showing llama3.1 tests running (Done:11/5) | @Avi Benchmark latency 8b Numbers (decomposed and not for prefill) and TP8 (ETA: 11/11) <br> - @Avi Add benchmarking perf guards to tests (ETA: 11/15) <br> - @Avi Add automatic uploading of latest llama IR if PPL and perf tests pass (ETA: 11/18) | <br> - @Avi Testing 405B (ETA: 11/18) <br> - @Archana 8b PPL presubmite test (ETA: 11/19) 
+|Item                          | Last Week (Nov 18-22) | Current Week (Nov 25-27) |
+|------------------------------|-----------------------|--------------------------|
+| Sharktank Modeling           |<br>- @Kyle Add mmdit for flux through sharktank (ETA: 11/19) <br> - @Boian T5XXL export to MLIR and numerics comparison to eager [PR](https://github.com/nod-ai/shark-ai/pull/573) (ETA: 11/22) | <br> - @Boian Add CLIP encoder to sharktank (ETA: 11/27) <br> -@Dan fix numeric fp8 issue (ETA: 11/26)
+| IREE codegeneration          | | - @kunvar support for non deocmposed decode (ETA: 11/27) - @stan: FP8 attention (ETA: 11/27) | 
+| Serving | | <br> - @stephen / @xida implement Radix Attention in shortfin (ETA: 12/6) <br> - @egarvey wire up Flux.1 in shortfin using ONNX model (ETA:11/27) 
+| Test Automation              |<br> - @Avi Add benchmarking perf guards, add automatic uploading of latest llama IR if PPL and perf tests pass, <br> - @Archana 8b PPL presubmite test (ETA: 11/19) | <br>- @Avi Work with codegen folks to get 405B FP16 fixed and tested (ETA: 11/18) 
+| Performance Tuning           | | 
 
 
 # Status-Numerics 
@@ -65,11 +60,11 @@ Example: /data/llama-3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters
 
 Example: /data/llama-3.1/artifacts/405b/llama3.1_405b_fp16_nondecomposed_tp8_bs4.mlir
 
-## decomposed
+## llama3.1 decomposed
 To generate artifacts, on SharkMI300x, follow sharktank [setup instructions](https://gist.github.com/stbaione/be38bfb214d990a4b765804223d6b948), then:
 `python -m sharktank.examples.export_paged_llm_v1 --irpa-file=/data/llama-3.1/weights/8b/fp16/llama3.1_8b_fp16.irpa --output-mlir f16_dc.mlir  --bs=1  --attention-kernel=decomposed`
 
-## 405B TP8 commands
+## llama3.1 405B TP8 commands
 1. Shard irpa file:
 
 `
@@ -108,7 +103,7 @@ iree-compile 405b_f16_tp8_decomposed.mlir --iree-hip-target=gfx942 --iree-hal-ta
 | llama3.1-70B-FP8-decomposed  |PASS [TP1 mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/native_fp8_e4m3fnuz_llama3_70b.mlir) [irpa](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/native_fp8_e4m3fnuz_llama3_70b.irpa) |Fails in iree, [patch](https://github.com/iree-org/iree/pull/18890) | tbd | tbd | tbd
 | llama3.1-405B-FP8-decomposed  | tbd | tbd | tbd | tbd | tbd
 
-## non decomposed
+## llama3.1 non-decomposed 
 (MI300X GPU, SPX Mode)
 |Item                                      | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
 |------------------------------------------|---------------|-----------------|-----------------|--------------|-----------------|
@@ -121,7 +116,7 @@ iree-compile 405b_f16_tp8_decomposed.mlir --iree-hip-target=gfx942 --iree-hal-ta
 | llama3.1-405B-FP8 |ETA: 11/5   | tbd | tbd | tbd | tbd
 | llama-toy-size-FP32-TP2-CPU | PASS | PASS | tbd | tbd | tbd
 
-## decodeposed 
+## llama3.1 decodeposed 
 (only decode is decomposed)
 (MI300X GPU, SPX Mode)
 |Item                                      | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
@@ -134,12 +129,12 @@ iree-compile 405b_f16_tp8_decomposed.mlir --iree-hip-target=gfx942 --iree-hal-ta
 | llama3.1-405B-FP8  | tbd | tbd | tbd | tbd | tbd
 | llama-toy-size-FP32-TP2-CPU  | tbd | tbd | tbd | tbd | tbd
 
-## ONNX model 
+## Flux.1 dev
 |Item              | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
 |------------------|---------------|-----------------|-----------------|--------------|-----------------|
-| Flux1.dev      |tbd | tbd | tbd | tbd | tbd
+| Flux1.dev ONNX   |tbd | tbd | tbd | tbd | tbd
 
-### T5 Encoder (part of FLUX)
+### T5 Encoder (part of Flux.1 dev)
 
 Only the `xxl` variant is actually used in FLUX. The `small` variant is provided for faster iteration if needed.
 
@@ -167,6 +162,12 @@ iree-run-module \
 |------------------------------------------|---------------|-----------------|-----------------|--------------|-----------------|
 | t5-v1.1-small-encoder-fp32      |PASS [mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/t5/small/google__t5_v1_1_small_encoder_fp32.mlir) [gguf](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/t5/small/google__t5-v1_1-small_fp32.gguf) [irpa](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/t5/small/google__t5_v1_1_small_encoder_fp32.irpa)  | PASS | PASS [args](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/t5/small/google__t5_v1_1_small_iree_forward_bs4_arg0.npy) [expected_result](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/t5/small/google__t5_v1_1_small_torch_forward_result0.npy) | PASS `tol < (atol=1e-4, rtol=1.5e-3)` | tbd
 | t5-v1.1-xxl-encoder-fp32      |PASS [mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/t5/xxl/google__t5_v1_1_xxl_encoder_fp32.mlir) [gguf](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/t5/xxl/google__t5-v1_1-xxl_fp32.gguf) [irpa](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/t5/xxl/google__t5_v1_1_xxl_encoder_fp32.irpa)  | PASS | PASS [args](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/t5/xxl/google__t5_v1_1_xxl_iree_forward_bs4_arg0.npy) [expected_result](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/t5/xxl/google__t5_v1_1_xxl_torch_forward_result0.npy) | PASS `tol < (atol=1e-4, rtol=1.5e-3)` | tbd
+
+## Mistral 8x7B
+|Item              | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
+|------------------|---------------|-----------------|-----------------|--------------|-----------------|
+| Mistral 8x7B ONNX   |tbd | tbd | tbd | tbd | tbd
+
 
 # AMD GPU Machines
 [MI300](https://confluence.amd.com/display/ENGIT/Nod.AI+Lab#Nod.AILab-MI300NodAIMachines)
