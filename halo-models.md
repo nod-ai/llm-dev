@@ -19,7 +19,7 @@ ITL: Average time between each new token generated in decode phase (second token
 - [sglang-shortfin llama3.1](https://github.com/stbaione/SHARK-Platform/blob/sglang-user-doc/docs/shortfin/llm/user/shortfin_with_sglang_frontend_language.md)
   
 # Nightly Test Reports
-See latest [CI/Nightly Test Report](https://nod-ai.github.io/shark-ai/). Use [Nod.AI Lab](https://confluence.amd.com/pages/viewpage.action?spaceKey=ENGIT&title=Nod.AI+Lab) page to ssh into machine SharkMi300X to find logs and artifacts to triage the failures. File an issue (if not already filed/listed) and add to [# Issues](https://github.com/nod-ai/llm-dev/edit/main/halo-models.md#issues)
+See latest [CI/Nightly Test Report](https://nod-ai.github.io/shark-ai/). Use [Nod.AI Lab](https://confluence.amd.com/pages/viewpage.action?spaceKey=ENGIT&title=Nod.AI+Lab) page to ssh into machine SharkMi300X to find logs and artifacts to triage the failures. File an issue (if not already filed/listed) and add to Issues table below.
 
 # Issues
 | category | issue link | assigned to | status |
