@@ -4,7 +4,7 @@ This page is project tracker to get halo models like llama3, Flux.1, Mistral etc
 
 # Release Goals
 - Shark V3.1 (Jan 2025) llama3.1 405B sharded across 8 MI300x GPUs performant at level of vLLM PyTorch (Fused Ops Eager Mode)
-- Shark V3.2 (Feb 2025) Flux.1dev and Mistral 8x7B performant
+- Shark V3.2 (Feb 2025) Flux.1dev and Mixtral 8x7B performant at 125% of PyTorch-rocm
 
 # Glossary
 
@@ -165,10 +165,10 @@ iree-run-module \
 | t5-v1.1-small-encoder-f32      |PASS [mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/t5/small/google__t5_v1_1_small_encoder_f32.mlir) [gguf](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/t5/small/google__t5-v1_1-small_f32.gguf) [irpa](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/t5/small/google__t5_v1_1_small_encoder_f32.irpa)  | PASS | PASS [args](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/t5/small/google__t5_v1_1_small_encoder_f32_iree_forward_bs4_arg0.npy) [expected_result](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/t5/small/google__t5_v1_1_small_encoder_f32_torch_forward_result0.npy) | PASS `tol < (atol=1e-4, rtol=1.5e-3)` | tbd
 | t5-v1.1-xxl-encoder-f32      |PASS [mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/t5/xxl/google__t5_v1_1_xxl_encoder_f32.mlir) [gguf](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/t5/xxl/google__t5-v1_1-xxl_f32.gguf) [irpa](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/t5/xxl/google__t5_v1_1_xxl_encoder_f32.irpa)  | PASS | PASS [args](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/t5/xxl/google__t5_v1_1_xxl_encoder_f32_iree_forward_bs4_arg0.npy) [expected_result](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/t5/xxl/google__t5_v1_1_xxl_encoder_f32_torch_forward_result0.npy) | PASS `tol < (atol=1e-4, rtol=1.5e-3)` | tbd
 
-## Mistral 8x7B
+## Mixtral 8x7B
 |Item              | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
 |------------------|---------------|-----------------|-----------------|--------------|-----------------|
-| Mistral 8x7B ONNX   |tbd | tbd | tbd | tbd | tbd
+| Mixtral 8x7B ONNX   |tbd | tbd | tbd | tbd | tbd
 
 
 # AMD GPU Machines
