@@ -30,12 +30,12 @@ See latest [CI/Nightly Test Report](https://nod-ai.github.io/shark-ai/). Use [No
 
 # Schedule
 (Model is assumed to be llama3.1 in the following table, e.g. "8B FP8" means "llama3.1 8B FP8 model")
-|Item                          | Last Week (Nov 18-22) | Current Week (Nov 25-27) |
+|Item                          | Last Week (Nov 25-27) | Current Week (Dec 2-6) |
 |------------------------------|-----------------------|--------------------------|
-| Sharktank Modeling           |<br>- @Kyle Add mmdit for flux through sharktank (ETA: 11/19) <br> - @Boian T5XXL export to MLIR and numerics comparison to eager [PR](https://github.com/nod-ai/shark-ai/pull/573) (ETA: 11/22) | <br> - @Boian Add CLIP encoder to sharktank (ETA: 11/27) <br> -@Dan fix numeric fp8 issue (ETA: 11/26)
-| IREE codegeneration          | | - @kunvar support for non deocmposed decode (ETA: 11/27) - @stan: FP8 attention (ETA: 11/27) | 
-| Serving | | <br> - @stephen / @xida implement Radix Attention in shortfin (ETA: 12/6) <br> - @egarvey wire up Flux.1 in shortfin using ONNX model (ETA:11/27) 
-| Test Automation              |<br> - @Avi Add benchmarking perf guards, add automatic uploading of latest llama IR if PPL and perf tests pass, <br> - @Archana 8b PPL presubmite test (ETA: 11/19) | <br>- @Avi Work with codegen folks to get 405B FP16 fixed and tested (ETA: 11/18) 
+| Sharktank Modeling           | <br> - @Boian Add CLIP encoder to sharktank (ETA: 11/27) <br> -@Dan fix numeric fp8 issue (ETA: 11/26) |
+| IREE codegeneration          |- @kunvar support for non deocmposed decode (ETA: 11/27) <br> - @stan: FP8 attention (ETA: 11/27) | 
+| Serving | <br> - @stephen / @xida implement Radix Attention in shortfin (ETA: 12/6) <br> - @egarvey wire up Flux.1 in shortfin using ONNX model (ETA:11/27) |
+| Test Automation              |<br>- @Avi Work with codegen folks to get 405B FP16 fixed and tested (ETA: 11/18) 
 | Performance Tuning           | | 
 
 
