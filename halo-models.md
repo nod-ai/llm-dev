@@ -32,7 +32,7 @@ See latest [CI/Nightly Test Report](https://nod-ai.github.io/shark-ai/). Use [No
 (Model is assumed to be llama3.1 in the following table, e.g. "8B FP8" means "llama3.1 8B FP8 model")
 |Item                          | Last Week (Nov 25-27) | Current Week (Dec 2-6) |
 |------------------------------|-----------------------|--------------------------|
-| Sharktank Modeling           | <br> - @Boian Add CLIP encoder to sharktank (ETA: 11/27) <br> -@Dan fix numeric fp8 issue (ETA: 11/26) | - @Boian CLIP encoder (ETA: 12/5) <br> - @Rob CI llama regression tests (ETA 12/3) <br> -@Ian 
+| Sharktank Modeling           | <br> - @Boian Add CLIP encoder to sharktank (ETA: 11/27) <br> -@Dan fix numeric fp8 issue (ETA: 11/26) | - @Boian CLIP encoder (ETA: 12/5) <br> - @Rob CI llama regression tests (ETA 12/3) <br> - @Ian Finish VAE decode (ETA: 12/5) 
 | IREE codegeneration          |- @kunvar support for non deocmposed decode (ETA: 11/27) <br> - @stan: FP8 attention (ETA: 11/27) | 
 | Serving | <br> - @stephen / @xida implement Radix Attention in shortfin (ETA: 12/6) <br> - @egarvey wire up Flux.1 in shortfin using ONNX model (ETA:11/27) | - @eagarvey finish Flux pipeline for image generation (ETA: 12/2) | - @Stephen Debug CI flakiness (ETA: 12/2) <br> - @Xida landing PR's for attention changes (ETA: 12/3)
 | Test Automation              |<br>- @Avi Work with codegen folks to get 405B FP16 fixed and tested (ETA: 11/18) | - @Avi benchmarking dashboard (ETA: 12/3) <br> - @Archana shortfin regression tests (ETA: 12/3)
