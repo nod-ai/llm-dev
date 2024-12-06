@@ -220,9 +220,7 @@ Follow the steps [here](https://github.com/nod-ai/shark-ai/blob/main/docs/shortf
 
 ## Setup SGLang With Shortfin
 
-TODO: Currently in PR. Will update link once it is merged.
-
-Follow the steps [here](https://github.com/stbaione/SHARK-Platform/blob/sglang-user-doc/docs/shortfin/llm/user/shortfin_with_sglang_frontend_language.md)
+Follow the steps [here](https://github.com/nod-ai/shark-ai/blob/main/docs/shortfin/llm/user/shortfin_with_sglang_frontend_language.md)
 
 ## SGLang/Shortfin Feature Enablement
 
