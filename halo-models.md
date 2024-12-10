@@ -42,10 +42,10 @@ See latest [CI/Nightly Test Report](https://nod-ai.github.io/shark-ai/). Use [No
 (Model is assumed to be llama3.1 in the following table, e.g. "8B FP8" means "llama3.1 8B FP8 model")
 |Item                          | Last Week (Dec 2-6) | Current Week (Dec 9-13) |
 |------------------------------|-----------------------|--------------------------|
-| Sharktank Modeling           | - @Boian CLIP encoder (ETA: 12/5) <br> - @Rob CI llama regression tests (ETA 12/3) <br> - @Ian Finish VAE decode (ETA: 12/5) | <br> - @Ian Finish Flux Vae decode (ETA 12/11) <br> - @Kyle finish flux model (ETA: 12/9) <br> - @Boian flux clip model export and compile for bf16 (ETA: 12/9)  <br> - @Dan debuggign IR generated (ETA: 12/9)
+| Sharktank Modeling           | - @Boian CLIP encoder (ETA: 12/5) <br> - @Rob CI llama regression tests (ETA 12/3) <br> - @Ian Finish VAE decode (ETA: 12/5) | <br> - @Ian Finish Flux Vae decode (ETA 12/11) <br> - @Kyle finish flux model (ETA: 12/11) <br> - @Boian flux clip model export and compile for bf16 (ETA: 12/9)  <br> - @Dan debuggi IR generated (Done: 12/9) <br> - @Dan Finish and merge FP8 llama PR (ETA 12/11)
 | IREE codegeneration          | | 
-| Serving | <br> - @eagarvey finish Flux pipeline for image generation (ETA: 12/3) <br> - @Stephen Debug CI flakiness (ETA: 12/2) <br> - @Xida landing PR's for attention changes (ETA: 12/3) | - @ean flush out bf16 flux in shortfin for flux (ETA 12/9) <br> - @Xida Debugging batching numeric issues (ETA: 12/9) <br> - @Stephen enabling sharded llama in shortfin (ETA: 12/9) |
-| Test Automation              |- @Avi benchmarking dashboard (ETA: 12/3) <br> - @Archana shortfin regression tests (ETA: 12/3) | @ Avi - 405B TP8 fp16 verfication and Tracy Profiles (ETA 12/9) <br> - @Archana shortfin PPL debugging, may be batching issue (ETA: 12/9) <br> - @Rob grok numerics (ETA 12/9)
+| Serving | <br> - @eagarvey finish Flux pipeline for image generation (ETA: 12/3) <br> - @Stephen Debug CI flakiness (ETA: 12/2) <br> - @Xida landing PR's for attention changes (ETA: 12/3) | - @ean flush out bf16 flux in shortfin for flux (ETA 12/9) <br> - @Xida Debugging batching numeric issues (Done: 12/9) <br> - @Stephen enabling sharded llama in shortfin (ETA: 12/10) |
+| Test Automation              |- @Avi benchmarking dashboard (ETA: 12/3) <br> - @Archana shortfin regression tests (ETA: 12/3) | @ Avi - 405B TP8 fp16 verfication and Tracy Profiles (ETA 12/9) <br> - @Archana shortfin PPL debugging (ETA: 12/10) <br> - @Rob grok numerics (ETA 12/9) <br> - @Rob debug multi-device (ETA: 12/10)
 | Performance Tuning           | | 
 
 
