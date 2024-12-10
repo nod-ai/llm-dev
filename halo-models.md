@@ -19,7 +19,7 @@ ITL: Average time between each new token generated in decode phase (second token
 Need to be able to have a flow where user can download gguf open weights and compile the model and launch shortfin server
 | Steps                               | instructions | owner |
 |-------------------------------------|--------------|--------|
-| Compile Model: Given gguf, import weights, export MLIR and get vmfb | [model cookbook](https://github.com/nod-ai/shark-ai/blob/main/docs/model_cookbook.md)  | @scott
+| Compile Model: Given gguf, import weights, export MLIR and get vmfb | [cookbooks](https://github.com/nod-ai/shark-ai/tree/main/docs/shortfin/llm/user)  | @scott
 | Launch Shortfin: Launch shortfin server for {single node, cluster of nodes} | TBD | @xida/@sai
 | Run Inference: Use sglang front-end to drive inference | TBD | @stephen
 
