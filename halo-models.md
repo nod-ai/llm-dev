@@ -20,7 +20,7 @@ Need to be able to have a flow where user can download gguf open weights and com
 | Steps                               | instructions | owner |
 |-------------------------------------|--------------|--------|
 | Compile Model: Given gguf, import weights, export MLIR and get vmfb | [model cookbook](https://github.com/nod-ai/shark-ai/blob/main/docs/model_cookbook.md)  | @scott
-| Launch Shortfin: Launch shortfin server for {single node, cluster of nodes} | TBD | @xida/@avi
+| Launch Shortfin: Launch shortfin server for {single node, cluster of nodes} | TBD | @xida/@sai
 | Run Inference: Use sglang front-end to drive inference | TBD | @stephen
 
 
