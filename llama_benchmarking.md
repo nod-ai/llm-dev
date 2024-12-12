@@ -7,7 +7,7 @@ In order to benchmark Llama 3.1 prefill and decode, you will need these artifact
 
 ## 1. Get the irpa files
 Create a SAS token in Azure:
-- Go to the `sharkblobs` storage account in the Azure portal
+- Go to the [sharkblobs](https://portal.azure.com/#@amdcloud.onmicrosoft.com/resource/subscriptions/8c190d1b-eb91-48d5-bec5-3e7cb7412e6c/resourceGroups/pdue-nod-ai-rg/providers/Microsoft.Storage/storageAccounts/sharkblobs/overview) storage account in the Azure portal
 - In the `Security + networking` dropdown, click `Shared access signature`
 - Under `Allowed resource types` select Service, Container, and Object
 - Scroll down to the bottom and select `Generate SAS and connection string`
