@@ -12,11 +12,11 @@ Create a SAS token in Azure:
 - Under `Allowed resource types` select Service, Container, and Object
 - Scroll down to the bottom and select `Generate SAS and connection string`
 - Scroll down and Copy the SAS token
-- Replace <Add your SAS token here> (inclduing the < and >) by SAS token string in instructions below 
+- Replace [Add your SAS token here] (inclduing the [ and ]) by SAS token string in instructions below 
 Unsharded:
 
 ```
-azcopy copy 'https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_8b/8b_f16.irpa?<Add SAS token here>' '8b_f16.irpa'
+azcopy copy 'https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_8b/8b_f16.irpa?[Add SAS token here]' '8b_f16.irpa'
 ```
 
 If you have trouble accessing `sharkblobs`, you can copy the 8b f16 unsharded irpa file from the `SharkMi300x` machine:
