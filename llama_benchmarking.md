@@ -13,6 +13,7 @@ Create a SAS token in Azure:
 - Scroll down to the bottom and select `Generate SAS and connection string`
 - Scroll down and Copy the SAS token
 - Replace [Add your SAS token here] (inclduing the [ and ]) by SAS token string in instructions below 
+
 Unsharded:
 
 ```
