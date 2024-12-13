@@ -50,14 +50,19 @@ python3 -m sharktank.examples.export_paged_llm_v1 --bs=4 --irpa-file=8b_f16.irpa
 Get the 8b f16 tp1 unsharded numpy inputs: [get_8b_f16_tp1_numpy_inputs.sh](https://gist.github.com/aviator19941/380acabc77aeb4749fac14262e17db69)
 
 ## 4. Compile command
+This command compiles the full IR (both prefill + decode) into a vmfb.
 
-`
+```
 ../iree-build-no-trace/tools/iree-compile 8b_f16_prefill_nondecomposed.mlir --iree-hip-target=gfx942 -o=prefill_8b.vmfb --iree-hal-target-device=hip --iree-dispatch-creation-enable-aggressive-fusion=true --iree-global-opt-propagate-transposes=true --iree-opt-aggressively-propagate-transposes=true --iree-opt-data-tiling=false --iree-preprocessing-pass-pipeline='builtin.module(util.func(iree-preprocessing-generalize-linalg-matmul-experimental))' --iree-hal-indirect-command-buffers=true --iree-stream-resource-memory-model=discrete --iree-hip-legacy-sync=false --iree-hal-memoization=true --iree-opt-strip-assertions
-`
+```
 
 ## 5. Benchmark command
+In order to benchmark prefill, make sure you specify the function as `prefill_bs{batch_size}` and specify the 4 inputs using the numpy files in 
+`/data/llama-3.1/weights/8b/prefill_args_bs4_128`.
 
-`
+Prefill benchmark command:
+
+```
 ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
   ../iree-build-no-trace/tools/iree-benchmark-module \
   --hip_use_streams=true \
@@ -71,7 +76,30 @@ ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
   --input=@/data/llama-3.1/weights/8b/prefill_args_bs4_128/seq_block_ids.npy \
   --input=@/data/llama-3.1/weights/8b/prefill_args_bs4_128/cs_f16.npy \
   --benchmark_repetitions=3
-`
+```
+
+In order to benchmark decode, make sure you specify the function as `decode_bs{batch_size}` and specify the 5 inputs using the numpy files in 
+`/data/llama-3.1/weights/8b/decode_args_bs4_128`.
+
+Decode benchmark command:
+
+```
+ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7  \
+  ../iree-build-no-trace/tools/iree-benchmark-module \
+  --hip_use_streams=true \
+  --device_allocator=caching \
+  --module=8b_f16_nondecomposed_32.vmfb \
+  --parameters=model=8b_fp16.irpa \
+  --device=hip://4 \
+  --function=decode_bs4 \
+  --input=@../SHARK-Platform/decode_args_bs4_128_stride_32/next_tokens.npy \
+  --input=@../SHARK-Platform/decode_args_bs4_128_stride_32/seq_lens.npy \
+  --input=@../SHARK-Platform/decode_args_bs4_128_stride_32/start_positions.npy \
+  --input=@../SHARK-Platform/decode_args_bs4_128_stride_32/seq_block_ids.npy \
+  --input=@../SHARK-Platform/decode_args_bs4_128_stride_32/cs_f16.npy \
+  --benchmark_repetitions=3
+```
+
 
 ## Sharded
 Sharded - If you want to create your own tp8 sharded irpa files use this command:
@@ -94,12 +122,12 @@ Get the 8b f16 tp8 sharded numpy inputs: [get_8b_f16_tp8_numpy_inputs.sh](https:
 
 Sharded compile command:
 
-`
+```
 ../iree-build-no-trace/tools/iree-compile 405b_f16_prefill_tp8_nondecomposed.mlir --iree-hip-target=gfx942 -o=prefill_405b_tp8.vmfb --iree-hal-target-device=hip[0] --iree-hal-target-device=hip[1] --iree-hal-target-device=hip[2] --iree-hal-target-device=hip[3] --iree-hal-target-device=hip[4] --iree-hal-target-device=hip[5] --iree-hal-target-device=hip[6] --iree-hal-target-device=hip[7] --iree-dispatch-creation-enable-aggressive-fusion=true --iree-global-opt-propagate-transposes=true --iree-opt-aggressively-propagate-transposes=true --iree-opt-data-tiling=false --iree-preprocessing-pass-pipeline='builtin.module(util.func(iree-preprocessing-generalize-linalg-matmul-experimental))' --iree-hal-indirect-command-buffers=true --iree-stream-resource-memory-model=discrete --iree-hip-legacy-sync=false --iree-hal-memoization=true --iree-opt-strip-assertions
-`
+```
 
 Sharded:
 
-`
+```
 ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 ../iree-build-no-trace/tools/iree-run-module --hip_use_streams=true --device_allocator=caching --module=prefill_405b_tp8.vmfb --parameters=model=/shark-dev/405b/llama3.1_405b_fp16_tp8_parameters.irpa --parameters=model=/shark-dev/405b/llama3.1_405b_fp16_tp8_parameters.rank0.irpa --parameters=model=/shark-dev/405b/llama3.1_405b_fp16_tp8_parameters.rank1.irpa --parameters=model=/shark-dev/405b/llama3.1_405b_fp16_tp8_parameters.rank2.irpa --parameters=model=/shark-dev/405b/llama3.1_405b_fp16_tp8_parameters.rank3.irpa --parameters=model=/shark-dev/405b/llama3.1_405b_fp16_tp8_parameters.rank4.irpa --parameters=model=/shark-dev/405b/llama3.1_405b_fp16_tp8_parameters.rank5.irpa --parameters=model=/shark-dev/405b/llama3.1_405b_fp16_tp8_parameters.rank6.irpa --parameters=model=/shark-dev/405b/llama3.1_405b_fp16_tp8_parameters.rank7.irpa --device=hip://0 --device=hip://1 --device=hip://2 --device=hip://3 --device=hip://4 --device=hip://5 --device=hip://6 --device=hip://7 --function=prefill_bs4 --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/random_tokens.npy --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/seq_lens.npy --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/seq_block_ids.npy --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_0.npy --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_1.npy --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_2.npy --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_3.npy --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_4.npy --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_5.npy --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_6.npy --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_7.npy
-`
+```
