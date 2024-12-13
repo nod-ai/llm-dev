@@ -1,5 +1,5 @@
 # How to benchmark Llama 3.1
-In order to benchmark Llama 3.1 prefill and decode, you will need these artifacts for sharded (Tensor Parallel (TP)=8) or unsharded (TP=1):
+In order to benchmark Llama 3.1 prefill and decode, you will need these artifacts for unsharded (TP=1) benchmarks:
 
 1. irpa file(s)
 2. IR
