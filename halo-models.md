@@ -14,20 +14,26 @@ TTFT: Time To First Token (time taken from processing of prompt to first token g
 
 ITL: Average time between each new token generated in decode phase (second token onwards)
 
-# llama3.1 inference user instructions
+# User Instructions
+-Read [cookbooks](https://github.com/nod-ai/shark-ai/tree/main/docs/shortfin/llm/user) for user-like inference run instructions.
 
-Need to be able to have a flow where user can download gguf open weights and compile the model and launch shortfin server
-| Steps                               | instructions | owner |
-|-------------------------------------|--------------|--------|
-| Compile Model: Given gguf, import weights, export MLIR and get vmfb | [cookbooks](https://github.com/nod-ai/shark-ai/tree/main/docs/shortfin/llm/user)  | @scott
-| Launch Shortfin: Launch shortfin server for {single node, cluster of nodes} | TBD | @xida/@sai
-| Run Inference: Use sglang front-end to drive inference | TBD | @stephen
+# Benchmarking
+-Read [benchmarking](https://github.com/nod-ai/llm-dev/blob/main/llama_benchmarking.md) to get setup to get performance numbers.
+## Latest Tracy Profiles
+| Model | Tracy Profile |
+|-------|---------------|
+|llama3.1 8B Fp16 Unsharded nondecomposed (i.e. using flash attention2) | [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/8b_f16_nondecomposed_32.tracy)
 
+# Schedule
+(Model is assumed to be llama3.1 in the following table, e.g. "8B FP8" means "llama3.1 8B FP8 model")
+|Item                          | Current Week (Dec 9-13) |  Next Week (Dec 16-20) |
+|------------------------------|-----------------------|--------------------------|
+| Sharktank Modeling           | - @Ian Finish Flux Vae decode (DONE 12/11) <br> - @Kyle finish flux model (DONE: 12/11) <br> - @Boian flux clip model export and compile for bf16 (DONE: 12/11)  <br> - @Dan Finish and merge FP8 llama PR (ETA 12/12) |
+| IREE codegeneration          | - @kunvar decode flash attention (DONE 12/11) | 
+| Serving |- @ean flush out bf16 flux in shortfin for flux (ETA 12/12) <br> - @Xida fix flakiness in batch handling (Done: 12/12) <br> - @Stephen test and ensure sglang/shortfin batch runs work (ETA: 12/12) |
+| Test Automation              |- @Avi refresh benchmarking decode and prefill for 8B, 70B   (ETA: 12/12) <br> -@Archana shortfin PPL debugging (ETA: 12/10) <br> -@Rob debug multi-device (ETA: 12/11)
+| Performance Tuning           | -@Avi tracy profile for decode (ETA:12/11)| 
 
-# Run Instructions
-- [shortfin SDXL](https://github.com/nod-ai/SHARK-Platform/tree/main/shortfin/python/shortfin_apps/sd)
-- [sglang-shortfin llama3.1](https://github.com/stbaione/SHARK-Platform/blob/sglang-user-doc/docs/shortfin/llm/user/shortfin_with_sglang_frontend_language.md)
-  
 # Nightly Test Reports
 See latest [CI/Nightly Test Report](https://nod-ai.github.io/shark-ai/). Use [Nod.AI Lab](https://confluence.amd.com/pages/viewpage.action?spaceKey=ENGIT&title=Nod.AI+Lab) page to ssh into machine SharkMi300X to find logs and artifacts to triage the failures. File an issue (if not already filed/listed) and add to Issues table below.
 
@@ -36,18 +42,6 @@ See latest [CI/Nightly Test Report](https://nod-ai.github.io/shark-ai/). Use [No
 |---|---|---|---|
 |quark quantization | [QUARK-71](https://jira.xilinx.com/browse/QUARK-71) | Bowen Bow | FP8 matmul should be used in attention|
 |iree codegen | [18864](https://github.com/iree-org/iree/issues/18864)| Ian Wood | OOM for 70B |
-|iree Negative Memory | [19077](https://github.com/iree-org/iree/issues/19077) | unassigned | op uses -131072 bytes of shared memory
-
-# Schedule
-(Model is assumed to be llama3.1 in the following table, e.g. "8B FP8" means "llama3.1 8B FP8 model")
-|Item                          | Last Week (Dec 2-6) | Current Week (Dec 9-13) |
-|------------------------------|-----------------------|--------------------------|
-| Sharktank Modeling           | - @Boian CLIP encoder (ETA: 12/5) <br> - @Rob CI llama regression tests (ETA 12/3) <br> - @Ian Finish VAE decode (ETA: 12/5) | <br> - @Ian Finish Flux Vae decode (ETA 12/11) <br> - @Kyle finish flux model (ETA: 12/11) <br> - @Boian flux clip model export and compile for bf16 (ETA: 12/9)  <br> - @Dan debuggi IR generated (Done: 12/9) <br> - @Dan Finish and merge FP8 llama PR (ETA 12/11)
-| IREE codegeneration          | | 
-| Serving | <br> - @eagarvey finish Flux pipeline for image generation (ETA: 12/3) <br> - @Stephen Debug CI flakiness (ETA: 12/2) <br> - @Xida landing PR's for attention changes (ETA: 12/3) | - @ean flush out bf16 flux in shortfin for flux (ETA 12/9) <br> - @Xida Debugging batching numeric issues (Done: 12/9) <br> - @Stephen enabling sharded llama in shortfin (ETA: 12/10) |
-| Test Automation              |- @Avi benchmarking dashboard (ETA: 12/3) <br> - @Archana shortfin regression tests (ETA: 12/3) | @ Avi - 405B TP8 fp16 verfication and Tracy Profiles (ETA 12/9) <br> - @Archana shortfin PPL debugging (ETA: 12/10) <br> - @Rob grok numerics (ETA 12/9) <br> - @Rob debug multi-device (ETA: 12/10)
-| Performance Tuning           | | 
-
 
 # Status-Numerics 
 Following naming convention should be used for weights and artifacts (on SharkMI300x and other similar machines)
@@ -70,11 +64,11 @@ Example: /data/llama-3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters
 
 Example: /data/llama-3.1/artifacts/405b/llama3.1_405b_fp16_nondecomposed_tp8_bs4.mlir
 
-## llama3.1 decomposed
-To generate artifacts, on SharkMI300x, follow sharktank [setup instructions](https://gist.github.com/stbaione/be38bfb214d990a4b765804223d6b948), then:
-`python -m sharktank.examples.export_paged_llm_v1 --irpa-file=/data/llama-3.1/weights/8b/fp16/llama3.1_8b_fp16.irpa --output-mlir f16_dc.mlir  --bs=1  --attention-kernel=decomposed`
+## llama3.1 (non-decomposed, uses Flash Attention 2)
+To generate artifacts for llama3.1 8B, on SharkMI300x, follow sharktank [setup instructions](https://gist.github.com/stbaione/be38bfb214d990a4b765804223d6b948), then:
+`python -m sharktank.examples.export_paged_llm_v1 --irpa-file=/data/llama-3.1/weights/8b/fp16/llama3.1_8b_fp16.irpa --output-mlir f16_dc.mlir  --bs=1`
 
-## llama3.1 405B TP8 commands
+To generate sharded llama3.1 405b artifacts, do following:
 1. Shard irpa file:
 
 `
@@ -95,25 +89,12 @@ Prefill + Decode Nondecomposed
 python3 -m sharktank.examples.export_paged_llm_v1 --irpa-file=test.irpa --output-mlir=405b_f16_tp8_decomposed.mlir --output-config=405b_f16_tp8_decomposed.json --bs=4 --attention-kernel torch
 `
 
-3. Compile (FAIL [compile error](https://gist.github.com/aviator19941/73468660ecef16b03b37e9afa2e6d075), seems related to this [PR](https://github.com/iree-org/iree/pull/18663)):
+3. Compile:
 
 `
 iree-compile 405b_f16_tp8_decomposed.mlir --iree-hip-target=gfx942 --iree-hal-target-backends=rocm -o=405b_f16_tp8_decomposed.vmfb --iree-hal-target-device=hip[0] --iree-hal-target-device=hip[1] --iree-hal-target-device=hip[2] --iree-hal-target-device=hip[3] --iree-hal-target-device=hip[4] --iree-hal-target-device=hip[5] --iree-hal-target-device=hip[6] --iree-hal-target-device=hip[7] --iree-dispatch-creation-enable-aggressive-fusion=true --iree-global-opt-propagate-transposes=true --iree-opt-aggressively-propagate-transposes=true --iree-opt-data-tiling=false --iree-preprocessing-pass-pipeline='builtin.module(util.func(iree-preprocessing-generalize-linalg-matmul-experimental))' --iree-hal-indirect-command-buffers=true --iree-stream-resource-memory-model=discrete --iree-hip-legacy-sync=false --iree-hal-memoization=true --iree-opt-strip-assertions
 `
-
-(MI300X GPU, SPX Mode)
-|Item                                      | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric [Perplexity](https://github.com/nod-ai/shark-ai/tree/main/sharktank/sharktank/evaluate) | Serving numeric |
-|------------------------------------------|---------------|-----------------|-----------------|--------------|-----------------|
-| llama3.1-8B-FP16-decomposed      |PASS [TP1 mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/8b_f16_decomposed_11_22.mlir) [gguf](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_8b/llama8b_f16.gguf) [irpa](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_8b/8b_f16.irpa)  |PASS [vmfb](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_8b/8b_f16.vmfb) | PASS |14.99 | tbd
-| llama3.1-8B-FP16-decomposed-TP8 | PASS ([MLIR](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_8b/llama3.1_8b_fp16_decomposed_tp8.mlir)) | PASS | PASS | FAIL (probably)  | tbd
-| llama3.1-70B-FP16-decomposed      |PASS [TP1 mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_70b/llama70b_f16.mlir) [gguf](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_70b/llama70b_f16.gguf) [irpa](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_70b/70b_f16.irpa) |PASS [vmfb](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_70b/70b_f16.vmfb) | FAIL [OOM](https://github.com/iree-org/iree/issues/18864)  | tbd | tbd
-| llama3.1-405B-FP16-decomposed  |PASS [TP1 mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_405b/llama3.1_405b_fp16_TP1.mlir) [gguf](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_405b/llama405b_fp16.gguf)   | tbd | tbd | tbd | tbd
-| llama3.1-405B-FP16-decomposed-TP8 | PASS [MLIR](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_405b/llama3.1_405b_f16_tp8.mlir) | PASS [vmfb](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_405b/llama3.1_405b_f16_tp8.vmfb) | FAIL [Registers](https://github.com/iree-org/iree/issues/18923)  | tbd | tbd
-| llama3.1-8B-FP8-decomposed   |PASS [TP1 mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/native_fp8_e4m3fnuz_llama3_8b.mlir) [irpa](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/native_fp8_e4m3fnuz_llama3_8b.irpa) | Fails in iree, [patch](https://github.com/iree-org/iree/pull/18890) | tbd | tbd | tbd
-| llama3.1-70B-FP8-decomposed  |PASS [TP1 mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/native_fp8_e4m3fnuz_llama3_70b.mlir) [irpa](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/native_fp8_e4m3fnuz_llama3_70b.irpa) |Fails in iree, [patch](https://github.com/iree-org/iree/pull/18890) | tbd | tbd | tbd
-| llama3.1-405B-FP8-decomposed  | tbd | tbd | tbd | tbd | tbd
-
-## llama3.1 non-decomposed 
+### Artifacts
 (MI300X GPU, SPX Mode)
 |Item                                      | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
 |------------------------------------------|---------------|-----------------|-----------------|--------------|-----------------|
@@ -126,19 +107,6 @@ iree-compile 405b_f16_tp8_decomposed.mlir --iree-hip-target=gfx942 --iree-hal-ta
 | llama3.1-70B-FP8  |ETA: 11/1   | tbd | tbd | tbd | tbd
 | llama3.1-405B-FP8 |ETA: 11/5   | tbd | tbd | tbd | tbd
 | llama-toy-size-FP32-TP2-CPU | PASS | PASS | tbd | tbd | tbd
-
-## llama3.1 decodeposed 
-(only decode is decomposed)
-(MI300X GPU, SPX Mode)
-|Item                                      | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
-|------------------------------------------|---------------|-----------------|-----------------|--------------|-----------------|
-| llama3.1-8B-FP16      |PASS [mlir_tp1](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/llama8b_f16_tp1_decodeposed_bs4.mlir)   | tbd | tbd | tbd | tbd
-| llama3.1-70B-FP16      | tbd | tbd | tbd | tbd | tbd
-| llama3.1-405B-FP16  |PASS [mlir_tp8](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_405b/llama3_405b_f16_tp8_decodeposed.mlir)    | tbd | tbd | tbd | tbd
-| llama3.1-8B-FP8   | PASS [mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/f8_half_ndc.mlir) | Fail (attention, Dan currently looking into this) | tbd | tbd | tbd
-| llama3.1-70B-FP8  | tbd  | tbd | tbd | tbd | tbd
-| llama3.1-405B-FP8  | tbd | tbd | tbd | tbd | tbd
-| llama-toy-size-FP32-TP2-CPU  | tbd | tbd | tbd | tbd | tbd
 
 ## Flux.1 dev
 |Item              | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
