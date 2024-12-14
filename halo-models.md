@@ -113,6 +113,19 @@ iree-compile 405b_f16_tp8_decomposed.mlir --iree-hip-target=gfx942 --iree-hal-ta
 |------------------|---------------|-----------------|-----------------|--------------|-----------------|
 | Flux1.dev ONNX   |tbd | tbd | tbd | tbd | tbd
 
+## Flux.1 Schnell Transformer
+|Item              | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
+|------------------|---------------|-----------------|-----------------|--------------|-----------------|
+| sharktank `black-forest-labs--FLUX.1-schnell--transformer-single-layer-bf16` | [MLIR](https://sharkblobs.blob.core.windows.net/halo-models/flux/transformer/black-forest-labs--FLUX.1-schnell--transformer-single-layer-b16.mlir) [IRPA](https://sharkblobs.blob.core.windows.net/halo-models/flux/transformer/black-forest-labs--FLUX.1-schnell--transformer-single-layer-b16.irpa)  | tbd | tbd | N/A | N/A
+| sharktank `black-forest-labs--FLUX.1-schnell--black-forest-labs-transformer-bf16` (this is the real model) | [MLIR](https://sharkblobs.blob.core.windows.net/halo-models/flux/transformer/black-forest-labs--FLUX.1-schnell--black-forest-labs-transformer-bf16.mlir) [IRPA](https://sharkblobs.blob.core.windows.net/halo-models/flux/transformer/black-forest-labs--FLUX.1-schnell--black-forest-labs-transformer-bf16.irpa)  | tbd | tbd | tbd | tbd
+
+`black-forest-labs--FLUX.1-schnell--transformer-single-layer-bf16` is a single layer with random weights.
+It is meant to help for faster iteration when working with the model.
+
+The actual model `black-forest-labs--FLUX.1-schnell--black-forest-labs-transformer-bf1` is with real pretrained parameters and has 19 MMDiT layers.
+
+
+
 ### T5 Encoder (part of Flux.1 dev)
 
 Only the `xxl` variant is actually used in FLUX. The `small` variant is provided for faster iteration if needed.
