@@ -1,6 +1,6 @@
 
 # Introduction
-This page is project tracker to get halo models like llama3, Flux.1, Mistral etc. working on one or more MI3xx using shark/iree. 
+This page is project tracker to get halo models like llama3, Flux.1, Mistral etc. working on one or more MI3xx using shark/iree.
 
 # Release Goals
 - Shark V3.1.0 (Jan 6, 2025) llama3.1 405B sharded across 8 MI300x GPUs performant at level of vLLM PyTorch, Flux.1 dev
@@ -29,10 +29,10 @@ ITL: Average time between each new token generated in decode phase (second token
 |Item                          | Current Week (Dec 9-13) |  Next Week (Dec 16-20) |
 |------------------------------|-----------------------|--------------------------|
 | Sharktank Modeling           | - @Ian Finish Flux Vae decode (DONE 12/11) <br> - @Kyle finish flux model (DONE: 12/11) <br> - @Boian flux clip model export and compile for bf16 (DONE: 12/11)  <br> - @Dan Finish and merge FP8 llama PR (ETA 12/12) |
-| IREE codegeneration          | - @kunvar decode flash attention (DONE 12/11) | 
+| IREE codegeneration          | - @kunwar decode flash attention (DONE 12/11) |
 | Serving |- @ean flush out bf16 flux in shortfin for flux (ETA 12/12) <br> - @Xida fix flakiness in batch handling (Done: 12/12) <br> - @Stephen test and ensure sglang/shortfin batch runs work (ETA: 12/12) |
 | Test Automation              |- @Avi refresh benchmarking decode and prefill for 8B, 70B   (ETA: 12/12) <br> -@Archana shortfin PPL debugging (ETA: 12/10) <br> -@Rob debug multi-device (ETA: 12/11)
-| Performance Tuning           | -@Avi tracy profile for decode (ETA:12/11)| 
+| Performance Tuning           | -@Avi tracy profile for decode (ETA:12/11)|
 
 # Nightly Test Reports
 See latest [CI/Nightly Test Report](https://nod-ai.github.io/shark-ai/). Use [Nod.AI Lab](https://confluence.amd.com/pages/viewpage.action?spaceKey=ENGIT&title=Nod.AI+Lab) page to ssh into machine SharkMi300X to find logs and artifacts to triage the failures. File an issue (if not already filed/listed) and add to Issues table below.
@@ -43,26 +43,30 @@ See latest [CI/Nightly Test Report](https://nod-ai.github.io/shark-ai/). Use [No
 |quark quantization | [QUARK-71](https://jira.xilinx.com/browse/QUARK-71) | Bowen Bow | FP8 matmul should be used in attention|
 |iree codegen | [18864](https://github.com/iree-org/iree/issues/18864)| Ian Wood | OOM for 70B |
 
-# Status-Numerics 
+# Status-Numerics
 Following naming convention should be used for weights and artifacts (on SharkMI300x and other similar machines)
 
-**UnSharded Weights:** 
+**UnSharded Weights:**
 
 /data/<model_name>/weights/<model_size>/<modelname_modelsize_datatype>.irpa
 
 Example: /data/llama-3.1/weights/405b/fp16/llama3.1_405b_fp16.irpa
 
-**Sharded Weights:** 
+**Sharded Weights:**
 
+```
 /data/<model_name>/weights/<model_size>/<shard_size>/<modelname_modelsize_shardsize_ranksuffix>.irpa
+```
 
-Example: /data/llama-3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank0.irpa
+Example: `/data/llama-3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank0.irpa`
 
-**Artifacts:** 
+**Artifacts:**
 
+```
 /data/<model_name>/artifacts/<model_size>/<model_name>\_<model_size>\_<data_type>\_<attention_kind>\_<sharding>\_<batch_size>.[mlir | vmfb]
+```
 
-Example: /data/llama-3.1/artifacts/405b/llama3.1_405b_fp16_nondecomposed_tp8_bs4.mlir
+Example: `/data/llama-3.1/artifacts/405b/llama3.1_405b_fp16_nondecomposed_tp8_bs4.mlir`
 
 ## llama3.1 (non-decomposed, uses Flash Attention 2)
 To generate artifacts for llama3.1 8B, on SharkMI300x, follow sharktank [setup instructions](https://gist.github.com/stbaione/be38bfb214d990a4b765804223d6b948), then:
@@ -71,29 +75,46 @@ To generate artifacts for llama3.1 8B, on SharkMI300x, follow sharktank [setup i
 To generate sharded llama3.1 405b artifacts, do following:
 1. Shard irpa file:
 
-`
-python3 -m sharktank.examples.sharding.shard_llm_dataset --irpa-file llama3_405b_f16.irpa --output-irpa test.irpa --tensor-parallelism-size 8
-`
+```shell
+python3 -m sharktank.examples.sharding.shard_llm_dataset \
+  --irpa-file llama3_405b_f16.irpa --output-irpa test.irpa \
+  --tensor-parallelism-size 8
+```
 
 2. Export to MLIR:
 
 Prefill Nondecomposed
 
-`
-python3 -m sharktank.examples.export_paged_llm_v1 --irpa-file=test.irpa --output-mlir=405b_f16_tp8_decomposed.mlir --output-config=405b_f16_tp8_decomposed.json --bs=4 --attention-kernel torch --skip-decode
-`
+```shell
+python3 -m sharktank.examples.export_paged_llm_v1 --irpa-file=test.irpa \
+  --output-mlir=405b_f16_tp8_decomposed.mlir
+  --output-config=405b_f16_tp8_decomposed.json --bs=4
+  --attention-kernel torch --skip-decode
+```
 
 Prefill + Decode Nondecomposed
 
-`
-python3 -m sharktank.examples.export_paged_llm_v1 --irpa-file=test.irpa --output-mlir=405b_f16_tp8_decomposed.mlir --output-config=405b_f16_tp8_decomposed.json --bs=4 --attention-kernel torch
-`
+```shell
+python3 -m sharktank.examples.export_paged_llm_v1 --irpa-file=test.irpa \
+  --output-mlir=405b_f16_tp8_decomposed.mlir --output-config=405b_f16_tp8_decomposed.json \
+  --bs=4 --attention-kernel torch
+```
 
 3. Compile:
 
-`
-iree-compile 405b_f16_tp8_decomposed.mlir --iree-hip-target=gfx942 --iree-hal-target-backends=rocm -o=405b_f16_tp8_decomposed.vmfb --iree-hal-target-device=hip[0] --iree-hal-target-device=hip[1] --iree-hal-target-device=hip[2] --iree-hal-target-device=hip[3] --iree-hal-target-device=hip[4] --iree-hal-target-device=hip[5] --iree-hal-target-device=hip[6] --iree-hal-target-device=hip[7] --iree-dispatch-creation-enable-aggressive-fusion=true --iree-global-opt-propagate-transposes=true --iree-opt-aggressively-propagate-transposes=true --iree-opt-data-tiling=false --iree-preprocessing-pass-pipeline='builtin.module(util.func(iree-preprocessing-generalize-linalg-matmul-experimental))' --iree-hal-indirect-command-buffers=true --iree-stream-resource-memory-model=discrete --iree-hip-legacy-sync=false --iree-hal-memoization=true --iree-opt-strip-assertions
-`
+```shell
+iree-compile 405b_f16_tp8_decomposed.mlir --iree-hip-target=gfx942 --iree-hal-target-backends=rocm \
+  --iree-hal-target-device=hip[0] --iree-hal-target-device=hip[1] --iree-hal-target-device=hip[2] \
+  --iree-hal-target-device=hip[3] --iree-hal-target-device=hip[4] --iree-hal-target-device=hip[5] \
+  --iree-hal-target-device=hip[6] --iree-hal-target-device=hip[7] \
+  --iree-dispatch-creation-enable-aggressive-fusion=true --iree-opt-aggressively-propagate-transposes=true \
+  --iree-opt-data-tiling=false \
+  --iree-preprocessing-pass-pipeline='builtin.module(util.func(iree-preprocessing-generalize-linalg-matmul-experimental))' \
+  --iree-hal-indirect-command-buffers=true --iree-stream-resource-memory-model=discrete --iree-hip-legacy-sync=false \
+  --iree-hal-memoization=true --iree-opt-strip-assertions \
+  -o 405b_f16_tp8_decomposed.vmfb
+```
+
 ### Artifacts
 (MI300X GPU, SPX Mode)
 |Item                                      | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
@@ -124,14 +145,12 @@ It is meant to help for faster iteration when working with the model.
 
 The actual model `black-forest-labs--FLUX.1-schnell--black-forest-labs-transformer-bf1` is with real pretrained parameters and has 19 MMDiT layers.
 
-
-
 ### T5 Encoder (part of Flux.1 dev)
 
 Only the `xxl` variant is actually used in FLUX. The `small` variant is provided for faster iteration if needed.
 
 #### Compile
-```bash
+```shell
 iree-compile \
   google__t5_v1_1_xxl_encoder_fp32.mlir \
   --iree-hal-target-device=hip \
@@ -140,7 +159,7 @@ iree-compile \
 ```
 
 ### Run
-```bash
+```shell
 iree-run-module \
   --device=hip \
   --module=google__t5_v1_1_xxl_encoder_fp32.vmfb \
@@ -169,11 +188,17 @@ iree-run-module \
 
 ## MLIR generation and Compilation
 Generate IR
+
+```shell
+python3 -m sharktank.examples.export_paged_llm_v1 \
+  --irpa-file <input_irpa path with correct sharding and dtype> --output-mlir <output-mlir> \
+  --bs <batch size> --tensor-parallelism-size <TP size if sharding> \
+  --attention-kernel <decomposed or torch_sdpa> --no-fake-quant <only for fp8>
 ```
-python3 -m sharktank.examples.export_paged_llm_v1 --irpa-file <input_irpa path with correct sharding and dtype> --output-mlir <output-mlir> --bs <batch size> --tensor-parallelism-size <TP size if sharding> --attention-kernel <decomposed or torch_sdpa> --no-fake-quant <only for fp8>
-```
+
 Generate vmfb
-```
+
+```shell
 iree-compile --iree-hal-target-backends=rocm --iree-hip-target=gfx942 -o <output-vmfb path>
 ```
 
@@ -185,24 +210,29 @@ Follow the steps [here](https://github.com/nod-ai/SHARK-Platform/blob/main/shark
 In browser, click on [sharkblobs](https://portal.azure.com/#@amdcloud.onmicrosoft.com/resource/subscriptions/8c190d1b-eb91-48d5-bec5-3e7cb7412e6c/resourceGroups/pdue-nod-ai-rg/providers/Microsoft.Storage/storageAccounts/sharkblobs/storagebrowser) , then click on "Blob-containers" and the click on "halo-models"
 
 Or, use command line by first installing az cli as:
-```
+```shell
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 ```
+
 And then, get the account key for the storage account by clicking on "Storage Accounts" in Azure Services or searching "sharkblobs" in the top search bar. Then, click on sharkblobs. Then, on the left side bar, under Security + networking, click on "Access keys". Copy the account key from here and use in the following command
 To upload:
-```
+
+```shell
 az storage blob upload --account-name sharkblobs --container-name halo-models --name <azure path, example: halo-models/llama3_8b/tp1/llama.mlir> --file <local_path_on_computer> --account-key <key_retrieved_from_directions_above>
 ```
 
 To download:
-```
+
+```shell
 az storage blob download --account-name sharkblobs --container-name halo-models --name <azure path, example: halo-models/llama3_8b/tp1/llama.mlir> --file <local_path_on_computer> --account-key <key_retrieved_from_directions_above>
 ```
 
 if you are downloading from "sharkpublic" then replace instructions above by sharkpublic and get your account access key for sharkpublic.
 Example:
-```
-az storage blob download --account-name sharkpublic --container-name sharkpublic --name ian/llama8b_f16.gguf --file llama8b_f16.gguf --account-key <key string>
+
+```shell
+az storage blob download --account-name sharkpublic --container-name sharkpublic --name ian/llama8b_f16.gguf \
+  --file llama8b_f16.gguf --account-key <key string>
 ```
 
 ## Export With `sharktank` and Server with `shortfin`:
@@ -245,11 +275,11 @@ The latest benchmark results for the SGLang integration can be found [here](http
 ### Guideline:
 1) small files and MLIR files check into [llm-dev](https://github.com/nod-ai/llm-dev)
 2) large files upload to [sharkblobs](https://portal.azure.com/#@amdcloud.onmicrosoft.com/resource/subscriptions/8c190d1b-eb91-48d5-bec5-3e7cb7412e6c/resourceGroups/pdue-nod-ai-rg/providers/Microsoft.Storage/storageAccounts/sharkblobs/storagebrowser) -> "halo-models" container on Azure and put link to that in the table(s) below
-3) Very large files, store on GPU server and note the name/location of/on the machine in table(s) below 
+3) Very large files, store on GPU server and note the name/location of/on the machine in table(s) below
 
-Note: If a link to Azure sharkblob below gives you an error, either use az cli to download (see section Accessing sharkblobs on Azure) or click on [sharkblobs](https://portal.azure.com/#@amdcloud.onmicrosoft.com/resource/subscriptions/8c190d1b-eb91-48d5-bec5-3e7cb7412e6c/resourceGroups/pdue-nod-ai-rg/providers/Microsoft.Storage/storageAccounts/sharkblobs/storagebrowser) , then click on "Blob containers" and then navigate to the file manually and download it. 
+Note: If a link to Azure sharkblob below gives you an error, either use az cli to download (see section Accessing sharkblobs on Azure) or click on [sharkblobs](https://portal.azure.com/#@amdcloud.onmicrosoft.com/resource/subscriptions/8c190d1b-eb91-48d5-bec5-3e7cb7412e6c/resourceGroups/pdue-nod-ai-rg/providers/Microsoft.Storage/storageAccounts/sharkblobs/storagebrowser), then click on "Blob containers" and then navigate to the file manually and download it.
 
-### TP1 
+### TP1
 
 Models           |     FP16        |   FP8           |     Q4_1         |    Q4_K       |    Attention IRs
 :--------------: | :-------------: |:----------------:|:---------------:|:-------------:|:------------------:
@@ -258,5 +288,4 @@ llama3-8b | [mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/
 llama3-70b | [mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_70b/llama70b_f16.mlir) [gguf](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_70b/llama70b_f16.gguf) |  [mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/native_fp8_e4m3fnuz_llama3_70b.mlir) [irpa](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/native_fp8_e4m3fnuz_llama3_8_70b.irpa)| [mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_70b/llama70b_q4_1.mlir) [gguf](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_70b/llama70b_q4_1.gguf) | [mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_70b/llama70b_q4_k.mlir) [gguf](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_70b/llama70b_q4_k.gguf) |
 llama3-405b | [mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_405b/llama3.1_405b_fp16_TP1.mlir) [gguf](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_405b/llama405b_fp16.gguf) | | [mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_405b/llama405b_q4_1.mlir) [gguf](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_405b/llama405b_q4_1.gguf) | [mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_405b/llama405b_q4_k.mlir) [gguf](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_405b/llama405b_q4_k.gguf) |
 grok-1 | [mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/grok.mlir) [gguf](https://sharkpublic.blob.core.windows.net/sharkpublic/llm-dev/grok_1/grok-1-f16.gguf) |NA | [mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/grok-1/grok-1-q4_1-irpa.mlir) [gguf](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/grok-1/grok-1-q4_1.gguf) | [gguf](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/grok-1/grok-1-q4_k.gguf) |
-
 
