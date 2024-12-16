@@ -28,11 +28,11 @@ ITL: Average time between each new token generated in decode phase (second token
 (Model is assumed to be llama3.1 in the following table, e.g. "8B FP8" means "llama3.1 8B FP8 model")
 |Item                          | Current Week (Dec 9-13) |  Next Week (Dec 16-20) |
 |------------------------------|-----------------------|--------------------------|
-| Sharktank Modeling           | - @Ian Finish Flux Vae decode (DONE 12/11) <br> - @Kyle finish flux model (DONE: 12/11) <br> - @Boian flux clip model export and compile for bf16 (DONE: 12/11)  <br> - @Dan Finish and merge FP8 llama PR (ETA 12/12) |
-| IREE codegeneration          | - @kunwar decode flash attention (DONE 12/11) |
-| Serving |- @ean flush out bf16 flux in shortfin for flux (ETA 12/12) <br> - @Xida fix flakiness in batch handling (Done: 12/12) <br> - @Stephen test and ensure sglang/shortfin batch runs work (ETA: 12/12) |
-| Test Automation              |- @Avi refresh benchmarking decode and prefill for 8B, 70B   (ETA: 12/12) <br> -@Archana shortfin PPL debugging (ETA: 12/10) <br> -@Rob debug multi-device (ETA: 12/11)
-| Performance Tuning           | -@Avi tracy profile for decode (ETA:12/11)|
+| Sharktank Modeling           | - @Ian Finish Flux Vae decode (DONE 12/11) <br> - @Kyle finish flux model (DONE: 12/11) <br> - @Boian flux clip model export and compile for bf16 (DONE: 12/11)  <br> - @Dan Finish and merge FP8 llama PR (ETA 12/12) | - @Rob multi-device fixes (ETA 12/16) <br> - @Boian Landing flux transformer model (ETA 12/16) <br> - @Boian updating clip and T5 tests (ETA 12/16) 
+| IREE codegeneration          | - @kunwar decode flash attention (DONE 12/11) | @Dan Reworking fp8 attention for Stan (ETA 12/16) <br> - @Dan lowering issue for fp8 (ETA 12/17)
+| Serving |- @ean flush out bf16 flux in shortfin for flux (ETA 12/12) <br> - @Xida fix flakiness in batch handling (Done: 12/12) <br> - @Stephen test and ensure sglang/shortfin batch runs work (ETA: 12/12) | - @Stephen Debugging multi-device llms in shortfin (ETA: 12/16) <br> - @Ean debugging fp16 flux pipeline (ETA 12/16) <br> - @Xida Debugging batching issue (ETA 12/16)
+| Test Automation              |- @Avi refresh benchmarking decode and prefill for 8B, 70B   (ETA: 12/12) <br> -@Archana shortfin PPL debugging (ETA: 12/10) <br> -@Rob debug multi-device (ETA: 12/11) | - @Archana triaging PPL breakages from block size and device affinities (ETA 12/16) <br> - @Archana shortfin PPL integration (ETA 12/17) 
+| Performance Tuning           | -@Avi tracy profile for decode (ETA:12/11)| @Avi Landing fixes for block size changes (ETA 12/16) <br> @Avi tracy profiling updates (ETA 12/17)
 
 # Nightly Test Reports
 See latest [CI/Nightly Test Report](https://nod-ai.github.io/shark-ai/). Use [Nod.AI Lab](https://confluence.amd.com/pages/viewpage.action?spaceKey=ENGIT&title=Nod.AI+Lab) page to ssh into machine SharkMi300X to find logs and artifacts to triage the failures. File an issue (if not already filed/listed) and add to Issues table below.
