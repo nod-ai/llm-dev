@@ -156,7 +156,7 @@ python3 -m sharktank.examples.export_paged_llm_v1 \
   --skip-decode
 ```
 
-Get the 8b f16 tp8 sharded numpy inputs: [get_8b_f16_tp8_numpy_inputs.sh](https://gist.github.com/aviator19941/9b3cd6511347e57671b7ff1da7c80bfa)
+Get the 405b f16 tp8 sharded numpy inputs: [get_405b_tp8_inputs.sh](https://gist.github.com/aviator19941/97323fee3524d193c0dff2653d6a2a86)
 
 Sharded compile command:
 
