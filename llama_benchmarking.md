@@ -1,4 +1,4 @@
-# How to benchmark Llama 3.1
+# How to benchmark Llama 3.1 TP1 Unsharded
 In order to benchmark Llama 3.1 prefill and decode, you will need these artifacts for unsharded (TP=1) benchmarks:
 
 1. irpa file(s)
@@ -44,9 +44,7 @@ python3 -m sharktank.examples.export_paged_llm_v1 \
   --irpa-file=8b_f16.irpa \
   --output-mlir=8b_f16_prefill_nondecomposed.mlir \
   --output-config=8b_f16_prefill_nondecomposed.json \
-  --attention-kernel=torch \
-  --skip-decode \
-  --block-seq-stride=32
+  --skip-decode
 ```
 
 To generate the IR for both prefill + decode (remove the `--skip-decode` flag):
@@ -55,9 +53,7 @@ python3 -m sharktank.examples.export_paged_llm_v1 \
   --bs=4 \
   --irpa-file=8b_f16.irpa \
   --output-mlir=8b_f16_prefill_nondecomposed.mlir \
-  --output-config=8b_f16_prefill_nondecomposed.json \
-  --attention-kernel=torch \
-  --block-seq-stride=32
+  --output-config=8b_f16_prefill_nondecomposed.json
 ```
 
 ## 3. Get the numpy inputs
@@ -129,43 +125,59 @@ ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7  \
   --benchmark_repetitions=3
 ```
 
-
-## 6. Set up TP>1 sharded artifacts
-If you want to create your own TP8 sharded irpa files use this command:
+# How to benchmark Llama 3.1 TP8 Sharded
+## 1. Set up TP>1 sharded artifacts
+Given a non-sharded irpa file, if you want to create your own TP8 sharded irpa files use this command:
 ```
 python3 -m sharktank.examples.sharding.shard_llm_dataset \
-  --irpa-file 8b_fp16.irpa \
-  --output-irpa 8b_fp16_tp8.irpa \
+  --irpa-file 405b_fp16.irpa \
+  --output-irpa 405b_fp16_tp8.irpa \
   --tensor-parallelism-size 8
 ```
 
-## 7. Download sharded irpa files
-Larger sharded irpa files (e.g. 70b, 405b) will be stored in `sharkblobs` soon. Otherwise, you can copy the 70b/405b f16 sharded irpa files from the `SharkMi300x` machine (long copy time):
+## 2. Download sharded irpa files
+Create a SAS token in Azure:
+Follow instructions [here](https://github.com/nod-ai/llm-dev/edit/main/llama_benchmarking.md#1-get-the-unsharded-irpa-files).
+
+The sharded irpa files for 405b have already been generated and stored. In order to download them, use this command:
 ```
-scp nod@10.23.233.219:/data/llama3.1/weights/405b/fp16/tp8/* .
+azcopy copy \
+  'https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_405b/tp8?[Add SAS token here]' \
+  '405b_tp8_irpa' --recursive
 ```
 
-## 8. Generate the sharded IR
+## 3. Generate the sharded IR
 
-You need to use the unranked sharded irpa file to generate the sharded IR:
+You need to use the unranked sharded irpa file to generate the sharded IR for prefill:
 
 ```
 python3 -m sharktank.examples.export_paged_llm_v1 \
   --bs=4 \
-  --irpa-file=/shark-dev/405b/llama3.1_405b_fp16_tp8_parameters.irpa \
+  --irpa-file=405b_tp8_irpa/llama3.1_405b_fp16_tp8_parameters.irpa \
   --output-mlir=405b_f16_prefill_tp8_nondecomposed.mlir \
   --output-config=405b_f16_prefill_tp8_nondecomposed.json \
-  --attention-kernel=torch \
   --skip-decode
 ```
 
-## 9. Get the TP8 sharded numpy inputs:
+For decode:
+
+You need to use the unranked sharded irpa file to generate the sharded IR for prefill:
+
+```
+python3 -m sharktank.examples.export_paged_llm_v1 \
+  --bs=4 \
+  --irpa-file=405b_tp8_irpa/llama3.1_405b_fp16_tp8_parameters.irpa \
+  --output-mlir=405b_f16_prefill_tp8_nondecomposed.mlir \
+  --output-config=405b_f16_prefill_tp8_nondecomposed.json
+```
+
+## 4. Get the TP8 sharded numpy inputs:
 
 Get the 405b f16 tp8 unsharded prefill numpy inputs: [get_405b_tp8_prefill_inputs.sh](https://gist.github.com/aviator19941/97323fee3524d193c0dff2653d6a2a86)
 
 Get the 405b f16 tp8 unsharded decode numpy inputs: [get_405b_tp8_decode_inputs.sh](https://gist.github.com/aviator19941/a874d3cc03649abbfecc5dac27c62eda)
 
-## 10. Compile sharded IR
+## 5. Compile sharded IR
 Compile command:
 
 ```
@@ -193,7 +205,7 @@ Compile command:
   --iree-opt-strip-assertions
 ```
 
-## 11. Benchmark sharded vmfb 
+## 6. Benchmark sharded vmfb 
 Sharded benchmark command:
 
 ```
@@ -220,15 +232,15 @@ ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
   --device=hip://6 \
   --device=hip://7 \
   --function=prefill_bs4 \
-  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/random_tokens.npy \
-  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/seq_lens.npy \
-  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/seq_block_ids.npy \
-  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_0.npy \
-  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_1.npy \
-  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_2.npy \
-  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_3.npy \
-  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_4.npy \
-  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_5.npy \
-  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_6.npy \
-  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_7.npy
+  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128_stride_32/tokens.npy \
+  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128_stride_32/seq_lens.npy \
+  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128_stride_32/seq_block_ids.npy \
+  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128_stride_32/cs_f16_shard_0.npy \
+  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128_stride_32/cs_f16_shard_1.npy \
+  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128_stride_32/cs_f16_shard_2.npy \
+  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128_stride_32/cs_f16_shard_3.npy \
+  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128_stride_32/cs_f16_shard_4.npy \
+  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128_stride_32/cs_f16_shard_5.npy \
+  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128_stride_32/cs_f16_shard_6.npy \
+  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128_stride_32/cs_f16_shard_7.npy
 ```
