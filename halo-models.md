@@ -68,53 +68,6 @@ Example: `/data/llama-3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameter
 
 Example: `/data/llama-3.1/artifacts/405b/llama3.1_405b_fp16_nondecomposed_tp8_bs4.mlir`
 
-## llama3.1 (non-decomposed, uses Flash Attention 2)
-To generate artifacts for llama3.1 8B, on SharkMI300x, follow sharktank [setup instructions](https://gist.github.com/stbaione/be38bfb214d990a4b765804223d6b948), then:
-`python -m sharktank.examples.export_paged_llm_v1 --irpa-file=/data/llama-3.1/weights/8b/fp16/llama3.1_8b_fp16.irpa --output-mlir f16_dc.mlir  --bs=1`
-
-To generate sharded llama3.1 405b artifacts, do following:
-1. Shard irpa file:
-
-```shell
-python3 -m sharktank.examples.sharding.shard_llm_dataset \
-  --irpa-file llama3_405b_f16.irpa --output-irpa test.irpa \
-  --tensor-parallelism-size 8
-```
-
-2. Export to MLIR:
-
-Prefill Nondecomposed
-
-```shell
-python3 -m sharktank.examples.export_paged_llm_v1 --irpa-file=test.irpa \
-  --output-mlir=405b_f16_tp8_decomposed.mlir
-  --output-config=405b_f16_tp8_decomposed.json --bs=4
-  --attention-kernel torch --skip-decode
-```
-
-Prefill + Decode Nondecomposed
-
-```shell
-python3 -m sharktank.examples.export_paged_llm_v1 --irpa-file=test.irpa \
-  --output-mlir=405b_f16_tp8_decomposed.mlir --output-config=405b_f16_tp8_decomposed.json \
-  --bs=4 --attention-kernel torch
-```
-
-3. Compile:
-
-```shell
-iree-compile 405b_f16_tp8_decomposed.mlir --iree-hip-target=gfx942 --iree-hal-target-backends=rocm \
-  --iree-hal-target-device=hip[0] --iree-hal-target-device=hip[1] --iree-hal-target-device=hip[2] \
-  --iree-hal-target-device=hip[3] --iree-hal-target-device=hip[4] --iree-hal-target-device=hip[5] \
-  --iree-hal-target-device=hip[6] --iree-hal-target-device=hip[7] \
-  --iree-dispatch-creation-enable-aggressive-fusion=true --iree-opt-aggressively-propagate-transposes=true \
-  --iree-opt-data-tiling=false \
-  --iree-preprocessing-pass-pipeline='builtin.module(util.func(iree-preprocessing-generalize-linalg-matmul-experimental))' \
-  --iree-hal-indirect-command-buffers=true --iree-stream-resource-memory-model=discrete --iree-hip-legacy-sync=false \
-  --iree-hal-memoization=true --iree-opt-strip-assertions \
-  -o 405b_f16_tp8_decomposed.vmfb
-```
-
 ### Artifacts
 (MI300X GPU, SPX Mode)
 |Item                                      | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
