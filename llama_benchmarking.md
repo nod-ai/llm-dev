@@ -130,8 +130,8 @@ ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7  \
 ```
 
 
-## Sharded
-Sharded - If you want to create your own tp8 sharded irpa files use this command:
+## 6. Set up TP>1 sharded artifacts
+If you want to create your own TP8 sharded irpa files use this command:
 ```
 python3 -m sharktank.examples.sharding.shard_llm_dataset \
   --irpa-file 8b_fp16.irpa \
@@ -139,12 +139,15 @@ python3 -m sharktank.examples.sharding.shard_llm_dataset \
   --tensor-parallelism-size 8
 ```
 
+## 7. Download sharded irpa files
 Larger sharded irpa files (e.g. 70b, 405b) will be stored in `sharkblobs` soon. Otherwise, you can copy the 70b/405b f16 sharded irpa files from the `SharkMi300x` machine (long copy time):
 ```
 scp nod@10.23.233.219:/data/llama3.1/weights/405b/fp16/tp8/* .
 ```
 
-Sharded - You need to use the unranked sharded irpa file to generate the sharded IR:
+## 8. Generate the sharded IR
+
+You need to use the unranked sharded irpa file to generate the sharded IR:
 
 ```
 python3 -m sharktank.examples.export_paged_llm_v1 \
@@ -156,9 +159,14 @@ python3 -m sharktank.examples.export_paged_llm_v1 \
   --skip-decode
 ```
 
-Get the 405b f16 tp8 sharded numpy inputs: [get_405b_tp8_inputs.sh](https://gist.github.com/aviator19941/97323fee3524d193c0dff2653d6a2a86)
+## 9. Get the TP8 sharded numpy inputs:
 
-Sharded compile command:
+Get the 405b f16 tp8 unsharded prefill numpy inputs: [get_405b_tp8_prefill_inputs.sh](https://gist.github.com/aviator19941/97323fee3524d193c0dff2653d6a2a86)
+
+Get the 405b f16 tp8 unsharded decode numpy inputs: [get_405b_tp8_decode_inputs.sh](https://gist.github.com/aviator19941/a874d3cc03649abbfecc5dac27c62eda)
+
+## 10. Compile sharded IR
+Compile command:
 
 ```
 ../iree-build-no-trace/tools/iree-compile \
@@ -185,7 +193,8 @@ Sharded compile command:
   --iree-opt-strip-assertions
 ```
 
-Sharded run compile:
+## 11. Benchmark sharded vmfb 
+Sharded benchmark command:
 
 ```
 ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
