@@ -27,13 +27,13 @@ Create a SAS token in Azure:
 
 ```
 azcopy copy \
-'https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_8b/8b_f16.irpa?[Add SAS token here]' \
-'8b_f16.irpa'
+'https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_8b/8b_fp16.irpa?[Add SAS token here]' \
+'8b_fp16.irpa'
 ```
 
 If you have trouble accessing `sharkblobs`, you can copy the 8b f16 unsharded irpa file from the `SharkMi300x` machine:
 ```
-scp nod@10.23.233.219:/data/llama3.1/weights/8b/fp16/llama3.1_8b_fp16.irpa 8b_f16.irpa
+scp nod@10.23.233.219:/data/llama3.1/weights/8b/fp16/llama3.1_8b_fp16.irpa 8b_fp16.irpa
 ```
 
 ## 2. Generate the IR
@@ -41,9 +41,9 @@ a. To generate the IR for prefill only:
 ```
 python3 -m sharktank.examples.export_paged_llm_v1 \
   --bs=4 \
-  --irpa-file=8b_f16.irpa \
-  --output-mlir=8b_f16_prefill_nondecomposed.mlir \
-  --output-config=8b_f16_prefill_nondecomposed.json \
+  --irpa-file=8b_fp16.irpa \
+  --output-mlir=8b_fp16_prefill_nondecomposed.mlir \
+  --output-config=8b_fp16_prefill_nondecomposed.json \
   --skip-decode
 ```
 
@@ -51,16 +51,16 @@ To generate the IR for both prefill + decode (remove the `--skip-decode` flag):
 ```
 python3 -m sharktank.examples.export_paged_llm_v1 \
   --bs=4 \
-  --irpa-file=8b_f16.irpa \
-  --output-mlir=8b_f16_prefill_nondecomposed.mlir \
-  --output-config=8b_f16_prefill_nondecomposed.json
+  --irpa-file=8b_fp16.irpa \
+  --output-mlir=8b_fp16_prefill_nondecomposed.mlir \
+  --output-config=8b_fp16_prefill_nondecomposed.json
 ```
 
 ## 3. Get the numpy inputs
 
-Get the 8b f16 tp1 unsharded prefill numpy inputs: [get_8b_f16_tp1_prefill_inputs.sh](https://gist.github.com/aviator19941/380acabc77aeb4749fac14262e17db69)
+Get the 8b f16 tp1 unsharded prefill numpy inputs: [get_8b_fp16_tp1_prefill_inputs.sh](https://gist.github.com/aviator19941/380acabc77aeb4749fac14262e17db69)
 
-Get the 8b f16 tp1 unsharded decode numpy inputs: [get_8b_f16_tp1_decode_inputs.sh](https://gist.github.com/aviator19941/5f7db8ada6a4a95efe1d9a7975fed276)
+Get the 8b f16 tp1 unsharded decode numpy inputs: [get_8b_fp16_tp1_decode_inputs.sh](https://gist.github.com/aviator19941/5f7db8ada6a4a95efe1d9a7975fed276)
 
 ## 4. Compile command
 This command compiles the full IR (both prefill + decode) into a vmfb.
