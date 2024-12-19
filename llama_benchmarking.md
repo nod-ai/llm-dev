@@ -125,6 +125,68 @@ ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7  \
   --benchmark_repetitions=3
 ```
 
+## 6. Get tracy file
+Build IREE with trace:
+```
+cmake -G Ninja -B ../iree-build-trace \
+  -S . -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+  -DIREE_ENABLE_ASSERTIONS=ON \
+  -DCMAKE_C_COMPILER=clang \
+  -DCMAKE_CXX_COMPILER=clang++ \
+  -DIREE_ENABLE_RUNTIME_TRACING=ON \
+  -DIREE_BUILD_TRACY=ON \
+  -DIREE_ENABLE_LLD=ON \
+  -DIREE_BUILD_PYTHON_BINDINGS=ON \
+  -DPython3_EXECUTABLE="$(which python3)" \
+  -DIREE_TARGET_BACKEND_CUDA=OFF \
+
+cmake --build ../iree-build-trace
+```
+
+Compile with trace:
+```
+../iree-build-trace/tools/iree-compile \
+  ../SHARK-Platform/8b_fp16_prefill_nondecomposed.mlir \
+  --iree-hip-target=gfx942 \
+  -o=prefill_8b.vmfb \
+  --iree-hal-target-device=hip \
+  --iree-dispatch-creation-enable-aggressive-fusion=true \
+  --iree-global-opt-propagate-transposes=true \
+  --iree-opt-aggressively-propagate-transposes=true \
+  --iree-opt-data-tiling=false \
+  --iree-preprocessing-pass-pipeline='builtin.module(util.func(iree-preprocessing-generalize-linalg-matmul-experimental))' \
+  --iree-hal-indirect-command-buffers=true \
+  --iree-stream-resource-memory-model=discrete \
+  --iree-hip-legacy-sync=false \
+  --iree-hal-memoization=true \
+  --iree-opt-strip-assertions \
+  --iree-hal-executable-debug-level=3 \
+  --iree-hal-dump-executable-sources-to=dump
+```
+
+Run `iree-run-module` with `TRACY_NO_EXIT=1`:
+```
+TRACY_NO_EXIT=1 \
+  ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
+  ../iree-build-no-trace/tools/iree-benchmark-module \
+  --hip_use_streams=true \
+  --device_allocator=caching \
+  --module=prefill_8b.vmfb \
+  --parameters=model=8b_fp16.irpa \
+  --device=hip://4 \
+  --function=prefill_bs4 \
+  --input=@prefill_args_bs4_128_stride_32/tokens.npy \
+  --input=@prefill_args_bs4_128_stride_32/seq_lens.npy \
+  --input=@prefill_args_bs4_128_stride_32/seq_block_ids.npy \
+  --input=@prefill_args_bs4_128_stride_32/cs_f16.npy \
+  --benchmark_repetitions=3
+```
+
+Open another terminal and run this command to capture the tracy file:
+```
+../iree-build-trace/tracy/iree-tracy-capture -f -o prefill_8b.tracy
+```
+
 # How to benchmark Llama 3.1 TP8 Sharded
 ## 1. Set up TP>1 sharded artifacts
 Given a non-sharded irpa file, if you want to create your own TP8 sharded irpa files use this command:
