@@ -66,7 +66,7 @@ Get the 8b f16 tp1 unsharded decode numpy inputs: [get_8b_fp16_tp1_decode_inputs
 This command compiles the full IR (both prefill + decode) into a vmfb.
 
 ```
-../iree-build-no-trace/tools/iree-compile 8b_f16_prefill_nondecomposed.mlir \
+../iree-build-no-trace/tools/iree-compile 8b_fp16_prefill_nondecomposed.mlir \
   --iree-hip-target=gfx942 \
   -o=prefill_8b.vmfb \
   --iree-hal-target-device=hip \
@@ -113,7 +113,7 @@ ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7  \
   ../iree-build-no-trace/tools/iree-benchmark-module \
   --hip_use_streams=true \
   --device_allocator=caching \
-  --module=8b_f16_nondecomposed_32.vmfb \
+  --module=8b_fp16_nondecomposed_32.vmfb \
   --parameters=model=8b_fp16.irpa \
   --device=hip://4 \
   --function=decode_bs4 \
