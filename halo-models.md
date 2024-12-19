@@ -84,21 +84,24 @@ Example: `/data/llama-3.1/artifacts/405b/llama3.1_405b_fp16_nondecomposed_tp8_bs
 | llama3.1-405B-FP8 |ETA: 11/5   | tbd | tbd | tbd | tbd
 | llama-toy-size-FP32-TP2-CPU | PASS | PASS | tbd | tbd | tbd
 
-## Flux.1 dev
+## Flux.1 Dev Transformer
 |Item              | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
 |------------------|---------------|-----------------|-----------------|--------------|-----------------|
-| Flux1.dev ONNX   |tbd | tbd | tbd | tbd | tbd
+| sharktank `black-forest-labs--FLUX.1-dev--transformer-single-layer-bf16` | [MLIR](https://sharkblobs.blob.core.windows.net/halo-models/flux/transformer/black-forest-labs--FLUX.1-dev--transformer-single-layer-b16.mlir) [IRPA](https://sharkblobs.blob.core.windows.net/halo-models/flux/transformer/black-forest-labs--FLUX.1-dev--transformer-single-layer-b16.irpa)  | tbd | tbd | N/A | N/A
+| sharktank `black-forest-labs--FLUX.1-dev--black-forest-labs-transformer-bf16` (this is the real production model) | [MLIR](https://sharkblobs.blob.core.windows.net/halo-models/flux/transformer/black-forest-labs--FLUX.1-dev--black-forest-labs-transformer-bf16.mlir) [IRPA](https://sharkblobs.blob.core.windows.net/halo-models/flux/transformer/black-forest-labs--FLUX.1-dev--black-forest-labs-transformer-bf16.irpa)  | tbd | tbd | tbd | tbd
 
 ## Flux.1 Schnell Transformer
 |Item              | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
 |------------------|---------------|-----------------|-----------------|--------------|-----------------|
 | sharktank `black-forest-labs--FLUX.1-schnell--transformer-single-layer-bf16` | [MLIR](https://sharkblobs.blob.core.windows.net/halo-models/flux/transformer/black-forest-labs--FLUX.1-schnell--transformer-single-layer-b16.mlir) [IRPA](https://sharkblobs.blob.core.windows.net/halo-models/flux/transformer/black-forest-labs--FLUX.1-schnell--transformer-single-layer-b16.irpa)  | tbd | tbd | N/A | N/A
-| sharktank `black-forest-labs--FLUX.1-schnell--black-forest-labs-transformer-bf16` (this is the real model) | [MLIR](https://sharkblobs.blob.core.windows.net/halo-models/flux/transformer/black-forest-labs--FLUX.1-schnell--black-forest-labs-transformer-bf16.mlir) [IRPA](https://sharkblobs.blob.core.windows.net/halo-models/flux/transformer/black-forest-labs--FLUX.1-schnell--black-forest-labs-transformer-bf16.irpa)  | tbd | tbd | tbd | tbd
+| sharktank `black-forest-labs--FLUX.1-schnell--black-forest-labs-transformer-bf16` | [MLIR](https://sharkblobs.blob.core.windows.net/halo-models/flux/transformer/black-forest-labs--FLUX.1-schnell--black-forest-labs-transformer-bf16.mlir) [IRPA](https://sharkblobs.blob.core.windows.net/halo-models/flux/transformer/black-forest-labs--FLUX.1-schnell--black-forest-labs-transformer-bf16.irpa)  | tbd | tbd | tbd | tbd
 
-`black-forest-labs--FLUX.1-schnell--transformer-single-layer-bf16` is a single layer with random weights.
+Schenll is almost the same as Dev. Dev has a guidance layer and guidance parameter, while Schenll does not.
+
+`black-forest-labs--FLUX.1-<schnell/dev>--transformer-single-layer-bf16` is a single layer with random weights.
 It is meant to help for faster iteration when working with the model.
 
-The actual model `black-forest-labs--FLUX.1-schnell--black-forest-labs-transformer-bf1` is with real pretrained parameters and has 19 MMDiT layers.
+The actual models `black-forest-labs--FLUX.1-<dev/schnell>--black-forest-labs-transformer-bf1` are with real pretrained parameters and have 19 MMDiT layers.
 
 ### T5 Encoder (part of Flux.1 dev)
 
