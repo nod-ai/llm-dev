@@ -126,7 +126,7 @@ ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7  \
 ```
 
 ## 6. Get tracy file
-Build IREE with trace:
+Build IREE with runtime tracing and tracy:
 ```
 cmake -G Ninja -B ../iree-build-trace \
   -S . -DCMAKE_BUILD_TYPE=RelWithDebInfo \
