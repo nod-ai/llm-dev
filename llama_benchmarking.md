@@ -92,7 +92,6 @@ Prefill benchmark command:
 ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
   ../iree-build-no-trace/tools/iree-benchmark-module \
   --hip_use_streams=true \
-  --device_allocator=caching \
   --module=prefill_8b.vmfb \
   --parameters=model=8b_fp16.irpa \
   --device=hip://4 \
@@ -112,7 +111,6 @@ Decode benchmark command:
 ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7  \
   ../iree-build-no-trace/tools/iree-benchmark-module \
   --hip_use_streams=true \
-  --device_allocator=caching \
   --module=8b_fp16_nondecomposed_32.vmfb \
   --parameters=model=8b_fp16.irpa \
   --device=hip://4 \
@@ -170,7 +168,6 @@ TRACY_NO_EXIT=1 \
   ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
   ../iree-build-no-trace/tools/iree-benchmark-module \
   --hip_use_streams=true \
-  --device_allocator=caching \
   --module=prefill_8b.vmfb \
   --parameters=model=8b_fp16.irpa \
   --device=hip://4 \
@@ -274,7 +271,6 @@ Sharded benchmark command:
 ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
   ../iree-build-no-trace/tools/iree-run-module \
   --hip_use_streams=true \
-  --device_allocator=caching \
   --module=prefill_405b_tp8.vmfb \
   --parameters=model=llama3.1_405b_fp16_tp8_parameters.irpa \
   --parameters=model=llama3.1_405b_fp16_tp8_parameters.rank0.irpa \
