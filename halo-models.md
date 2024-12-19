@@ -23,6 +23,8 @@ ITL: Average time between each new token generated in decode phase (second token
 | Model | Tracy Profile |
 |-------|---------------|
 |llama3.1 8B Fp16 Unsharded nondecomposed (i.e. using flash attention2) | [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/8b_f16_nondecomposed_32.tracy)
+|llama3.1 8B Fp16 Unsharded decode (i.e. using flash attention2) | [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/8b_f16_decode_unsharded.tracy)
+
 
 # Schedule
 (Model is assumed to be llama3.1 in the following table, e.g. "8B FP8" means "llama3.1 8B FP8 model")
