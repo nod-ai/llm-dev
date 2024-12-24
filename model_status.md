@@ -20,19 +20,13 @@
 
 
 
-
-
-
 ### Sharded
 
 
 |Model|IR generation|Compilation|runtime|Comment|
 |---|---|---|---|---|                                         
-|8B-Prefill|PASS|FAIL|Memory access fault by GPU node-4 (Agent handle: 0x58470a300960) on address 0x7182ec58b000. Reason: Unknown|
-|8B-Decode|PASS|FAIL|:0:rocdevice.cpp            :2984: 2787027630305 us: [pid:688936 tid:0x7dfc4e600640] Callback: Queue 0x7dfbe0300000 aborting with error : HSA_STATUS_ERROR_MEMORY_APERTURE_VIOLATION: The agent attempted to access memory beyond the largest legal address. code: 0x29
-|70B-Prefill|PASS|PASS|
-|70B-Decode|PASS|PASS|
-|405B-Prefill|PASS|PASS|FAIL|
-|405B-Decode|PASS|FAIL|
+|8B-Prefill|PASS|FAIL|FAIL|Memory access fault by GPU node-4 (Agent handle: 0x58470a300960) on address 0x7182ec58b000. Reason: Unknown|
+|8B-Decode|PASS|FAIL|FAIL|:0:rocdevice.cpp            :2984: 2787027630305 us: [pid:688936 tid:0x7dfc4e600640] Callback: Queue 0x7dfbe0300000 aborting with error : HSA_STATUS_ERROR_MEMORY_APERTURE_VIOLATION: The agent attempted to access memory beyond the largest legal address. code: 0x29
+|405B-Decode|PASS|PASS|FAIL| Seems input is not correct. INVALID_ARGUMENT; function expected fewer input values; parsing input `@/data/llama3.1/weights/405b/decode_args_bs4_128_stride_32/cs_f16_shard_7.npy
 
 
