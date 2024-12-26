@@ -1,6 +1,6 @@
 ### Model status
 
-|Model|IR generation|compilation|runtime|shortfin serving|Kubernetis|
+|Model|IR generation|compilation|runtime|shortfin serving|Kubernetes cluster|
 |---|---|---|---|---|---|       
 |8B-FP16(unsharded)|PASS|PASS|PASS|PASS|NTD
 |70B-FP16(unsharded)|PASS|PASS|PASS|NTD|NTD
