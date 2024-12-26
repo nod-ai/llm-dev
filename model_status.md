@@ -1,12 +1,13 @@
 ### Model status
 
-|Model|IR generation|compilation|runtime|shortfin serving|
-|---|---|---|---|---|       
-|8B-FP16(unsharded)|PASS|PASS|PASS|NTD
-|70B-FP16(unsharded)|PASS|PASS|PASS|NTD
-|405B-FP16(sharded, prefill)|PASS|PASS|PASS|NTD
-
-
+|Model|IR generation|compilation|runtime|shortfin serving|Kubernetis|
+|---|---|---|---|---|---|       
+|8B-FP16(unsharded)|PASS|PASS|PASS|NTD|NTD
+|70B-FP16(unsharded)|PASS|PASS|PASS|NTD|NTD
+|405B-FP16(sharded)|Prefill-PASS|Prefill-PASS|Prefill-PASS|NTD|NTD
+|8B-Instruct-FP16(unsharded)|NTD|NTD|NTD|NTD|NTD
+|70B-Instruct-FP16unsharded)|NTD|NTD|NTD|NTD|NTD
+|405B-Instruct-FP16(sharded)|NTD|NTD|NTD|NTD|NTD
 
 
 ### issue with models
