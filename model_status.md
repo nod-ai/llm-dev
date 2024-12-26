@@ -2,7 +2,7 @@
 
 |Model|IR generation|compilation|runtime|shortfin serving|Kubernetis|
 |---|---|---|---|---|---|       
-|8B-FP16(unsharded)|PASS|PASS|PASS|NTD|NTD
+|8B-FP16(unsharded)|PASS|PASS|PASS|PASS|NTD
 |70B-FP16(unsharded)|PASS|PASS|PASS|NTD|NTD
 |405B-FP16(sharded)|Prefill-PASS|Prefill-PASS|Prefill-PASS|NTD|NTD
 |8B-Instruct-FP16(unsharded)|NTD|NTD|NTD|NTD|NTD
