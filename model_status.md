@@ -1,6 +1,6 @@
 ### Model status
 
-|Model|IR generation|compilation|runtime|shortfin-SGLang serving|Kubernetes cluster|
+|Model|sharktank|iree-compile|iree-run-module|shortfin-sglang|kubernetes|
 |---|---|---|---|---|---|       
 |8B-FP16(unsharded)|PASS|PASS|PASS|NTD|NTD
 |70B-FP16(unsharded)|PASS|PASS|PASS|NTD|NTD
