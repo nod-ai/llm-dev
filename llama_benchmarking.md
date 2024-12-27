@@ -81,7 +81,11 @@ This command compiles the full IR (both prefill + decode) into a vmfb.
   --iree-hal-memoization=true \
   --iree-opt-strip-assertions
 ```
-
+## 4b Test that it runs
+Adapt as per model as your artifacts names, following example is for 405B TP8 sharded run
+```
+ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 iree-run-module  --hip_use_streams=true --device_allocator=caching --module=artifacts/prefill_405b_tp8_12_10.vmfb  --parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.irpa  --parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.rank0.irpa  --parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.rank1.irpa  --parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.rank2.irpa  --parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.rank3.irpa  --parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.rank4.irpa  --parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.rank5.irpa  --parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.rank6.irpa  --parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.rank7.irpa  --device=hip://0  --device=hip://1  --device=hip://2  --device=hip://3  --device=hip://4  --device=hip://5  --device=hip://6  --device=hip://7  --function=prefill_bs4  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/random_tokens.npy  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/seq_lens.npy  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/seq_block_ids.npy  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_0.npy  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_1.npy  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_2.npy  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_3.npy  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_4.npy  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_5.npy  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_6.npy  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_7.npy 
+```
 ## 5. Benchmark command
 In order to benchmark prefill, make sure you specify the function as `prefill_bs{batch_size}` and specify the 4 inputs using the numpy files in 
 `prefill_args_bs4_128_stride_32`.
