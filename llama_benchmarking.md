@@ -371,6 +371,6 @@ ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7  ~/iree-build-trace/tools/iree-benchmark-mo
 --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_4.npy  \
 --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_5.npy  \
 --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_6.npy  \
---input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_7.npy
+--input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_7.npy \
 --benchmark_repetitions=3
 ```
