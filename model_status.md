@@ -6,7 +6,7 @@
 |70B-FP16(unsharded)|PASS|PASS|PASS|NTD|NTD
 |405B-FP16(sharded)|Prefill-PASS|Prefill-PASS|Prefill-PASS|NTD|NTD
 |8B-Instruct-FP16(unsharded)|PASS|PASS|PASS|PASS|NTD
-|70B-Instruct-FP16unsharded)|PASS|PASS|PASS|NTD|NTD
+|70B-Instruct-FP16(unsharded)|PASS|PASS|PASS|NTD|NTD
 |405B-Instruct-FP16(sharded)|NTD|NTD|NTD|NTD|NTD
 
 N.B. The weight file for 70B-Instruct was generated using `llama.cpp/convert_hf_to_gguf.py` through the following command:
