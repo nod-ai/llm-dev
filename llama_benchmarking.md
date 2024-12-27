@@ -1,4 +1,4 @@
-# How to benchmark Llama 3.1 TP1 Unsharded
+# How to benchmark Llama 3.1 
 In order to benchmark Llama 3.1 prefill and decode, you will need these artifacts for unsharded (TP=1) benchmarks:
 
 1. irpa file(s)
