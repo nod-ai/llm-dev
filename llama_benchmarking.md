@@ -81,6 +81,30 @@ This command compiles the full IR (both prefill + decode) into a vmfb.
   --iree-hal-memoization=true \
   --iree-opt-strip-assertions
 ```
+Following command is for TP8 sharded 405B compilation
+```
+artifacts/405b_f16_prefill_tp8_nondecomposed.mlir  \
+--iree-hip-target=gfx942  \
+-o=artifacts/prefill_405b_tp8_12_10.vmfb  \
+--iree-hal-target-device=hip[0]  \
+--iree-hal-target-device=hip[1]  \
+--iree-hal-target-device=hip[2]  \
+--iree-hal-target-device=hip[3]  \
+--iree-hal-target-device=hip[4]  \
+--iree-hal-target-device=hip[5]  \
+--iree-hal-target-device=hip[6]  \
+--iree-hal-target-device=hip[7]  \
+--iree-dispatch-creation-enable-aggressive-fusion=true     \
+--iree-global-opt-propagate-transposes=true  \
+--iree-opt-aggressively-propagate-transposes=true     \
+--iree-opt-data-tiling=false  \
+--iree-preprocessing-pass-pipeline='builtin.module(util.func(iree-preprocessing-generalize-linalg-matmul-experimental))'     \
+--iree-hal-indirect-command-buffers=true  \
+--iree-stream-resource-memory-model=discrete  \
+--iree-hip-legacy-sync=false    \
+--iree-hal-memoization=true  \
+--iree-opt-strip-assertions
+```
 ## 4b Test that it runs
 Adapt as per model as your artifacts names, following example is for 405B TP8 sharded run
 ```
