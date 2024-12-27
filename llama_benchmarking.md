@@ -1,4 +1,4 @@
-# How to benchmark Llama 3.1 
+# Benchmark Llama 3.1 Unsharded (TP1)
 In order to benchmark Llama 3.1 prefill and decode, you will need these artifacts for unsharded (TP=1) benchmarks:
 
 1. irpa file(s)
@@ -80,60 +80,6 @@ This command compiles the full IR (both prefill + decode) into a vmfb.
   --iree-hip-legacy-sync=false \
   --iree-hal-memoization=true \
   --iree-opt-strip-assertions
-```
-Following command is for TP8 sharded 405B compilation
-```
-artifacts/405b_f16_prefill_tp8_nondecomposed.mlir  \
---iree-hip-target=gfx942  \
--o=artifacts/prefill_405b_tp8_12_10.vmfb  \
---iree-hal-target-device=hip[0]  \
---iree-hal-target-device=hip[1]  \
---iree-hal-target-device=hip[2]  \
---iree-hal-target-device=hip[3]  \
---iree-hal-target-device=hip[4]  \
---iree-hal-target-device=hip[5]  \
---iree-hal-target-device=hip[6]  \
---iree-hal-target-device=hip[7]  \
---iree-dispatch-creation-enable-aggressive-fusion=true     \
---iree-global-opt-propagate-transposes=true  \
---iree-opt-aggressively-propagate-transposes=true     \
---iree-opt-data-tiling=false  \
---iree-preprocessing-pass-pipeline='builtin.module(util.func(iree-preprocessing-generalize-linalg-matmul-experimental))'     \
---iree-hal-indirect-command-buffers=true  \
---iree-stream-resource-memory-model=discrete  \
---iree-hip-legacy-sync=false    \
---iree-hal-memoization=true  \
---iree-opt-strip-assertions
-```
-## 4b. iree-run-module (optional)
-Adapt as per model as your artifacts names, following example is for 405B TP8 sharded run
-```
-ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 iree-run-module  \
---hip_use_streams=true --device_allocator=caching  \
---module=artifacts/prefill_405b_tp8_12_10.vmfb  \
---parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.irpa  \
---parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.rank0.irpa  \
---parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.rank1.irpa  \
---parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.rank2.irpa  \
---parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.rank3.irpa  \
---parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.rank4.irpa  \
---parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.rank5.irpa  \
---parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.rank6.irpa  \
---parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.rank7.irpa  \
---device=hip://0  --device=hip://1  --device=hip://2  --device=hip://3  --device=hip://4  \
---device=hip://5  --device=hip://6  --device=hip://7  \
---function=prefill_bs4  \
---input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/random_tokens.npy  \
---input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/seq_lens.npy  \
---input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/seq_block_ids.npy  \
---input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_0.npy  \
---input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_1.npy  \
---input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_2.npy  \
---input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_3.npy  \
---input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_4.npy  \
---input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_5.npy  \
---input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_6.npy  \
---input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_7.npy 
 ```
 ## 5. Benchmark command
 In order to benchmark prefill, make sure you specify the function as `prefill_bs{batch_size}` and specify the 4 inputs using the numpy files in 
@@ -313,13 +259,65 @@ Compile command:
   --iree-hal-memoization=true \
   --iree-opt-strip-assertions
 ```
-
+Following command is for TP8 sharded 405B compilation
+```
+artifacts/405b_f16_prefill_tp8_nondecomposed.mlir  \
+--iree-hip-target=gfx942  \
+-o=artifacts/prefill_405b_tp8_12_10.vmfb  \
+--iree-hal-target-device=hip[0]  \
+--iree-hal-target-device=hip[1]  \
+--iree-hal-target-device=hip[2]  \
+--iree-hal-target-device=hip[3]  \
+--iree-hal-target-device=hip[4]  \
+--iree-hal-target-device=hip[5]  \
+--iree-hal-target-device=hip[6]  \
+--iree-hal-target-device=hip[7]  \
+--iree-dispatch-creation-enable-aggressive-fusion=true     \
+--iree-global-opt-propagate-transposes=true  \
+--iree-opt-aggressively-propagate-transposes=true     \
+--iree-opt-data-tiling=false  \
+--iree-preprocessing-pass-pipeline='builtin.module(util.func(iree-preprocessing-generalize-linalg-matmul-experimental))'     \
+--iree-hal-indirect-command-buffers=true  \
+--iree-stream-resource-memory-model=discrete  \
+--iree-hip-legacy-sync=false    \
+--iree-hal-memoization=true  \
+--iree-opt-strip-assertions
+```
+## 4b. iree-run-module (optional)
+Adapt as per model as your artifacts names, following example is for 405B TP8 sharded run
+```
+ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 iree-run-module  --hip_use_streams=true \
+--device_allocator=caching  \
+--module=artifacts/prefill_405b_tp8_12_10.vmfb  \
+--parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.irpa  \
+--parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.rank0.irpa  \
+--parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.rank1.irpa  \
+--parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.rank2.irpa  \
+--parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.rank3.irpa  \
+--parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.rank4.irpa  \
+--parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.rank5.irpa  \
+--parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.rank6.irpa  \
+--parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.rank7.irpa  \
+--device=hip://0  --device=hip://1  --device=hip://2  --device=hip://3   \
+--device=hip://4  --device=hip://5  --device=hip://6  --device=hip://7   \
+--function=prefill_bs4  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/random_tokens.npy  \
+--input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/seq_lens.npy  \
+--input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/seq_block_ids.npy   \
+--input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_0.npy  \
+--input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_1.npy  \
+--input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_2.npy  \
+--input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_3.npy  \
+--input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_4.npy  \
+--input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_5.npy  \
+--input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_6.npy  \
+--input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_7.npy
+```
 ## 6. Benchmark sharded vmfb 
 Sharded benchmark command:
 
 ```
 ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
-  ../iree-build-no-trace/tools/iree-run-module \
+  ../iree-build-no-trace/tools/iree-benchmark-module \
   --hip_use_streams=true \
   --module=prefill_405b_tp8.vmfb \
   --parameters=model=llama3.1_405b_fp16_tp8_parameters.irpa \
@@ -350,5 +348,6 @@ ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
   --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128_stride_32/cs_f16_shard_4.npy \
   --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128_stride_32/cs_f16_shard_5.npy \
   --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128_stride_32/cs_f16_shard_6.npy \
-  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128_stride_32/cs_f16_shard_7.npy
+  --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128_stride_32/cs_f16_shard_7.npy \
+  --benchmark_repetitions=3
 ```
