@@ -19,11 +19,13 @@ ITL: Average time between each new token generated in decode phase (second token
 
 # Benchmarking
 -Read [benchmarking](https://github.com/nod-ai/llm-dev/blob/main/llama_benchmarking.md) to get setup to get performance numbers.
-## Latest Tracy Profiles
-| Model | Tracy Profile |
-|-------|---------------|
-|llama3.1 8B Fp16 Unsharded nondecomposed (i.e. using flash attention2) | [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/8b_f16_nondecomposed_32.tracy)
-|llama3.1 8B Fp16 Unsharded decode (i.e. using flash attention2) | [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/8b_f16_decode_unsharded.tracy)
+## Tracy Profiles (nondecomposed)
+| Model | Tracy Profile |Comments|
+|-------|---------------|--------|
+|llama3.1 8B Fp16 Unsharded| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/8b_f16_nondecomposed_32.tracy)
+|llama3.1 8B Fp16 Unsharded| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/8b_f16_decode_unsharded.tracy)
+|llama3.1 70B Fp16 Unsharded| TBD |
+|llama3.1 405B Fp16 TP8| TBD |
 
 
 # Schedule
