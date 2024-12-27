@@ -347,7 +347,7 @@ ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
 Run tracy profile collection
 ```
 TRACY_NO_EXIT=1 \
-ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 ~/iree-build-tracy/iree-benchmark-module -run-module  --hip_use_streams=true \
+ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7  ~/iree-build-trace/tools/iree-benchmark-module -run-module  --hip_use_streams=true \
 --device_allocator=caching  \
 --module=artifacts/prefill_405b_tp8_tracy.vmfb  \
 --parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.irpa  \
