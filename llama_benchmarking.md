@@ -233,6 +233,7 @@ Get the 405b f16 tp8 unsharded prefill numpy inputs: [get_405b_tp8_prefill_input
 Get the 405b f16 tp8 unsharded decode numpy inputs: [get_405b_tp8_decode_inputs.sh](https://gist.github.com/aviator19941/a874d3cc03649abbfecc5dac27c62eda)
 
 ## 5. Build IREE for tracy profiling
+
 Build IREE with runtime tracing and tracy:
 ```
 cmake -G Ninja -B ../iree-build-trace   -S . -DCMAKE_BUILD_TYPE=RelWithDebInfo   \
@@ -247,13 +248,17 @@ cmake -G Ninja -B ../iree-build-trace   -S . -DCMAKE_BUILD_TYPE=RelWithDebInfo  
 cmake --build ../iree-build-trace
 ```
 ## 5b. Compile sharded IR
+
 Compile command:
 
 ```
-~/iree-build-trace/tools/iree-compile  \
+~/iree-build-trace/tools/iree-compile --compile-to=input  \
 artifacts/405b_f16_prefill_tp8_nondecomposed.mlir  \
+-o artifacts/405b_f16_prefill_tp8_nondecomposed.iree.mlir
+
+~/iree-build-trace/tools/iree-compile  \
+artifacts/405b_f16_prefill_tp8_nondecomposed.iree.mlir  \
 --iree-hip-target=gfx942  \
--o=artifacts/prefill_405b_tp8_tracy.vmfb  \
 --iree-hal-target-device=hip[0]  \
 --iree-hal-target-device=hip[1]  \
 --iree-hal-target-device=hip[2]  \
@@ -273,11 +278,15 @@ artifacts/405b_f16_prefill_tp8_nondecomposed.mlir  \
 --iree-hal-memoization=true  \
 --iree-opt-strip-assertions \
 --iree-hal-executable-debug-level=3 \
---iree-hal-dump-executable-sources-to=dump
+--iree-hal-dump-executable-sources-to=dump \
+--mlir-print-debuginfo \
+-o=artifacts/prefill_405b_tp8_tracy.vmfb
 ```
 
 ## 4b. iree-run-module (optional)
-Adapt as per model as your artifacts names, following example is for 405B TP8 sharded run
+
+Adapt as per model as your artifacts names, following example is for 405B TP8 sharded run:
+
 ```
 ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 iree-run-module  --hip_use_streams=true \
 --device_allocator=caching  \
@@ -305,7 +314,9 @@ ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 iree-run-module  --hip_use_streams=true \
 --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_6.npy  \
 --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_7.npy
 ```
+
 ## 6. Benchmark sharded vmfb 
+
 Sharded benchmark command:
 
 ```
@@ -344,11 +355,12 @@ ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
   --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128_stride_32/cs_f16_shard_7.npy \
   --benchmark_repetitions=3
 ```
-Run tracy profile collection
+## 7. Collect Tracy Profile
+Run tracy profile collection, replace the IP address and port as per your case or choice:
+
 ```
-TRACY_NO_EXIT=1 \
-ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7  ~/iree-build-trace/tools/iree-benchmark-module -run-module  --hip_use_streams=true \
---device_allocator=caching  \
+TRACY_PORT=8086 TRACY_NO_EXIT=1 ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7  \
+~/iree-build-trace/tools/iree-run-module -run-module  --hip_use_streams=true \
 --module=artifacts/prefill_405b_tp8_tracy.vmfb  \
 --parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.irpa  \
 --parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.rank0.irpa  \
@@ -371,6 +383,38 @@ ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7  ~/iree-build-trace/tools/iree-benchmark-mo
 --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_4.npy  \
 --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_5.npy  \
 --input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_6.npy  \
---input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_7.npy \
---benchmark_repetitions=3
+--input=@/data/llama3.1/weights/405b/prefill_args_bs4_128/cs_f16_shard_7.npy 
 ```
+You can replace iree-run-module by iree-benchmark-module and add  --benchmark_repetitions=3 to run benchmark instead.
+
+And in a separate terminal run following (-s 35 colelcts for 35 seconds, you can remove it and try, at present I see that 405B cannot colelct more than 35 seconds):
+```
+ ~/iree-build-trace/tracy/iree-tracy-capture -f -a 172.19.26.15 -p 8086 -o llama3.1_405b_tp8_fp16_prefill.tracy -s 35
+```
+
+## 8. Build/install Tracy Profile Viewer
+
+You can install [Windows Tracy profile viewer](https://github.com/wolfpld/tracy/releases/download/v0.11.1/windows-0.11.1.zip) on your laptop or try building the tracy-profiler on Ubuntu 22.04 and use that. For Ubuntu 22.04, you will need to make sure your machine has right packages by doing following:
+```
+sudo apt update
+sudo apt install libdbus-1-dev libegl1-mesa-dev libxkbcommon-dev wayland-protocols libwayland-egl1-mesa libwayland-dev
+```
+Then follow instructions on [build tracy profiler](https://iree.dev/developers/performance/profiling-with-tracy/#building-tracy-from-source)
+Following worked for my setup with ~/iree is where iree source code is checked out for me:
+```
+cd ~/iree/third_party/tracy
+cmake -B profiler/build -S profiler -DCMAKE_BUILD_TYPE=Release
+cmake --build profiler/build --parallel --config Release
+```
+## 9. View tracy file
+
+You can view trace using:
+```
+~/iree/third-party/trcay/profiler/build/tracy-profiler .\llama3.1_405b_tp8_fp16_prefill.tracy
+```
+Or say if you installed the windows version on your laptop, you can scp your .tracy from MI300X server and view as below assuming you uninstalled the windows release of tracy at c:\iree-tracy. An example command to follow is below:
+```
+scp 172.19.26.15:/home/kudeepak/llama3.1/405B/llama3.1_405b_tp8_fp16_prefill.tracy .
+C:\iree-tracy\tracy-profiler.exe .\llama3.1_405b_tp8_fp16_prefill.tracy
+```
+
