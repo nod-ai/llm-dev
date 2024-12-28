@@ -25,7 +25,7 @@ ITL: Average time between each new token generated in decode phase (second token
 |llama3.1 8B Fp16 Unsharded| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/8b_f16_nondecomposed_32.tracy)
 |llama3.1 8B Fp16 Unsharded| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/8b_f16_decode_unsharded.tracy)
 |llama3.1 70B Fp16 Unsharded| TBD |
-|llama3.1 405B Fp16 TP8| TBD |
+|llama3.1 405B Fp16 TP8 prefill| [Tracy Profile](https://amdcloud-my.sharepoint.com/:u:/g/personal/kudeepak_amd_com/EQp34SwbTSlAjrleUhnWhlsBrQRvMkVzEFymYEJjqDLoYg?e=2Bh3tF) |
 
 
 # Schedule
