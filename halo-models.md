@@ -53,6 +53,8 @@ See latest [CI/Nightly Test Report](https://nod-ai.github.io/shark-ai/). Use [No
 |---|---|---|---|
 |quark quantization | [QUARK-71](https://jira.xilinx.com/browse/QUARK-71) | Bowen Bow | FP8 matmul should be used in attention|
 |iree codegen | [18864](https://github.com/iree-org/iree/issues/18864)| Ian Wood | OOM for 70B |
+|iree codegen | [19564](https://github.com/iree-org/iree/issues/19564)| Ian Wood | HSA_STATUS_ERROR_MEMORY_APERTURE_VIOLATION |
+|iree tracy profiling | [19571](https://github.com/iree-org/iree/issues/19571) | |hits assertion for tracing 405B sharded |
 
 # Status-Numerics
 Following naming convention should be used for weights and artifacts (on SharkMI300x and other similar machines)
