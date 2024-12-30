@@ -19,10 +19,7 @@ ITL: Average time between each new token generated in decode phase (second token
 
 # Benchmarking
 -Read [benchmarking](https://github.com/nod-ai/llm-dev/blob/main/llama_benchmarking.md) to get setup to get performance numbers.
-
-# Testing
-- See [Testing Status](https://github.com/nod-ai/llm-dev/blob/main/model_status.md)
-  
+-Download following tracy files to see distribution of inference runtimes. You can either download a tracy-profile viewer from [here](https://github.com/wolfpld/tracy/releases/download/v0.11.1/windows-0.11.1.zip) and unzip it on your laptop or use https://tracy.nereid.pl/
 ## Tracy Profiles (nondecomposed)
 | Model | Tracy Profile |Comments|
 |-------|---------------|--------|
@@ -34,7 +31,9 @@ ITL: Average time between each new token generated in decode phase (second token
 |llama3.1 70B Fp16 decode TP1| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/70b_fp16_decode_unsharded.tracy)
 |llama3.1 405B Fp16 prefill TP8| [Tracy Profile](https://amdcloud-my.sharepoint.com/:u:/g/personal/kudeepak_amd_com/EQp34SwbTSlAjrleUhnWhlsBrQRvMkVzEFymYEJjqDLoYg?e=2Bh3tF) |
 
-
+# Testing
+- See [Testing Status](https://github.com/nod-ai/llm-dev/blob/main/model_status.md)
+  
 # Schedule
 (Model is assumed to be llama3.1 in the following table, e.g. "8B FP8" means "llama3.1 8B FP8 model")
 |Item                          | Current Week (Dec 9-13) |  Next Week (Dec 16-20) |
