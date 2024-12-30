@@ -19,6 +19,10 @@ ITL: Average time between each new token generated in decode phase (second token
 
 # Benchmarking
 -Read [benchmarking](https://github.com/nod-ai/llm-dev/blob/main/llama_benchmarking.md) to get setup to get performance numbers.
+
+# Testing
+- See [Testing Status](https://github.com/nod-ai/llm-dev/blob/main/model_status.md)
+  
 ## Tracy Profiles (nondecomposed)
 | Model | Tracy Profile |Comments|
 |-------|---------------|--------|
