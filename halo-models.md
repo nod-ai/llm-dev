@@ -22,13 +22,13 @@ ITL: Average time between each new token generated in decode phase (second token
 ## Tracy Profiles (nondecomposed)
 | Model | Tracy Profile |Comments|
 |-------|---------------|--------|
-|llama3.1 8B Fp16 prefill Unsharded| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/8b_fp16_prefill_unsharded.tracy)
-|llama3.1 8B Fp16 decode Unsharded| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/8b_fp16_decode_unsharded.tracy)
-|llama3.1 8B Fp16 prefill sharded| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/8b_fp16_prefill_tp8_sharded.tracy)
-|llama3.1 8B Fp16 decode sharded| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/8b_fp16_decode_tp8_sharded.tracy)
-|llama3.1 70B Fp16 prefill Unsharded| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/70b_fp16_prefill_unsharded.tracy)
-|llama3.1 70B Fp16 decode Unsharded| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/70b_fp16_decode_unsharded.tracy)
-|llama3.1 405B Fp16 TP8 prefill| [Tracy Profile](https://amdcloud-my.sharepoint.com/:u:/g/personal/kudeepak_amd_com/EQp34SwbTSlAjrleUhnWhlsBrQRvMkVzEFymYEJjqDLoYg?e=2Bh3tF) |
+|llama3.1 8B Fp16 prefill TP1| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/8b_fp16_prefill_unsharded.tracy)
+|llama3.1 8B Fp16 decode TP1| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/8b_fp16_decode_unsharded.tracy)
+|llama3.1 8B Fp16 prefill TP8| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/8b_fp16_prefill_tp8_sharded.tracy)
+|llama3.1 8B Fp16 decode TP8| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/8b_fp16_decode_tp8_sharded.tracy)
+|llama3.1 70B Fp16 prefill TP1| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/70b_fp16_prefill_unsharded.tracy)
+|llama3.1 70B Fp16 decode TP1| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/70b_fp16_decode_unsharded.tracy)
+|llama3.1 405B Fp16 prefill TP8| [Tracy Profile](https://amdcloud-my.sharepoint.com/:u:/g/personal/kudeepak_amd_com/EQp34SwbTSlAjrleUhnWhlsBrQRvMkVzEFymYEJjqDLoYg?e=2Bh3tF) |
 
 
 # Schedule
