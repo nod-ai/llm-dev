@@ -45,7 +45,7 @@ iree-benchmark-module \
 ```
 python3 -m sharktank.examples.export_paged_llm_v1 \
   --bs=4 \
-  --irpa-file=/home/sai/temp_dir_by_dhiraj/gitRepo/llama_end_to_end/export/meta-llama-3.1-8b-instruct.f16.gguf \
+  --irpa-file=/data/llama3.1/weights/8b/fp16/llama3.1_8b_fp16.irpa \
   --output-mlir=8b_fp16_decode_unsharded.mlir \
   --output-config=8b_fp16_decode_unsharded.json
 
