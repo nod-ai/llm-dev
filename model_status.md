@@ -4,12 +4,10 @@
 |---|---|---|---|---|---|---|       
 |8B-FP16|PASS|PASS|PASS|PASS|PASS|NTD|NTD
 |70B-FP16|PASS|PASS|PASS|PASS|NTD|NTD
-|405B-FP16(sharded)|PASS|PASS|PASS|FAIL(decode)|NTD|NTD
+|405B-FP16(sharded)|PASS|PASS|PASS|FAIL(decode)<br>[19564](https://github.com/iree-org/iree/issues/19564)|NTD|NTD
 |8B-Instruct-FP16|PASS|PASS|PASS|PASS|PASS|NTD
 |70B-Instruct-FP16|PASS|PASS|PASS|PASS|NTD|NTD
 |405B-Instruct-FP16(sharded)|NTD|NTD|NTD|NTD|NTD|NTD
-
-70B-Prefill-tp8-sharded : [FAILED 19564](https://github.com/iree-org/iree/issues/19564)
 
 N.B. The weight file for 70B-Instruct was generated using `llama.cpp/convert_hf_to_gguf.py` through the following command:
 ```sh
