@@ -2,7 +2,7 @@
 
 |Model|sharktank|iree-compile|iree-run-module|iree-benchmark-module|shortfin-sglang|kubernetes|
 |---|---|---|---|---|---|---|       
-|8B-FP16(unsharded)|PASS|PASS|PASS|PASS|NTD|NTD
+|8B-FP16|PASS|PASS|PASS|PASS|PASS|NTD|NTD
 |70B-FP16(unsharded)|PASS|PASS|PASS|PASS|NTD|NTD
 |405B-FP16(sharded)|PASS|PASS|PASS|FAIL(decode)|NTD|NTD
 |8B-Instruct-FP16(unsharded)|PASS|PASS|PASS|PASS|PASS|NTD
