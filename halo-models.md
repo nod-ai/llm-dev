@@ -30,7 +30,7 @@ ITL: Average time between each new token generated in decode phase (second token
 |llama3.1 8B Fp16 decode TP8| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/8b_fp16_decode_tp8_sharded.tracy)
 |llama3.1 70B Fp16 prefill TP1| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/70b_fp16_prefill_unsharded.tracy)
 |llama3.1 70B Fp16 decode TP1| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/70b_fp16_decode_unsharded.tracy)
-|llama3.1 405B Fp16 prefill TP8| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_405b/405b_f16_tp8_nondecomposed_32.tracy) |
+|llama3.1 405B Fp16 prefill TP8| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_405b/405b_f16_tp8_nondecomposed_32.tracy) | [Issue 19571](https://github.com/iree-org/iree/issues/19571)
 
 # Testing
 - See [Testing Status](https://github.com/nod-ai/llm-dev/blob/main/model_status.md)
