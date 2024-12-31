@@ -167,7 +167,7 @@ Run `iree-run-module` with `TRACY_NO_EXIT=1`:
 ```
 TRACY_NO_EXIT=1 \
   ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
-  ../iree-build-no-trace/tools/iree-benchmark-module \
+  ../iree-build-trace/tools/iree-run-module \
   --hip_use_streams=true \
   --module=prefill_8b.vmfb \
   --parameters=model=8b_fp16.irpa \
@@ -176,8 +176,7 @@ TRACY_NO_EXIT=1 \
   --input=@prefill_args_bs4_128_stride_32/tokens.npy \
   --input=@prefill_args_bs4_128_stride_32/seq_lens.npy \
   --input=@prefill_args_bs4_128_stride_32/seq_block_ids.npy \
-  --input=@prefill_args_bs4_128_stride_32/cs_f16.npy \
-  --benchmark_repetitions=3
+  --input=@prefill_args_bs4_128_stride_32/cs_f16.npy
 ```
 
 Open another terminal and run this command to capture the tracy file:
