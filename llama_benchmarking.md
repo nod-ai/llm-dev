@@ -57,8 +57,8 @@ To generate the IR for both prefill + decode (remove the `--skip-decode` flag):
 python3 -m sharktank.examples.export_paged_llm_v1 \
   --bs=4 \
   --irpa-file=8b_fp16.irpa \
-  --output-mlir=8b_fp16_prefill_nondecomposed.mlir \
-  --output-config=8b_fp16_prefill_nondecomposed.json
+  --output-mlir=8b_fp16_nondecomposed.mlir \
+  --output-config=8b_fp16_nondecomposed.json
 ```
 
 ## 3. Get the numpy inputs
