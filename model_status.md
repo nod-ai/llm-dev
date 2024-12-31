@@ -1,70 +1,38 @@
 ### Model status
 
-### Token length: 128
-
-|Model|sharktank|iree-compile|iree-run-module|iree-benchmark-module|shortfin-sglang|kubernetes|
-|---|---|---|---|---|---|---|       
-|8B-FP16-TP1|PASS|PASS|PASS|PASS|PASS|NTD|NTD
-|70B-FP16-TP1|PASS|PASS|PASS|PASS|NTD|NTD
-|405B-FP16-TP8|
-|8B-Instruct-FP16-TP1|PASS|PASS|PASS|PASS|PASS|NTD
-|70B-Instruct-FP16-TP1|PASS|PASS|PASS|PASS|NTD|NTD
-|405B-Instruct-FP16-TP8|
-
-
-
-
 #### Token length: 2048
 
 |Model|sharktank|iree-compile|iree-run-module|iree-benchmark-module|shortfin-sglang|kubernetes|
 |---|---|---|---|---|---|---|       
 |8B-FP16-TP1|PASS|PASS|PASS|PASS|PASS|NTD|NTD
 |70B-FP16-TP1|PASS|PASS|PASS|FAIL(prefill) [19569](https://github.com/iree-org/iree/issues/19569)|NTD|NTD
-|405B-FP16-TP8|
+|405B-FP16-TP8-Prefill|PASS|PASS|FAIL [19573](https://github.com/iree-org/iree/issues/19573)|FAIL[19573](https://github.com/iree-org/iree/issues/19573)|NTD|NTD
+|405B-FP16-TP8-decode|
 |8B-Instruct-FP16-TP1|PASS|PASS|PASS|PASS|PASS|NTD
 |70B-Instruct-FP16-TP1|PASS|PASS|PASS|FAIL(prefill) [19569](https://github.com/iree-org/iree/issues/19569)|NTD|NTD
-|405B-Instruct-FP16-TP8|NTD|NTD|NTD|NTD|NTD|NTD
+|405B-Instruct-FP16-TP8-prefill|
+|405B-Instruct-FP16-TP8-decode|
 
-
-
-
-
-#### OLD
-
-
+### Token length: 128
 
 |Model|sharktank|iree-compile|iree-run-module|iree-benchmark-module|shortfin-sglang|kubernetes|
 |---|---|---|---|---|---|---|       
 |8B-FP16-TP1|PASS|PASS|PASS|PASS|PASS|NTD|NTD
 |70B-FP16-TP1|PASS|PASS|PASS|PASS|NTD|NTD
-|405B-FP16-TP8|PASS|PASS|PASS|FAIL(decode)<br>[19564](https://github.com/iree-org/iree/issues/19564)|NTD|NTD
+|405B-FP16-TP8-Prefill|PASS|PASS|FAIL [19573](https://github.com/iree-org/iree/issues/19573)|FAIL[19573](https://github.com/iree-org/iree/issues/19573)|NTD|NTD
+|405B-FP16-TP8-decode|
 |8B-Instruct-FP16-TP1|PASS|PASS|PASS|PASS|PASS|NTD
 |70B-Instruct-FP16-TP1|PASS|PASS|PASS|PASS|NTD|NTD
-|405B-Instruct-FP16-TP8|NTD|NTD|NTD|NTD|NTD|NTD
+|405B-Instruct-FP16-TP8-prefill|
+|405B-Instruct-FP16-TP8-decode|
+
+
+
 
 N.B. The weight file for 70B-Instruct was generated using `llama.cpp/convert_hf_to_gguf.py` through the following command:
 ```sh
  python3 convert_hf_to_gguf.py <path_to_hf_safetensor_files> --outtype f16 --outfile llama_70b_3.1_instruct.gguf
 ```
 
-### issue with models
-
-### Unsharded
-
-|Model| IR generation |Compilation|runtime|comment|
-|---|---|---|---|---|                                         
-|405B-FP16-Prefill|PASS|PASS|FAIL|RESOURCE_EXHAUSTED; HIP driver error 'hipErrorOutOfMemory' (2): out of memory|
-|405B-FP16-Decode|PASS|PASS|FAIL|RESOURCE_EXHAUSTED; HIP driver error 'hipErrorOutOfMemory' (2): out of memory|
-
-
-
-### Sharded
-
-
-|Model|IR generation|Compilation|runtime|Comment|
-|---|---|---|---|---|                                         
-|8B-Prefill|PASS|FAIL|FAIL|Memory access fault by GPU node-4 (Agent handle: 0x58470a300960) on address 0x7182ec58b000. Reason: Unknown|
-|8B-Decode|PASS|FAIL|FAIL|:0:rocdevice.cpp            :2984: 2787027630305 us: [pid:688936 tid:0x7dfc4e600640] Callback: Queue 0x7dfbe0300000 aborting with error : HSA_STATUS_ERROR_MEMORY_APERTURE_VIOLATION: The agent attempted to access memory beyond the largest legal address. code: 0x29
-|405B-Decode|PASS|PASS|FAIL| Seems input is not correct. INVALID_ARGUMENT; function expected fewer input values; parsing input `@/data/llama3.1/weights/405b/decode_args_bs4_128_stride_32/cs_f16_shard_7.npy
 
 
