@@ -22,15 +22,15 @@ ITL: Average time between each new token generated in decode phase (second token
 
 -Download following tracy files to see distribution of inference runtimes. You can either download a tracy-profile viewer from [here](https://github.com/wolfpld/tracy/releases/download/v0.11.1/windows-0.11.1.zip) and unzip it on your laptop or use https://tracy.nereid.pl/
 ## Tracy Profiles (nondecomposed)
-| Model | Tracy Profile |Comments|
-|-------|---------------|--------|
-|llama3.1 8B Fp16 prefill TP1| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/8b_fp16_prefill_unsharded.tracy)
-|llama3.1 8B Fp16 decode TP1| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/8b_fp16_decode_unsharded.tracy)
-|llama3.1 8B Fp16 prefill TP8| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/8b_fp16_prefill_tp8_sharded.tracy)
-|llama3.1 8B Fp16 decode TP8| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/8b_fp16_decode_tp8_sharded.tracy)
-|llama3.1 70B Fp16 prefill TP1| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/70b_fp16_prefill_unsharded.tracy)
-|llama3.1 70B Fp16 decode TP1| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/70b_fp16_decode_unsharded.tracy)
-|llama3.1 405B Fp16 prefill TP8| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_405b/405b_f16_tp8_nondecomposed_32.tracy) | [Issue 19571](https://github.com/iree-org/iree/issues/19571)
+| Model | Tracy Profile | dump file| Comments|
+|-------|---------------|--------|---|
+|llama3.1 8B Fp16 prefill TP1| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/8b_fp16_prefill_unsharded.tracy) | [Dump File](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/dump_8B_prefill_unsharded.tar.gz) |
+|llama3.1 8B Fp16 decode TP1| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/8b_fp16_decode_unsharded.tracy) | [Dump File](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/dump_8B_decode_unsharded.tar.gz) |
+|llama3.1 8B Fp16 prefill TP8| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/8b_fp16_prefill_tp8_sharded.tracy) | [Dump File](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/dump_8B_prefill_tp8_sharded.tar.gz) |
+|llama3.1 8B Fp16 decode TP8| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/8b_fp16_decode_tp8_sharded.tracy) | [Dump File](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/dump_8B_decode_tp8_sharded.tar.gz) |
+|llama3.1 70B Fp16 prefill TP1| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/70b_fp16_prefill_unsharded.tracy) | [Dump File](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/dump_70B_prefill_unsharded.tar.gz) |
+|llama3.1 70B Fp16 decode TP1| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/70b_fp16_decode_unsharded.tracy) | [Dump File](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_8b/dump_70B_decode_unsharded.tar.gz) |
+|llama3.1 405B Fp16 prefill TP8| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_405b/405b_f16_tp8_nondecomposed_32.tracy) || [Issue 19571](https://github.com/iree-org/iree/issues/19571)
 
 # Testing
 - See [Testing Status](https://github.com/nod-ai/llm-dev/blob/main/model_status.md)
