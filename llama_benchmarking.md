@@ -36,9 +36,9 @@ If you have trouble accessing `sharkblobs`, you can copy the 8b f16 unsharded ir
 scp nod@10.23.233.219:/data/llama3.1/weights/8b/fp16/llama3.1_8b_fp16.irpa 8b_fp16.irpa
 ```
 
-N.B.: Weight files for Llama-3.1-Instruct-<70B/405B> (GGUF) are located on the `SharkMi300X` machine at:
+N.B.: Weight files for Llama-3.1-Instruct-<8B/70B/405B> (GGUF) are located on the `SharkMi300X` machine at:
 ```
-/shark-dev/<70b/405b>/instruct/weights/llama3_<70b/405b>_instruct_fp16.gguf
+/shark-dev/<8b/70b/405b>/instruct/weights/llama3_<8b/70b/405b>_instruct_fp16.gguf
 ```
 
 ## 2. Generate the IR
