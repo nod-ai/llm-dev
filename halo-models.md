@@ -33,17 +33,17 @@ ITL: Average time between each new token generated in decode phase (second token
 |llama3.1 405B Fp16 prefill TP8| [Tracy Profile](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_405b/405b_f16_tp8_nondecomposed_32.tracy) || [Issue 19571](https://github.com/iree-org/iree/issues/19571)
 
 # Testing
-- See [Testing Status](https://github.com/nod-ai/llm-dev/blob/main/model_status.md)
+- See [Testing Status](https://github.com/nod-ai/llm-dev/blob/main/model_status.md)  
   
 # Schedule
 (Model is assumed to be llama3.1 in the following table, e.g. "8B FP8" means "llama3.1 8B FP8 model")
-|Item                          | Current Week (Dec 9-13) |  Next Week (Dec 16-20) |
+|Item                          | Previous Week (Dec 16-20) |  Next Week (Jan 2-3 |
 |------------------------------|-----------------------|--------------------------|
-| Sharktank Modeling           | - @Ian Finish Flux Vae decode (DONE 12/11) <br> - @Kyle finish flux model (DONE: 12/11) <br> - @Boian flux clip model export and compile for bf16 (DONE: 12/11)  <br> - @Dan Finish and merge FP8 llama PR (ETA 12/12) | - @Rob multi-device fixes (ETA 12/17) <br> - @Boian Landing flux transformer model (Done 12/16) <br> - @Boian updating clip and T5 tests (ETA 12/16) <br> - @Kyle help grok-1 (ETA: 12/20) <br> - @Archana bring up grok-1 q4_k (ETA: 12/20) <br> - @Boian debug flux compile time issue (ETA 12/20) 
-| IREE codegeneration          | - @kunwar decode flash attention (DONE 12/11) | @Dan Reworking fp8 attention for Stan (ETA 12/17) <br> - @Dan lowering issue for fp8 (ETA 12/17) 
-| Serving |- @ean flush out bf16 flux in shortfin for flux (ETA 12/12) <br> - @Xida fix flakiness in batch handling (Done: 12/12) <br> - @Stephen test and ensure sglang/shortfin batch runs work (ETA: 12/12) | - @Stephen Debugging multi-device llms in shortfin (ETA: 12/20) <br> - @Ean debugging fp16 flux pipeline (ETA 12/17) <br> - @Xida Debugging batching issue found in prefill (ETA 12/17) <br> - @Xida ramping up and helping on multi-device shortfin issue (ETA:12/20)
-| Test Automation              |- @Avi refresh benchmarking decode and prefill for 8B, 70B   (ETA: 12/12) <br> -@Archana shortfin PPL debugging (ETA: 12/10) <br> -@Rob debug multi-device (ETA: 12/11) | - @Archana triaging PPL breakages from block size and device affinities (Done 12/17) <br> - @Archana shortfin PPL integration (ETA 12/18) 
-| Performance Tuning           | -@Avi tracy profile for decode (ETA:12/11)| @Avi Landing fixes for block size changes (ETA 12/16) <br> @Avi tracy profiling updates (Done 12/17) <br> - @avi Benchmark with new rotary embedding (ETA: 12/20)
+| Sharktank Modeling           | - @Rob multi-device fixes (ETA 12/17) <br> - @Boian Landing flux transformer model (Done 12/16) <br> - @Boian updating clip and T5 tests (ETA 12/16) <br> - @Kyle help grok-1 (ETA: 12/20) <br> - @Archana bring up grok-1 q4_k (ETA: 12/20) <br> - @Boian debug flux compile time issue (ETA 12/20) | <br> - Boian landing flux tests (ETA 1/2) <br> - Boian flux transformer model profiling/tracy (ETA 1/2) <br> - @Ian Land flux vae (ETA 1/2) <br> - Kyle qa flux for release (ETA 1/2) <br>
+| IREE codegeneration          | - @Dan Reworking fp8 attention for Stan (ETA 12/17) <br> - @Dan lowering issue for fp8 (ETA 12/17) | - @Dan fp8 attention template changes (ETA 1/2) <br> - @Dan bf16 tracing issues (ETA 1/6) <br> - @Avi Tracy multi-gpu debugging (ETA 1/2) <br> - @Avi Investigating 405b sharding issues (ETA 1/2)
+| Serving |- @Stephen Debugging multi-device llms in shortfin (ETA: 12/20) <br> - @Ean debugging fp16 flux pipeline (ETA 12/17) <br> - @Xida Debugging batching issue found in prefill (ETA 12/17) <br> - @Xida ramping up and helping on multi-device shortfin issue (ETA:12/20) | <br> - @Xida helping debug shortfin multi-gpu issues (ETA 1/2) <br> - @Rob help debug shortfin multi-gpu (ETA 1/2)
+| Test Automation              | - @Archana triaging PPL breakages from block size and device affinities (Done 12/17) <br> - @Archana shortfin PPL integration (ETA 12/18) | - @Archana debug ppl seg fault (ETA 1/2) <br> - @Archana grok-1 debugging (ETA 1/6)
+| Performance Tuning           | - @Avi Landing fixes for block size changes (ETA 12/16) <br> @Avi tracy profiling updates (Done 12/17) <br> - @avi Benchmark with new rotary embedding (ETA: 12/20) |
 
 # Nightly Test Reports
 See latest [CI/Nightly Test Report](https://nod-ai.github.io/shark-ai/). Use [Nod.AI Lab](https://confluence.amd.com/pages/viewpage.action?spaceKey=ENGIT&title=Nod.AI+Lab) page to ssh into machine SharkMi300X to find logs and artifacts to triage the failures. File an issue (if not already filed/listed) and add to Issues table below.
