@@ -7,6 +7,10 @@ Run your command prepended with `gdb --args`:
 gdb --args iree-benchmark-module ...
 ```
 
+When GDB starts, press `r` and Enter to run the program.
+
+When the program crashes, use `bt` and Enter to get the backtrace of the crash.
+
 # Build IREE with ASAN (Address Sanitizer)
 Build IREE with `-DIREE_ASAN_BUILD=ON`.
 
