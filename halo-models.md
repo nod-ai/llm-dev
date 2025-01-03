@@ -96,13 +96,14 @@ Example: `/data/llama-3.1/artifacts/405b/llama3.1_405b_fp16_nondecomposed_tp8_bs
 | llama3.1-405B-FP8 |ETA: 11/5   | tbd | tbd | tbd | tbd
 | llama-toy-size-FP32-TP2-CPU | PASS | PASS | tbd | tbd | tbd
 
-## Flux.1 Dev Transformer
+## Flux.1 Transformer
+### Dev variant
 |Item              | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
 |------------------|---------------|-----------------|-----------------|--------------|-----------------|
 | sharktank `black-forest-labs--FLUX.1-dev--transformer-single-layer-bf16` | [MLIR](https://sharkblobs.blob.core.windows.net/halo-models/flux/transformer/black-forest-labs--FLUX.1-dev--transformer-single-layer-b16.mlir) [IRPA](https://sharkblobs.blob.core.windows.net/halo-models/flux/transformer/black-forest-labs--FLUX.1-dev--transformer-single-layer-b16.irpa)  | tbd | tbd | N/A | N/A
 | sharktank `black-forest-labs--FLUX.1-dev--black-forest-labs-transformer-bf16` (this is the real production model) | [MLIR](https://sharkblobs.blob.core.windows.net/halo-models/flux/transformer/black-forest-labs--FLUX.1-dev--black-forest-labs-transformer-bf16.mlir) [IRPA](https://sharkblobs.blob.core.windows.net/halo-models/flux/transformer/black-forest-labs--FLUX.1-dev--black-forest-labs-transformer-bf16.irpa)  | tbd | tbd | tbd | tbd
 
-## Flux.1 Schnell Transformer
+### Schnell variant
 |Item              | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
 |------------------|---------------|-----------------|-----------------|--------------|-----------------|
 | sharktank `black-forest-labs--FLUX.1-schnell--transformer-single-layer-bf16` | [MLIR](https://sharkblobs.blob.core.windows.net/halo-models/flux/transformer/black-forest-labs--FLUX.1-schnell--transformer-single-layer-b16.mlir) [IRPA](https://sharkblobs.blob.core.windows.net/halo-models/flux/transformer/black-forest-labs--FLUX.1-schnell--transformer-single-layer-b16.irpa)  | tbd | tbd | N/A | N/A
@@ -114,6 +115,30 @@ Schenll is almost the same as Dev. Dev has a guidance layer and guidance paramet
 It is meant to help for faster iteration when working with the model.
 
 The actual models `black-forest-labs--FLUX.1-<dev/schnell>--black-forest-labs-transformer-bf1` are with real pretrained parameters and have 19 MMDiT layers.
+
+### Compile command
+```bash
+iree-compile \
+  black-forest-labs--FLUX.1-dev--transformer-single-layer-b16.mlir \
+  -o black-forest-labs--FLUX.1-dev--transformer-single-layer-b16-hip.vmfb \
+  --iree-hal-target-device=hip \
+  --iree-hip-target=gfx942 \
+  --iree-opt-const-eval=false \
+  --iree-opt-strip-assertions=true \
+  --iree-global-opt-propagate-transposes=true \
+  --iree-dispatch-creation-enable-fuse-horizontal-contractions=true \
+  --iree-dispatch-creation-enable-aggressive-fusion=true \
+  --iree-opt-aggressively-propagate-transposes=true \
+  --iree-opt-outer-dim-concat=true \
+  --iree-vm-target-truncate-unsupported-floats \
+  --iree-llvmgpu-enable-prefetch=true \
+  --iree-opt-data-tiling=false \
+  --iree-codegen-gpu-native-math-precision=true \
+  --iree-codegen-llvmgpu-use-vector-distribution \
+  --iree-hip-waves-per-eu=2 \
+  --iree-execution-model=async-external \
+  "--iree-preprocessing-pass-pipeline=builtin.module(iree-preprocessing-transpose-convolution-pipeline,iree-preprocessing-pad-to-intrinsics)" \
+```
 
 ### T5 Encoder (part of Flux.1 dev)
 
