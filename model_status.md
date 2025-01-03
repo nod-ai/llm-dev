@@ -12,7 +12,7 @@
 |405B-FP16-TP8-decode|PASS|PASS|FAIL [19574](https://github.com/iree-org/iree/issues/19573)|FAIL[19574](https://github.com/iree-org/iree/issues/19574)|NTD|NTD|
 |8B-Instruct-FP16-TP1|PASS|PASS|PASS|PASS|PASS|NTD
 |70B-Instruct-FP16-TP1|PASS|PASS|PASS|FAIL(prefill) [19569](https://github.com/iree-org/iree/issues/19569)|NTD|NTD
-|405B-Instruct-FP16-TP8-prefill|
+|405B-Instruct-FP16-TP8-prefill|PASS|PASS|PASS|PASS|NTD|NTD
 |405B-Instruct-FP16-TP8-decode|
 
 ### Token length: 128
@@ -27,7 +27,7 @@
 |405B-FP16-TP8-decode|PASS|PASS|PASS|FAIL [19574](https://github.com/iree-org/iree/issues/19574)|NTD|NTD|
 |8B-Instruct-FP16-TP1|PASS|PASS|PASS|PASS|PASS|NTD
 |70B-Instruct-FP16-TP1|PASS|PASS|PASS|PASS|NTD|NTD
-|405B-Instruct-FP16-TP8-prefill|
+|405B-Instruct-FP16-TP8-prefill|PASS|PASS|PASS|PASS|NTD|NTD
 |405B-Instruct-FP16-TP8-decode|
 
 
