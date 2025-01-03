@@ -137,7 +137,7 @@ iree-compile \
   --iree-codegen-llvmgpu-use-vector-distribution \
   --iree-hip-waves-per-eu=2 \
   --iree-execution-model=async-external \
-  "--iree-preprocessing-pass-pipeline=builtin.module(iree-preprocessing-transpose-convolution-pipeline,iree-preprocessing-pad-to-intrinsics)" \
+  "--iree-preprocessing-pass-pipeline=builtin.module(iree-preprocessing-transpose-convolution-pipeline,iree-preprocessing-pad-to-intrinsics)"
 ```
 
 ### T5 Encoder (part of Flux.1 dev)
