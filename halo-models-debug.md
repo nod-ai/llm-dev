@@ -14,9 +14,7 @@ When the program crashes, use `bt` and Enter to get the backtrace of the crash.
 # Build IREE with ASAN (Address Sanitizer)
 Build IREE with `-DIREE_ASAN_BUILD=ON`.
 
-Compile with `--iree-llvmcpu-sanitize=address --iree-llvmcpu-link-embedded=false`.
-
-
+Compile and run module to see logs.
 
 # Use VM execution tracing
 The `--trace_execution` flag to runtime tools like `iree-run-module` will print each VM instruction as it is
