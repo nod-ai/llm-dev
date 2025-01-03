@@ -2,14 +2,23 @@ If there is a Segmentation fault, OOM, or core dumped error from the IREE runtim
 can be helpful in narrowing down the issue.
 
 # GDB
+Build IREE in `RelWithDebInfo` or `Debug` mode.
+
 Run your command prepended with `gdb --args`:
 ```
-gdb --args iree-benchmark-module ...
+gdb --args ../iree-build-trace/tools/iree-run-module ...
 ```
 
-When GDB starts, press `r` and Enter to run the program.
+When GDB starts, enter the commands below to load symbol table from iree-run-module, set a breakpoint, and run the debugger:
+```
+Reading symbols from ../iree-build-trace/tools/iree-run-module...
+(gdb) file ../iree-build-trace/tools/iree-run-module
+Load new symbol table from "../iree-build-trace/tools/iree-run-module"? (y or n) y
+Reading symbols from ../iree-build-trace/tools/iree-run-module...
+(gdb) break runtime/src/iree/hal/drivers/hip/event_semaphore.c:673
+(gdb) r
+```
 
-When the program crashes, use `bt` and Enter to get the backtrace of the crash.
 
 # Build IREE with ASAN (Address Sanitizer)
 Build IREE with `-DIREE_ASAN_BUILD=ON`.
