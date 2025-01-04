@@ -38,5 +38,30 @@ N.B. The weight file for 70B-Instruct was generated using `llama.cpp/convert_hf_
  python3 convert_hf_to_gguf.py <path_to_hf_safetensor_files> --outtype f16 --outfile llama_70b_3.1_instruct.gguf
 ```
 
+### Performance 
+
+|Model|Export time(sec)| iree-compile time(sec)
+|---|---|---|
+|8B-FP16-prefill-unsharded|145|18|
+|8B-FP16-prefill-sharded|954|170|
+|8B-FP16-decode-unsharded|203|32|
+|8B-FP16-decode-sharded|1684|370|
+|8B-inst-FP16-prefill-unsharded|140|19|
+|8B-inst-FP16-prefill-sharded|940|171|
+|8B-inst-FP16-decode-unsharded|193|31|
+|8B-inst-FP16-decode-sharded|1674|393|
+|70B-FP16-prefill-unsharded|269|40|
+|70B-FP16-prefill-sharded|2475|722|
+|70B-FP16-decode-unsharded|413|66|
+|70B-FP16-decode-sharded|4797|1642|
+|70B-inst-FP16-prefill-unsharded|161|40|
+|70B-inst-FP16-prefill-sharded|2505|706|
+|70B-inst-FP16-decode-unsharded|416|66|
+|70B-inst-FP16-decode-sharded|4784|1670|
+|405B-FP16-prefill-sharded|4711||
+|405B-FP16-decode-sharded|||
+|405B-inst-FP16-prefill-sharded|4745|1594|
+|405B-inst-FP16-decode-sharded|5798|4003|
+
 
 
