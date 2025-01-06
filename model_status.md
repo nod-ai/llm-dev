@@ -58,8 +58,8 @@ N.B. The weight file for 70B-Instruct was generated using `llama.cpp/convert_hf_
 |70B-inst-FP16-prefill-sharded|2505|706|
 |70B-inst-FP16-decode-unsharded|416|66|
 |70B-inst-FP16-decode-sharded|4784|1670|
-|405B-FP16-prefill-sharded|4711||
-|405B-FP16-decode-sharded|||
+|405B-FP16-prefill-sharded|4711|1691|
+|405B-FP16-decode-sharded|5648|3600|
 |405B-inst-FP16-prefill-sharded|4745|1594|
 |405B-inst-FP16-decode-sharded|5798|4003|
 
