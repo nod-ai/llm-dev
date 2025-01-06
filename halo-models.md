@@ -39,10 +39,10 @@ ITL: Average time between each new token generated in decode phase (second token
 (Model is assumed to be llama3.1 in the following table, e.g. "8B FP8" means "llama3.1 8B FP8 model")
 |Item                          | Previous Week (Jan 2-3) |  Next Week (Jan 6-10) |
 |------------------------------|-----------------------|--------------------------|
-| Sharktank Modeling           |  <br> - @Boian landing flux tests and triage numeric issues (ETA 1/3) <br> - @Boian flux transformer model profiling/tracy (ETA 1/2) <br> - @Ian Land flux vae (ETA 1/2) <br> - Kyle qa flux for release (ETA 1/2) <br> |
+| Sharktank Modeling           |  <br> - @Boian landing flux tests and triage numeric issues (ETA 1/3) <br> - @Boian flux transformer model profiling/tracy (ETA 1/2) <br> - @Ian Land flux vae (ETA 1/2) <br> - Kyle qa flux for release (ETA 1/2) <br> | - @Dan Pushing attention fix for bf16 attention fp8 model (ETA 1/6) <br> - @Dan FP8 attention model functionality (ETA 1/7) <br> - @Boian circular deps fix for context management (ETA 1/6) <br>- @Boian debuging flux numeric issues (ETA 1/7) <br> - @Rob debugging multi-device performance llama issues with iree-run-module (ETA 1/7) <br> - @Ian vae ci debugging (1/6) <br>  - @Ian VAE bf16 numerics verification and debugging (1/7)
 | IREE codegeneration          | - @Dan fp8 attention template changes (ETA 1/2) <br> - @Dan bf16 tracing issues (ETA 1/6) <br> - @Avi Tracy multi-gpu debugging (ETA 1/2) <br> - @Avi Investigating 405b sharding issues (ETA 1/2) |
-| Serving | <br> - @Xida helping debug shortfin multi-gpu issues (ETA 1/2) <br> - @Rob help debug shortfin multi-gpu (ETA 1/2) <br> - @Ean Land fp32 flux pipeline in shortfing (ETA 1/3) |
-| Test Automation              | - @Archana debug ppl seg fault (ETA 1/2) <br> - @Archana grok-1 debugging (ETA 1/6) |
+| Serving | <br> - @Xida helping debug shortfin multi-gpu issues (ETA 1/2) <br> - @Rob help debug shortfin multi-gpu (ETA 1/2) <br> - @Ean Land fp32 flux pipeline in shortfing (ETA 1/3) | - @Ean landing fp32 flux (ETA 1/6) <br> - @Ean PR for bf16 current status (ETA 1/7) <br> - @Ean debug sdxl release issue (ETA 1/6) <br> - @Stephen Continuing multi-device llama debugging in shortfin (ETA 1/7) <br> - @Kyle pick up and finish bf16 shortfin flux support (ETA 1/8)
+| Test Automation              | - @Archana debug ppl seg fault (ETA 1/2) <br> - @Archana grok-1 debugging (ETA 1/6) | - @Xida debugging shortfin CI (ETA 1/6) <br> - @Archana ppl seg fault debugging (ETA 1/7)
 | Performance Tuning           | |
 
 # Nightly Test Reports
