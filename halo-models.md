@@ -91,7 +91,7 @@ Example: `/data/llama-3.1/artifacts/405b/llama3.1_405b_fp16_nondecomposed_tp8_bs
 | llama3.1-70B-FP16      |PASS [mlir](https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_70b/70b_f16_nondecomposed.mlir)   |Fails in iree, [patch](https://github.com/iree-org/iree/pull/18890) | tbd | tbd | tbd
 | llama3.1-405B-FP16 bs4 TP8 (prefill) |  PASS [mlir_tp8](https://sharkpublic.blob.core.windows.net/sharkpublic/halo-models/llm-dev/llama3_405b/405b_instruct_fp16.mlir) | PASS [compile command](https://github.com/nod-ai/llm-dev/blob/main/llama_benchmarking.md#5-compile-sharded-ir) | PASS [benchmark command](https://github.com/nod-ai/llm-dev/blob/main/llama_benchmarking.md#6-benchmark-sharded-vmfb) [numpy inputs](https://github.com/nod-ai/llm-dev/blob/main/llama_benchmarking.md#2-download-sharded-irpa-files) | tbd | tbd
 | llama3.1-405B-FP16 bs4 TP8 (decode)  |  PASS | PASS | FAIL (Segfault) | tbd | tbd |
-| llama3.1-8B-FP8   |PASS [mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/fp8_llama31_8b.mlir) | tbd | tbd | tbd | tbd
+| llama3.1-8B-FP8   |PASS [mlir](https://sharkpublic.blob.core.windows.net/sharkpublic/dan/fp8_prefill.mlir) | yes | tbd | tbd | tbd
 | llama3.1-70B-FP8  |ETA: 11/1   | tbd | tbd | tbd | tbd
 | llama3.1-405B-FP8 |ETA: 11/5   | tbd | tbd | tbd | tbd
 | llama-toy-size-FP32-TP2-CPU | PASS | PASS | tbd | tbd | tbd
