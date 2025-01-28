@@ -82,7 +82,6 @@ This command compiles the full IR (both prefill + decode) into a vmfb.
   --iree-preprocessing-pass-pipeline='builtin.module(util.func(iree-preprocessing-generalize-linalg-matmul-experimental))' \
   --iree-hal-indirect-command-buffers=true \
   --iree-stream-resource-memory-model=discrete \
-  --iree-hip-legacy-sync=false \
   --iree-hal-memoization=true \
   --iree-opt-strip-assertions
 ```
@@ -156,7 +155,6 @@ Compile with trace:
   --iree-preprocessing-pass-pipeline='builtin.module(util.func(iree-preprocessing-generalize-linalg-matmul-experimental))' \
   --iree-hal-indirect-command-buffers=true \
   --iree-stream-resource-memory-model=discrete \
-  --iree-hip-legacy-sync=false \
   --iree-hal-memoization=true \
   --iree-opt-strip-assertions \
   --iree-hal-executable-debug-level=3 \
@@ -278,7 +276,6 @@ artifacts/405b_f16_prefill_tp8_nondecomposed.iree.mlir  \
 --iree-preprocessing-pass-pipeline='builtin.module(util.func(iree-preprocessing-generalize-linalg-matmul-experimental))'     \
 --iree-hal-indirect-command-buffers=true  \
 --iree-stream-resource-memory-model=discrete  \
---iree-hip-legacy-sync=false    \
 --iree-hal-memoization=true  \
 --iree-opt-strip-assertions \
 --iree-hal-executable-debug-level=3 \
