@@ -293,7 +293,6 @@ Adapt as per model as your artifacts names, following example is for 405B TP8 sh
 
 ```
 ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 iree-run-module  --hip_use_streams=true \
---device_allocator=caching  \
 --module=artifacts/prefill_405b_tp8_12_10.vmfb  \
 --parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.irpa  \
 --parameters=model=/data/llama3.1/weights/405b/fp16/llama3.1_405b_fp16_tp8_parameters.rank0.irpa  \
