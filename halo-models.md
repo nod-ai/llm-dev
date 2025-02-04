@@ -52,6 +52,7 @@ See latest [CI/Nightly Test Report](https://nod-ai.github.io/shark-ai/). Use [No
 | category | issue link | assigned to | status |
 |---|---|---|---|
 |quark quantization | [QUARK-71](https://jira.xilinx.com/browse/QUARK-71) | Bowen Bow | FP8 matmul should be used in attention |
+|shark-sre | N/A | Sai Enduri | Need more systems for CI/dev of 405b |
 |runtime | [19812](https://github.com/iree-org/iree/issues/19812) | Stephen Baione | Llama3.1_fp16_8b_tp8 fails prefill for long prompts when using async allocator |
 |runtime | [19832](https://github.com/iree-org/iree/issues/19832) | Stephen Baione | Llama_405b_tp8 OOM w/ Long Input Prompt |
 |iree runtime python package | [19886](https://github.com/iree-org/iree/issues/19886) | Avinash Sharma | TP8 benchmarking hits segfault with clang-17 |
