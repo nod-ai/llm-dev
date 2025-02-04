@@ -51,9 +51,10 @@ See latest [CI/Nightly Test Report](https://nod-ai.github.io/shark-ai/). Use [No
 # Issues
 | category | issue link | assigned to | status |
 |---|---|---|---|
-|quark quantization | [QUARK-71](https://jira.xilinx.com/browse/QUARK-71) | Bowen Bow | FP8 matmul should be used in attention|
-|iree codegen | [18864](https://github.com/iree-org/iree/issues/18864)| Ian Wood | OOM for 70B |
-|iree codegen | [19564](https://github.com/iree-org/iree/issues/19564)| Ian Wood | HSA_STATUS_ERROR_MEMORY_APERTURE_VIOLATION |
+|quark quantization | [QUARK-71](https://jira.xilinx.com/browse/QUARK-71) | Bowen Bow | FP8 matmul should be used in attention |
+|runtime | [19812](https://github.com/iree-org/iree/issues/19812) | Stephen Baione | Llama3.1_fp16_8b_tp8 fails prefill for long prompts when using async allocator |
+|runtime | [19832](https://github.com/iree-org/iree/issues/19832) | Stephen Baione | Llama_405b_tp8 OOM w/ Long Input Prompt |
+|iree runtime python package | [19886](https://github.com/iree-org/iree/issues/19886) | Avinash Sharma | TP8 benchmarking hits segfault with clang-17 |
 |iree tracy profiling | [19571](https://github.com/iree-org/iree/issues/19571) | |hits assertion for tracing 405B sharded |
 
 # Status-Numerics
