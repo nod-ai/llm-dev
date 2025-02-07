@@ -25,16 +25,16 @@ ITL: Average time between each new token generated in decode phase (second token
 ## Llama Variants
 | Model | TP | Prefill | Decode | Tracy Profile | dump file| Comments|
 |-------|----|---------|--------|---------------|----------|---------|
-|Llama-3.1-8B | TP1 | PASS | PASS | | 
-|Llama-3.1-8B | TP8 | | | |
-|Llama-3.1-8B-Instruct | TP1 | PASS | PASS | |
-|Llama-3.1-8B-Instruct | TP8 | | | |
-|Llama-3.1-70B | TP1 | PASS | PASS | |
-|Llama-3.1-70B | TP8 | | | |
-|Llama-3.1-70B-Instruct | TP1 | PASS | PASS | |
-|Llama-3.1-70B-Instruct | TP8 | | | |
-|Llama-3.1-405B | TP8 | | | |
-|Llama-3.1-405B-Instruct | TP8 | | | |
+|Llama-3.1-8B | TP1 | PASS | PASS | | | |
+|Llama-3.1-8B | TP8 | | | | | |
+|Llama-3.1-8B-Instruct | TP1 | PASS | PASS | | |
+|Llama-3.1-8B-Instruct | TP8 | PASS | FAIL | | |
+|Llama-3.1-70B | TP1 | PASS | PASS | | | |
+|Llama-3.1-70B | TP8 | | | | | |
+|Llama-3.1-70B-Instruct | TP1 | PASS | PASS | | |
+|Llama-3.1-70B-Instruct | TP8 | | | | | |
+|Llama-3.1-405B | TP8 | | | | | |
+|Llama-3.1-405B-Instruct | TP8 | | | | | |
 
 ## Tracy Profiles (nondecomposed)
 | Model | Tracy Profile | dump file| Comments|
