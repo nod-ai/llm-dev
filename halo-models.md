@@ -23,18 +23,18 @@ ITL: Average time between each new token generated in decode phase (second token
 -Download following tracy files to see distribution of inference runtimes. You can either download a tracy-profile viewer from [here](https://github.com/wolfpld/tracy/releases/download/v0.11.1/windows-0.11.1.zip) and unzip it on your laptop or use https://tracy.nereid.pl/. The MLIR dump files are also provided. Downlaod and unzip that in your local dir and in tracy-profiler, click on 'Info' at top and in 'Source location substitutions' provide path to the dump directory to see source annotations.
 
 ## Llama Variants
-| Model | TP | Prefill | Decode | Tracy Profile | dump file| Comments|
-|-------|----|---------|--------|---------------|----------|---------|
-|Llama-3.1-8B | TP1 | PASS | PASS | | | |
-|Llama-3.1-8B | TP8 | | | | | |
-|Llama-3.1-8B-Instruct | TP1 | PASS | PASS | | |
-|Llama-3.1-8B-Instruct | TP8 | PASS | FAIL | | |
-|Llama-3.1-70B | TP1 | PASS | PASS | | | |
-|Llama-3.1-70B | TP8 | | | | | |
-|Llama-3.1-70B-Instruct | TP1 | PASS | PASS | | |
-|Llama-3.1-70B-Instruct | TP8 | | | | | |
-|Llama-3.1-405B | TP8 | | | | | |
-|Llama-3.1-405B-Instruct | TP8 | | | | | |
+| Model | TP | Prefill | Decode | Shortfin | Tracy Profile | dump file| Comments|
+|-------|----|---------|--------|----------|---------------|----------|---------|
+|Llama-3.1-8B | TP1 | | | | | | |
+|Llama-3.1-8B | TP8 | | | | | | |
+|Llama-3.1-8B-Instruct | TP1 | PASS | PASS | Bad results | | |
+|Llama-3.1-8B-Instruct | TP8 | no iree-run-module output | PASS | Bad results | | |
+|Llama-3.1-70B | TP1 | | | | | | |
+|Llama-3.1-70B | TP8 | | | | | | |
+|Llama-3.1-70B-Instruct | TP1 | PASS | PASS | Bad results | | |
+|Llama-3.1-70B-Instruct | TP8 | no iree-run-module output | PASS | Bad results | | | |
+|Llama-3.1-405B | TP8 | | | | | | |
+|Llama-3.1-405B-Instruct | TP8 | PASS | PASS | Bad results | | | |
 
 ## Tracy Profiles (nondecomposed)
 | Model | Tracy Profile | dump file| Comments|
