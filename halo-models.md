@@ -28,7 +28,7 @@ ITL: Average time between each new token generated in decode phase (second token
 |Llama-3.1-8B | TP1 | | | | | | |
 |Llama-3.1-8B | TP8 | | | | | | |
 |Llama-3.1-8B-Instruct | TP1 | PASS | PASS | Bad results | | |
-|Llama-3.1-8B-Instruct | TP8 | no iree-run-module output | PASS | Bad results | | |
+|Llama-3.1-8B-Instruct | TP8 | PASS | PASS | Bad results | | |
 |Llama-3.1-70B | TP1 | | | | | | |
 |Llama-3.1-70B | TP8 | | | | | | |
 |Llama-3.1-70B-Instruct | TP1 | PASS | PASS | Bad results | | |
