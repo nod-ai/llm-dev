@@ -7,7 +7,7 @@ Irpa file: `/sharedfile/llama3_8b_fp8.irpa` on SharkMi300X
 | Attention-dtype | Activation-dtype | Eager Prefill | Eager Decode | IREE Prefill | IREE Decode | Tracy Profile | Comments|
 |-----------------|------------------|---------------|--------------|--------------|-------------|---------------|---------|
 |bfloat16 | bfloat16 | PASS | PASS | FAIL (compile) | FAIL (compile) | | | |
-|float8_e4m3fnuz | bfloat16 |  | | | | |  |
+|float8_e4m3fnuz | bfloat16 | [FAIL](https://gist.github.com/aviator19941/fe1f129557632896a8fabf573c973b5b) | FAIL | | | |  |
 
 ## Eager mode:
 ```
