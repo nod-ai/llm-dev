@@ -1,6 +1,7 @@
 # Llama 8B FP8
+Branch: `users/dan-garvey/enable_custom_fp8_matmul`
 
-Irpa file: /sharedfile/llama3_8b_fp8.irpa on SharkMi300X
+Irpa file: `/sharedfile/llama3_8b_fp8.irpa` on SharkMi300X
 
 ## Eager mode:
 ```
