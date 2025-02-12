@@ -4,9 +4,10 @@ Branch: `users/dan-garvey/enable_custom_fp8_matmul`
 Irpa file: `/sharedfile/llama3_8b_fp8.irpa` on SharkMi300X
 
 ## Attention and Activation dtype configs
-| Attention-dtype | Activation-dtype | Prefill | Decode | Tracy Profile | Comments|
-|-----------------|------------------|---------|--------|---------------|---------|
-|float8_e4m3fnuz | bfloat16 |  | | | |
+| Attention-dtype | Activation-dtype | Eager Prefill | Eager Decode | IREE Prefill | IREE Decode | Tracy Profile | Comments|
+|-----------------|------------------|---------------|--------------|--------------|-------------|---------------|---------|
+|bfloat16 | bfloat16 | PASS | PASS | FAIL (compile) | FAIL (compile) | | | |
+|float8_e4m3fnuz | bfloat16 |  | | | | |  |
 
 ## Eager mode:
 ```
@@ -17,8 +18,9 @@ python -m sharktank.examples.paged_llm_v1 \
   --attention-kernel=torch \
   --activation-dtype=bfloat16 \
   --save_intermediates_path="2_11" \
-  --attention-dtype=float8_e4m3fnuz \
-  --skip-decode
+  --attention-dtype=bfloat16 \
+  --fake-quant \
+  --use-hf
 ```
 
 ## Export IR:
