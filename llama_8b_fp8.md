@@ -3,6 +3,11 @@ Branch: `users/dan-garvey/enable_custom_fp8_matmul`
 
 Irpa file: `/sharedfile/llama3_8b_fp8.irpa` on SharkMi300X
 
+## Attention and Activation dtype configs
+| Attention-dtype | Activation-dtype | Prefill | Decode | Tracy Profile | Comments|
+|-----------------|------------------|---------|--------|---------------|---------|
+|float8_e4m3fnuz | bfloat16 |  | | | |
+
 ## Eager mode:
 ```
 python -m sharktank.examples.paged_llm_v1 \
