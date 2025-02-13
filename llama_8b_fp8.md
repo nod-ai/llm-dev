@@ -33,11 +33,16 @@ python3 -m sharktank.examples.export_paged_llm_v1 --irpa-file=/sharedfile/llama3
 ```
 
 ## Compile:
+Minimal flags:
 ```
 ../iree-build-no-trace/tools/iree-compile fp8_dan1.mlir \
   --iree-hip-target=gfx942 \
   -o=fp8_dan1.vmfb \
-  --iree-hal-target-device=hip \
+  --iree-hal-target-device=hip
+```
+
+Additional flags:
+```
   --iree-dispatch-creation-enable-aggressive-fusion=true \
   --iree-global-opt-propagate-transposes=true \
   --iree-opt-aggressively-propagate-transposes=true \
