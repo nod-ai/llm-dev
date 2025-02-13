@@ -6,7 +6,7 @@ Irpa file: `/sharedfile/llama3_8b_fp8.irpa` on SharkMi300X
 ## Attention and Activation dtype configs
 | Attention-dtype | Activation-dtype | Eager Prefill | Eager Decode | IREE Prefill | IREE Decode | Tracy Profile | Numerics(ppl) | Comments|
 |-----------------|------------------|---------------|--------------|--------------|-------------|---------------|---------|---------|
-|bfloat16 | bfloat16 | PASS | PASS | Compile w/o `--iree-dispatch-creation-enable-aggressive-fusion=true` | Compile w/o `--iree-dispatch-creation-enable-aggressive-fusion=true` | | [ppl](https://gist.github.com/archana-ramalingam/2f8f63ed7d228d66b3f5ece79295c4e7) | |
+|bfloat16 | bfloat16 | PASS | PASS | Compile w/o `--iree-dispatch-creation-enable-aggressive-fusion=true` | Compile w/o `--iree-dispatch-creation-enable-aggressive-fusion=true` | | [IREE ppl](https://gist.github.com/archana-ramalingam/2f8f63ed7d228d66b3f5ece79295c4e7) | |
 |float8_e4m3fnuz | bfloat16 | [FAIL](https://gist.github.com/aviator19941/fe1f129557632896a8fabf573c973b5b) | FAIL | | | |  |
 
 ## Eager mode:
