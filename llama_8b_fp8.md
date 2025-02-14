@@ -4,10 +4,24 @@ Branch: `users/dan-garvey/enable_custom_fp8_matmul`
 Irpa file: `/sharedfile/llama3_8b_fp8.irpa` on SharkMi300X
 
 ## Attention and Activation dtype configs
-| Attention-dtype | Activation-dtype | Eager Prefill | Eager Decode | IREE Prefill | IREE Decode | Tracy Profile | Numerics(ppl) | Comments|
-|-----------------|------------------|---------------|--------------|--------------|-------------|---------------|---------|---------|
-|bfloat16 | bfloat16 | PASS | PASS | PASS w/ no extra flags | TBD | | [IREE ppl](https://gist.github.com/archana-ramalingam/2f8f63ed7d228d66b3f5ece79295c4e7) | Compile w/o `--iree-dispatch-creation-enable-aggressive-fusion=true` |
-|float8_e4m3fnuz | bfloat16 | [FAIL](https://gist.github.com/aviator19941/fe1f129557632896a8fabf573c973b5b) | FAIL | | | |  |
+| Attention-dtype | Activation-dtype | Eager Prefill | Eager Decode | IREE Prefill | IREE Decode | Tracy Profile | Comments|
+|-----------------|------------------|---------------|--------------|--------------|-------------|---------------|---------|
+|bfloat16 | bfloat16 | PASS | PASS | PASS w/ no extra flags | TBD | | Compile w/o `--iree-dispatch-creation-enable-aggressive-fusion=true` |
+|float8_e4m3fnuz | bfloat16 | [FAIL](https://gist.github.com/aviator19941/fe1f129557632896a8fabf573c973b5b) | FAIL | | | |
+
+## Numerics:
+
+[Instructions](https://gist.github.com/archana-ramalingam/2f8f63ed7d228d66b3f5ece79295c4e7#file-llama3-1_8b_results-log-L57) to run IREE perplexity
+
+Listed below are the attention_dtype/activation_dtype used to export llama8b fp8 model and run ppl:
+
+| attention_dtype/activation_dtype-->|  float8_e4m3fnuz | float16 |  bfloat16 | float32  |
+|------------------------------------|------------------|---------|-----------|----------|
+|            float8_e4m3fnuz         |                  |42958.59 | 42516.55  | 42971.99 |
+|            float16                 |                  | 113.49  |           |          |
+|            bfloat16                |                  |         |  113.96   |          |
+|            float32                 |                  |         |           |   113.55 |
+
 
 ## Eager mode:
 ```
