@@ -13,14 +13,14 @@ Irpa file: `/sharedfile/llama3_8b_fp8.irpa` on SharkMi300X
 
 [Instructions](https://gist.github.com/archana-ramalingam/2f8f63ed7d228d66b3f5ece79295c4e7#file-llama3-1_8b_results-log-L57) to run IREE perplexity
 
-Listed below are the attention_dtype/activation_dtype used to export llama8b fp8 model and run ppl:
+Listed below are the attention_dtype/activation_dtype used to export llama8b fp8 model and run ppl with batch_size (bs) = 10:
 
 | attention_dtype/activation_dtype-->|  float8_e4m3fnuz | float16 |  bfloat16 | float32  |
-|------------------------------------|------------------|---------|-----------|----------|
-|            float8_e4m3fnuz         |                  |42958.59 | 42516.55  | 42971.99 |
-|            float16                 |                  | 113.49  |           |          |
-|            bfloat16                |                  |         |  113.96   |          |
-|            float32                 |                  |         |           |   113.55 |
+|:----------------------------------:|:----------------:|:-------:|:---------:|:--------:|
+|            float8_e4m3fnuz         |       N/A        | 42958.59| 42516.55  | 42971.99 |
+|            float16                 |       N/A        | 113.49  |  113.96   |  113.55  |
+|            bfloat16                |       N/A        | 113.49  |  113.96   |  113.55  |
+|            float32                 |       N/A        | 113.49  |  113.96   |  113.55  |
 
 
 ## Eager mode:
