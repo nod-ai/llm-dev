@@ -31,10 +31,7 @@ python -m sharktank.examples.paged_llm_v1 \
   --tokenizer-config-json=/sharedfile/tokenizer_config.json \
   --attention-kernel=torch \
   --activation-dtype=bfloat16 \
-  --save_intermediates_path="2_11" \
-  --attention-dtype=bfloat16 \
-  --fake-quant \
-  --use-hf
+  --attention-dtype=bfloat16
 ```
 
 ## Export IR:
