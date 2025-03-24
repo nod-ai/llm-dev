@@ -27,7 +27,7 @@ Create a SAS token in Azure:
 
 ```
 azcopy copy \
-'https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_8b/8b_fp16.irpa?[Add SAS token here]' \
+'https://sharkblobs.blob.core.windows.net/halo-models/llm-dev/llama3_8b/8b_f16.irpa?[Add SAS token here]' \
 '8b_fp16.irpa'
 ```
 
