@@ -9,17 +9,38 @@ Irpa file: `/sharedfile/llama3_8b_fp8.irpa` on SharkMi300X
 
 ## Numerics:
 
-[Instructions](https://gist.github.com/archana-ramalingam/2f8f63ed7d228d66b3f5ece79295c4e7#file-llama3-1_8b_results-log-L57) to run IREE perplexity
+Instructions to run perplexity tests for 8B fp8 model (non-fp8 attention)
 
-Listed below are the attention_dtype/activation_dtype used to export llama8b fp8 model and run ppl with batch_size (bs) = 10:
+Eager ppl:
 
-| attention_dtype/activation_dtype-->|  float8_e4m3fnuz | float16 |  bfloat16 | float32  |
-|:----------------------------------:|:----------------:|:-------:|:---------:|:--------:|
-|            float8_e4m3fnuz         |       N/A        | 42958.59| 42516.55  | 42971.99 |
-|            float16                 |       N/A        | 113.49  |  113.96   |  113.55  |
-|            bfloat16                |       N/A        | 113.49  |  113.96   |  113.55  |
-|            float32                 |       N/A        | 113.49  |  113.96   |  113.55  |
+```
+python -m sharktank.evaluate.perplexity_torch \
+  --irpa-file=fp8_attn.irpa \
+  --tokenizer-config-json=/sharedfile/tokenizer_config.json \
+  --attention-kernel=torch \
+  --attention-dtype=bfloat16 \
+  --activation-dtype=bfloat16 \
+  --use-hf \
+  --fake-quant\
+  --num-prompts=4 \
+  --device='cuda:0'
+```
 
+IREE ppl:
+```
+python -m sharktank.evaluate.perplexity_iree \
+  --irpa-file=/sharedfile/llama3_8b_fp8.irpa \
+  --tokenizer-config-json=/sharedfile/tokenizer_config.json \
+  --attention-kernel torch \
+  --iree-hal-target-device=hip \
+  --iree-hip-target=gfx942 \
+  --attention-dtype=bfloat16 \
+  --activation-dtype=bfloat16 \
+  --kv-cache-dtype=float8_e4m3fnuz \
+  --use-hf \
+  --num-prompts=4 \
+  --iree-device='hip://0'
+```
 
 ## Eager mode:
 ```
