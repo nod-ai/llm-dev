@@ -95,24 +95,30 @@ Example: `/data/llama-3.1/artifacts/405b/llama3.1_405b_fp16_nondecomposed_tp8_bs
 | llama-toy-size-FP32-TP2-CPU | PASS | PASS | tbd | tbd | tbd
 
 ## Flux.1 Transformer
+
+### Download
+To download all artifacts, MLIR, VMFB, Tracy traces, etc. you would need to get an Azure account key to access the files in the blob container.
+```bash
+az storage blob download-batch \
+  --destination "." \
+  --pattern "flux/transformer/*" \
+  --source "halo-models" \
+  --account-name "sharkblobs" \
+  --account-key <account-key>
+```
+
+
 ### Dev variant
 |Item              | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
 |------------------|---------------|-----------------|-----------------|--------------|-----------------|
-| sharktank `black-forest-labs--FLUX.1-dev--transformer-single-layer-bf16` | [MLIR](https://sharkblobs.blob.core.windows.net/halo-models/flux/transformer/black-forest-labs--FLUX.1-dev--transformer-single-layer-b16.mlir) [IRPA](https://sharkblobs.blob.core.windows.net/halo-models/flux/transformer/black-forest-labs--FLUX.1-dev--transformer-single-layer-b16.irpa)  | tbd | tbd | N/A | N/A
-| sharktank `black-forest-labs--FLUX.1-dev--black-forest-labs-transformer-bf16` (this is the real production model) | [MLIR](https://sharkblobs.blob.core.windows.net/halo-models/flux/transformer/black-forest-labs--FLUX.1-dev--black-forest-labs-transformer-bf16.mlir) [IRPA](https://sharkblobs.blob.core.windows.net/halo-models/flux/transformer/black-forest-labs--FLUX.1-dev--black-forest-labs-transformer-bf16.irpa)  | tbd | tbd | tbd | tbd
+| black-forest-labs bf16 | PASS | PASS  | PASS | PASS | tbd
 
 ### Schnell variant
 |Item              | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
 |------------------|---------------|-----------------|-----------------|--------------|-----------------|
-| sharktank `black-forest-labs--FLUX.1-schnell--transformer-single-layer-bf16` | [MLIR](https://sharkblobs.blob.core.windows.net/halo-models/flux/transformer/black-forest-labs--FLUX.1-schnell--transformer-single-layer-b16.mlir) [IRPA](https://sharkblobs.blob.core.windows.net/halo-models/flux/transformer/black-forest-labs--FLUX.1-schnell--transformer-single-layer-b16.irpa)  | tbd | tbd | N/A | N/A
-| sharktank `black-forest-labs--FLUX.1-schnell--black-forest-labs-transformer-bf16` | [MLIR](https://sharkblobs.blob.core.windows.net/halo-models/flux/transformer/black-forest-labs--FLUX.1-schnell--black-forest-labs-transformer-bf16.mlir) [IRPA](https://sharkblobs.blob.core.windows.net/halo-models/flux/transformer/black-forest-labs--FLUX.1-schnell--black-forest-labs-transformer-bf16.irpa)  | tbd | tbd | tbd | tbd
+| black-forest-labs bf16 | PASS | PASS  | PASS | PASS | tbd
 
 Schenll is almost the same as Dev. Dev has a guidance layer and guidance parameter, while Schenll does not.
-
-`black-forest-labs--FLUX.1-<schnell/dev>--transformer-single-layer-bf16` is a single layer with random weights.
-It is meant to help for faster iteration when working with the model.
-
-The actual models `black-forest-labs--FLUX.1-<dev/schnell>--black-forest-labs-transformer-bf1` are with real pretrained parameters and have 19 MMDiT layers.
 
 ### Compile command
 ```bash
@@ -138,7 +144,7 @@ iree-compile \
   "--iree-preprocessing-pass-pipeline=builtin.module(iree-preprocessing-transpose-convolution-pipeline,iree-preprocessing-pad-to-intrinsics)"
 ```
 
-### T5 Encoder (part of Flux.1 dev)
+## T5 Encoder (part of Flux.1 dev)
 
 Only the `xxl` variant is actually used in FLUX. The `small` variant is provided for faster iteration if needed.
 
