@@ -98,6 +98,7 @@ Example: `/data/llama-3.1/artifacts/405b/llama3.1_405b_fp16_nondecomposed_tp8_bs
 
 ### Download
 To download all artifacts, MLIR, VMFB, Tracy traces, etc. you would need to get an Azure account key to access the files in the blob container.
+Note that this will download the weights as well, which is ~50 GB.
 ```bash
 az storage blob download-batch \
   --destination "." \
