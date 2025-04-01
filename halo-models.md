@@ -118,6 +118,8 @@ export_path = Path("my_artifacts")
 export_flux_transformer_models(export_path)
 ```
 Note that you would need access to an AMD GPU with CDNA3 arch (gfx942 processor) to generate the trace.
+It also requires merging of this [PR](https://github.com/nod-ai/shark-ai/pull/1198).
+You may want to set env var `HF_HOME` for a non-default Hugging Faces models cache directory.
 
 
 ### Dev variant
