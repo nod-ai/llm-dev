@@ -108,6 +108,16 @@ az storage blob download-batch \
   --account-key <account-key>
 ```
 
+### Export, compile and trace
+If you want to regenerate the artifacts instead of downloading them you could use
+```python
+from sharktank.models.flux.export import export_flux_transformer_models
+from pathlib import Path
+
+export_path = Path("my_artifacts")
+export_flux_transformer_models(export_path)
+```
+
 
 ### Dev variant
 |Item              | Generate MLIR | Compile to vmfb | IREE invocation | IREE numeric | Serving numeric |
