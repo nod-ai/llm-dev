@@ -117,6 +117,7 @@ from pathlib import Path
 export_path = Path("my_artifacts")
 export_flux_transformer_models(export_path)
 ```
+Note that you would need access to an AMD GPU with CDNA3 arch (gfx942 processor) to generate the trace.
 
 
 ### Dev variant
