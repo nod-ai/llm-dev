@@ -60,8 +60,9 @@ python3 -m sharktank.examples.export_paged_llm_v1 --irpa-file=/sharedfile/llama3
 --output-mlir=fp8_dan1.mlir \
 --output-config=config1.json \
 --bs=1 --attention-kernel torch \
---attention-dtype=float8_e4m3fnuz \
+--attention-dtype=bfloat16 \
 --activation-dtype=bfloat16 \
+--kv-cache-dtype=float8_e4m3fnuz \
 --use-hf
 ```
 
