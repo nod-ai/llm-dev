@@ -2,7 +2,7 @@
 
 #### Token length: 2048
 
-|Model|sharktank|iree-compile|iree-run-module|iree-benchmark-module|shortfin-sglang|kubernetes|
+|Model|amdsharktank|iree-compile|iree-run-module|iree-benchmark-module|shortfin-sglang|kubernetes|
 |---|---|---|---|---|---|---|       
 |8B-FP16-TP1|PASS|PASS|PASS|PASS|PASS|NTD|NTD
 |70B-FP16-TP1|PASS|PASS|PASS|FAIL(prefill) [19569](https://github.com/iree-org/iree/issues/19569)|NTD|NTD
@@ -17,7 +17,7 @@
 
 ### Token length: 128
 
-|Model|sharktank|iree-compile|iree-run-module|iree-benchmark-module|shortfin-sglang|kubernetes|
+|Model|amdsharktank|iree-compile|iree-run-module|iree-benchmark-module|shortfin-sglang|kubernetes|
 |---|---|---|---|---|---|---|       
 |8B-FP16-TP1|PASS|PASS|PASS|PASS|PASS|NTD|NTD
 |70B-FP16-TP1|PASS|PASS|PASS|PASS|NTD|NTD
