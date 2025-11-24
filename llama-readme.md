@@ -40,7 +40,7 @@ For formats we should target  `Q_4_1` and `Q_4_K`.
 Converting a GGUF file to an IRPA file allows us to store tensor data in your preferred data.
 
 ```
-python3 -m sharktank.tools.dump_gguf --gguf-file <gguf_file> --save <irpa_file>
+python3 -m amdsharktank.tools.dump_gguf --gguf-file <gguf_file> --save <irpa_file>
 ```
 
 ## IRPA Sharding (optional)
@@ -50,7 +50,7 @@ the appropriate constants a replicated and sharded. We need to use as specially 
 loads occur separately. (This should be fixed in the future).
 
 ```
-python3 -m sharktank.models.llama.tools.shard_llama --irpa-file <unsharded-irpa>  --output-file <sharded-irpa> --shard_count=<sharding>
+python3 -m amdsharktank.models.llama.tools.shard_llama --irpa-file <unsharded-irpa>  --output-file <sharded-irpa> --shard_count=<sharding>
 ```
 
 ## MLIR Generation
@@ -59,5 +59,5 @@ Once we have any particular gguf file we can export the representative IR, we ch
 IRPA files as the loading process can be better optimized for quantzied types
 
 ```
-python3 -m sharktank.examples.export_paged_llm_v1 --irpa-file <input_gguf> --output-mlir <output-mlir>
+python3 -m amdsharktank.examples.export_paged_llm_v1 --irpa-file <input_gguf> --output-mlir <output-mlir>
 ```

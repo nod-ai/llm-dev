@@ -7,13 +7,13 @@ In order to benchmark Llama 3.1 prefill and decode, you will need these artifact
 4. decode numpy inputs
 
 ## 0. Set up venv
-a. Clone `shark-ai`:
+a. Clone `amd-shark-ai`:
 ```
-git clone https://github.com/nod-ai/shark-ai.git
+git clone https://github.com/nod-ai/amd-shark-ai.git
 ```
 
 b. Set up env:
-https://github.com/nod-ai/shark-ai/blob/main/docs/developer_guide.md#setup-a-venv
+https://github.com/nod-ai/amd-shark-ai/blob/main/docs/developer_guide.md#setup-a-venv
 
 
 ## 1. Get the unsharded irpa files
@@ -31,20 +31,20 @@ azcopy copy \
 '8b_fp16.irpa'
 ```
 
-If you have trouble accessing `sharkblobs`, you can copy the 8b f16 unsharded irpa file from the `SharkMi300x` machine:
+If you have trouble accessing `sharkblobs`, you can copy the 8b f16 unsharded irpa file from the `AMD-SharkMi300x` machine:
 ```
 scp nod@10.23.233.219:/data/llama3.1/weights/8b/fp16/llama3.1_8b_fp16.irpa 8b_fp16.irpa
 ```
 
-N.B.: Weight files for Llama-3.1-Instruct-<8B/70B/405B> (GGUF) are located on the `SharkMi300X` machine at:
+N.B.: Weight files for Llama-3.1-Instruct-<8B/70B/405B> (GGUF) are located on the `AMD-SharkMi300X` machine at:
 ```
-/shark-dev/<8b/70b/405b>/instruct/weights/llama3_<8b/70b/405b>_instruct_fp16.gguf
+/amdshark-dev/<8b/70b/405b>/instruct/weights/llama3_<8b/70b/405b>_instruct_fp16.gguf
 ```
 
 ## 2. Generate the IR
 a. To generate the IR for prefill only:
 ```
-python3 -m sharktank.examples.export_paged_llm_v1 \
+python3 -m amdsharktank.examples.export_paged_llm_v1 \
   --bs=4 \
   --irpa-file=8b_fp16.irpa \
   --output-mlir=8b_fp16_prefill_nondecomposed.mlir \
@@ -54,7 +54,7 @@ python3 -m sharktank.examples.export_paged_llm_v1 \
 
 To generate the IR for both prefill + decode (remove the `--skip-decode` flag):
 ```
-python3 -m sharktank.examples.export_paged_llm_v1 \
+python3 -m amdsharktank.examples.export_paged_llm_v1 \
   --bs=4 \
   --irpa-file=8b_fp16.irpa \
   --output-mlir=8b_fp16_nondecomposed.mlir \
@@ -144,7 +144,7 @@ cmake --build ../iree-build-trace
 Compile with trace:
 ```
 ../iree-build-trace/tools/iree-compile \
-  ../SHARK-Platform/8b_fp16_prefill_nondecomposed.mlir \
+  ../AMD-SHARK-Platform/8b_fp16_prefill_nondecomposed.mlir \
   --iree-hip-target=gfx942 \
   -o=prefill_8b.vmfb \
   --iree-hal-target-device=hip \
@@ -186,7 +186,7 @@ Open another terminal and run this command to capture the tracy file:
 ## 1. Set up TP>1 sharded artifacts (optional)
 Given a non-sharded irpa file, if you want to create your own TP8 sharded irpa files use this command:
 ```
-python3 -m sharktank.examples.sharding.shard_llm_dataset \
+python3 -m amdsharktank.examples.sharding.shard_llm_dataset \
   --irpa-file 405b_fp16.irpa \
   --output-irpa 405b_fp16_tp8.irpa \
   --tensor-parallelism-size 8
@@ -205,9 +205,9 @@ azcopy copy \
 
 ### X-1 machine
 ```
-8b weights: /shark-dev/data/llama3.1/weights/8b/fp16/tp8/
-70b weights: /shark-dev/data/llama3.1/weights/70b/fp16/tp8/
-405b weights: /shark-dev/data/llama3.1/weights/405b/fp16/tp8/
+8b weights: /amdshark-dev/data/llama3.1/weights/8b/fp16/tp8/
+70b weights: /samdhark-dev/data/llama3.1/weights/70b/fp16/tp8/
+405b weights: /amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/
 ```
 
 ## 3. Generate the sharded IR
@@ -215,9 +215,9 @@ azcopy copy \
 To generate the sharded IR use the unranked sharded irpa file:
 ### Export 8b sharded IR
 ```
-python -m sharktank.examples.export_paged_llm_v1 \
+python -m amdsharktank.examples.export_paged_llm_v1 \
   --bs=4 \
-  --irpa-file=/shark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.irpa \
+  --irpa-file=/amdshark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.irpa \
   --output-mlir=8b_instruct_tp8.mlir \
   --output-config=8b_instruct_tp8.json
 ```
@@ -228,9 +228,9 @@ You need to use the unranked sharded irpa file to generate the full sharded IR. 
 for only prefill, add the `--skip-decode` flag to the command:
 
 ```
-python3 -m sharktank.examples.export_paged_llm_v1 \
+python3 -m amdsharktank.examples.export_paged_llm_v1 \
   --bs=4 \
-  --irpa-file=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.irpa \
+  --irpa-file=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.irpa \
   --output-mlir=405b_f16_tp8.mlir \
   --output-config=405b_f16_tp8.json
 ```
@@ -244,12 +244,12 @@ Get the 405b f16 tp8 decode numpy inputs: [get_405b_tp8_decode_inputs.sh](https:
 ### 8b-Instruct, 70b-Instruct, 405b-Instruct TP8 numpy inputs:
 X-1:
 ```
-/shark-dev/8b/prefill_args_bs4_128_stride_32_tp8
-/shark-dev/8b/decode_args_bs4_128_stride_32_tp8
-/shark-dev/70b/prefill_args_bs4_128_stride_32_tp8
-/shark-dev/70b/decode_args_bs4_128_stride_32_tp8
-/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8
-/shark-dev/405b/decode_args_bs4_128_stride_32_tp8
+/amdshark-dev/8b/prefill_args_bs4_128_stride_32_tp8
+/amdshark-dev/8b/decode_args_bs4_128_stride_32_tp8
+/amdshark-dev/70b/prefill_args_bs4_128_stride_32_tp8
+/amdshark-dev/70b/decode_args_bs4_128_stride_32_tp8
+/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8
+/amdshark-dev/405b/decode_args_bs4_128_stride_32_tp8
 ```
 
 ## 5. Build IREE for tracy profiling
@@ -334,15 +334,15 @@ ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
   ../iree-build-no-trace/tools/iree-run-module   \
   --hip_use_streams=true   \
   --module=8b_instruct_tp8.vmfb   \
-  --parameters=model=/shark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.irpa   \
-  --parameters=model=/shark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank0.irpa   \
-  --parameters=model=/shark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank1.irpa   \
-  --parameters=model=/shark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank2.irpa   \
-  --parameters=model=/shark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank3.irpa   \
-  --parameters=model=/shark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank4.irpa   \
-  --parameters=model=/shark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank5.irpa   \
-  --parameters=model=/shark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank6.irpa   \
-  --parameters=model=/shark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank7.irpa   \
+  --parameters=model=/amdshark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.irpa   \
+  --parameters=model=/amdshark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank0.irpa   \
+  --parameters=model=/amdshark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank1.irpa   \
+  --parameters=model=/amdshark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank2.irpa   \
+  --parameters=model=/amdshark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank3.irpa   \
+  --parameters=model=/amdshark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank4.irpa   \
+  --parameters=model=/amdshark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank5.irpa   \
+  --parameters=model=/amdshark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank6.irpa   \
+  --parameters=model=/amdshark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank7.irpa   \
   --device=hip://0   \
   --device=hip://1   \
   --device=hip://2   \
@@ -352,17 +352,17 @@ ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
   --device=hip://6   \
   --device=hip://7   \
   --function=prefill_bs4   \
-  --input=@/shark-dev/8b/prefill_args_bs4_128_stride_32_tp8/tokens.npy   \
-  --input=@/shark-dev/8b/prefill_args_bs4_128_stride_32_tp8/seq_lens.npy   \
-  --input=@/shark-dev/8b/prefill_args_bs4_128_stride_32_tp8/seq_block_ids.npy   \
-  --input=@/shark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_0.npy   \
-  --input=@/shark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_1.npy   \
-  --input=@/shark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_2.npy   \
-  --input=@/shark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_3.npy   \
-  --input=@/shark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_4.npy   \
-  --input=@/shark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_5.npy   \
-  --input=@/shark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_6.npy   \
-  --input=@/shark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_7.npy \
+  --input=@/amdshark-dev/8b/prefill_args_bs4_128_stride_32_tp8/tokens.npy   \
+  --input=@/amdshark-dev/8b/prefill_args_bs4_128_stride_32_tp8/seq_lens.npy   \
+  --input=@/amdshark-dev/8b/prefill_args_bs4_128_stride_32_tp8/seq_block_ids.npy   \
+  --input=@/amdshark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_0.npy   \
+  --input=@/amdshark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_1.npy   \
+  --input=@/amdshark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_2.npy   \
+  --input=@/amdshark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_3.npy   \
+  --input=@/amdshark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_4.npy   \
+  --input=@/amdshark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_5.npy   \
+  --input=@/amdshark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_6.npy   \
+  --input=@/amdshark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_7.npy \
   --benchmark_repetitions=3
 ```
 ### 8b tp8 decode
@@ -389,18 +389,18 @@ ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
   --device=hip://6   \
   --device=hip://7   \
   --function=decode_bs4   \
-  --input=@/shark-dev/8b/decode_args_bs4_128_stride_32_tp8/next_tokens.npy   \
-  --input=@/shark-dev/8b/decode_args_bs4_128_stride_32_tp8/seq_lens.npy   \
-  --input=@/shark-dev/8b/decode_args_bs4_128_stride_32_tp8/start_positions.npy   \
-  --input=@/shark-dev/8b/decode_args_bs4_128_stride_32_tp8/seq_block_ids.npy   \
-  --input=@/shark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_0.npy   \
-  --input=@/shark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_1.npy   \
-  --input=@/shark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_2.npy   \
-  --input=@/shark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_3.npy   \
-  --input=@/shark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_4.npy   \
-  --input=@/shark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_5.npy   \
-  --input=@/shark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_6.npy   \
-  --input=@/shark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_7.npy \
+  --input=@/amdshark-dev/8b/decode_args_bs4_128_stride_32_tp8/next_tokens.npy   \
+  --input=@/amdshark-dev/8b/decode_args_bs4_128_stride_32_tp8/seq_lens.npy   \
+  --input=@/amdshark-dev/8b/decode_args_bs4_128_stride_32_tp8/start_positions.npy   \
+  --input=@/amdshark-dev/8b/decode_args_bs4_128_stride_32_tp8/seq_block_ids.npy   \
+  --input=@/amdshark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_0.npy   \
+  --input=@/amdshark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_1.npy   \
+  --input=@/amdshark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_2.npy   \
+  --input=@/amdshark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_3.npy   \
+  --input=@/amdshark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_4.npy   \
+  --input=@/amdshark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_5.npy   \
+  --input=@/amdshark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_6.npy   \
+  --input=@/amdshark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_7.npy \
   --benchmark_repetitions=3
 ```
 
@@ -412,15 +412,15 @@ ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
   ../iree-build-no-trace/tools/iree-run-module   \
   --hip_use_streams=true   \
   --module=405b_instruct_tp8.vmfb   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank0.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank1.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank2.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank3.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank4.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank5.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank6.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank7.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank0.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank1.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank2.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank3.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank4.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank5.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank6.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank7.irpa   \
   --device=hip://0   \
   --device=hip://1   \
   --device=hip://2   \
@@ -430,17 +430,17 @@ ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
   --device=hip://6   \
   --device=hip://7   \
   --function=prefill_bs4   \
-  --input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/tokens.npy   \
-  --input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/seq_lens.npy   \
-  --input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/seq_block_ids.npy   \
-  --input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_0.npy   \
-  --input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_1.npy   \
-  --input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_2.npy   \
-  --input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_3.npy   \
-  --input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_4.npy   \
-  --input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_5.npy   \
-  --input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_6.npy   \
-  --input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_7.npy \
+  --input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/tokens.npy   \
+  --input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/seq_lens.npy   \
+  --input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/seq_block_ids.npy   \
+  --input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_0.npy   \
+  --input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_1.npy   \
+  --input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_2.npy   \
+  --input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_3.npy   \
+  --input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_4.npy   \
+  --input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_5.npy   \
+  --input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_6.npy   \
+  --input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_7.npy \
   --benchmark_repetitions=3
 ```
 ### 405b tp8 decode
@@ -449,15 +449,15 @@ ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
   ../iree-build-no-trace/tools/iree-run-module   \
   --hip_use_streams=true   \
   --module=405b_f16_tp8.vmfb   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank0.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank1.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank2.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank3.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank4.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank5.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank6.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank7.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank0.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank1.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank2.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank3.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank4.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank5.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank6.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank7.irpa   \
   --device=hip://0   \
   --device=hip://1   \
   --device=hip://2   \
@@ -467,18 +467,18 @@ ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
   --device=hip://6   \
   --device=hip://7   \
   --function=decode_bs4   \
-  --input=@/shark-dev/405b/decode_args_bs4_128_stride_32_tp8/next_tokens.npy   \
-  --input=@/shark-dev/405b/decode_args_bs4_128_stride_32_tp8/seq_lens.npy   \
-  --input=@/shark-dev/405b/decode_args_bs4_128_stride_32_tp8/start_positions.npy   \
-  --input=@/shark-dev/405b/decode_args_bs4_128_stride_32_tp8/seq_block_ids.npy   \
-  --input=@/shark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_0.npy   \
-  --input=@/shark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_1.npy   \
-  --input=@/shark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_2.npy   \
-  --input=@/shark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_3.npy   \
-  --input=@/shark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_4.npy   \
-  --input=@/shark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_5.npy   \
-  --input=@/shark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_6.npy   \
-  --input=@/shark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_7.npy \
+  --input=@/amdshark-dev/405b/decode_args_bs4_128_stride_32_tp8/next_tokens.npy   \
+  --input=@/amdshark-dev/405b/decode_args_bs4_128_stride_32_tp8/seq_lens.npy   \
+  --input=@/amdshark-dev/405b/decode_args_bs4_128_stride_32_tp8/start_positions.npy   \
+  --input=@/amdshark-dev/405b/decode_args_bs4_128_stride_32_tp8/seq_block_ids.npy   \
+  --input=@/amdshark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_0.npy   \
+  --input=@/amdshark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_1.npy   \
+  --input=@/amdshark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_2.npy   \
+  --input=@/amdshark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_3.npy   \
+  --input=@/amdshark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_4.npy   \
+  --input=@/amdshark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_5.npy   \
+  --input=@/amdshark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_6.npy   \
+  --input=@/amdshark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_7.npy \
   --benchmark_repetitions=3
 ```
 
@@ -490,15 +490,15 @@ ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
   ../iree-build-no-trace/tools/iree-benchmark-module   \
   --hip_use_streams=true   \
   --module=export/8b_instruct_tp8.vmfb   \
-  --parameters=model=/shark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.irpa   \
-  --parameters=model=/shark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank0.irpa   \
-  --parameters=model=/shark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank1.irpa   \
-  --parameters=model=/shark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank2.irpa   \
-  --parameters=model=/shark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank3.irpa   \
-  --parameters=model=/shark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank4.irpa   \
-  --parameters=model=/shark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank5.irpa   \
-  --parameters=model=/shark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank6.irpa   \
-  --parameters=model=/shark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank7.irpa   \
+  --parameters=model=/amdshark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.irpa   \
+  --parameters=model=/amdshark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank0.irpa   \
+  --parameters=model=/amdshark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank1.irpa   \
+  --parameters=model=/amdshark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank2.irpa   \
+  --parameters=model=/amdshark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank3.irpa   \
+  --parameters=model=/amdshark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank4.irpa   \
+  --parameters=model=/amdshark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank5.irpa   \
+  --parameters=model=/amdshark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank6.irpa   \
+  --parameters=model=/amdshark-dev/8b/instruct/weights/tp8/llama3.1_8b_instruct_fp16_tp8.rank7.irpa   \
   --device=hip://0   \
   --device=hip://1   \
   --device=hip://2   \
@@ -508,17 +508,17 @@ ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
   --device=hip://6   \
   --device=hip://7   \
   --function=prefill_bs4   \
-  --input=@/shark-dev/8b/prefill_args_bs4_128_stride_32_tp8/tokens.npy   \
-  --input=@/shark-dev/8b/prefill_args_bs4_128_stride_32_tp8/seq_lens.npy   \
-  --input=@/shark-dev/8b/prefill_args_bs4_128_stride_32_tp8/seq_block_ids.npy   \
-  --input=@/shark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_0.npy   \
-  --input=@/shark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_1.npy   \
-  --input=@/shark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_2.npy   \
-  --input=@/shark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_3.npy   \
-  --input=@/shark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_4.npy   \
-  --input=@/shark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_5.npy   \
-  --input=@/shark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_6.npy   \
-  --input=@/shark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_7.npy \
+  --input=@/amdshark-dev/8b/prefill_args_bs4_128_stride_32_tp8/tokens.npy   \
+  --input=@/amdshark-dev/8b/prefill_args_bs4_128_stride_32_tp8/seq_lens.npy   \
+  --input=@/amdshark-dev/8b/prefill_args_bs4_128_stride_32_tp8/seq_block_ids.npy   \
+  --input=@/amdshark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_0.npy   \
+  --input=@/amdshark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_1.npy   \
+  --input=@/amdshark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_2.npy   \
+  --input=@/amdshark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_3.npy   \
+  --input=@/amdshark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_4.npy   \
+  --input=@/amdshark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_5.npy   \
+  --input=@/amdshark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_6.npy   \
+  --input=@/amdshark-dev/8b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_7.npy \
   --benchmark_repetitions=3
 ```
 ### 8b tp8 decode
@@ -545,18 +545,18 @@ ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
   --device=hip://6   \
   --device=hip://7   \
   --function=decode_bs4   \
-  --input=@/shark-dev/8b/decode_args_bs4_128_stride_32_tp8/next_tokens.npy   \
-  --input=@/shark-dev/8b/decode_args_bs4_128_stride_32_tp8/seq_lens.npy   \
-  --input=@/shark-dev/8b/decode_args_bs4_128_stride_32_tp8/start_positions.npy   \
-  --input=@/shark-dev/8b/decode_args_bs4_128_stride_32_tp8/seq_block_ids.npy   \
-  --input=@/shark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_0.npy   \
-  --input=@/shark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_1.npy   \
-  --input=@/shark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_2.npy   \
-  --input=@/shark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_3.npy   \
-  --input=@/shark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_4.npy   \
-  --input=@/shark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_5.npy   \
-  --input=@/shark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_6.npy   \
-  --input=@/shark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_7.npy \
+  --input=@/amdshark-dev/8b/decode_args_bs4_128_stride_32_tp8/next_tokens.npy   \
+  --input=@/amdshark-dev/8b/decode_args_bs4_128_stride_32_tp8/seq_lens.npy   \
+  --input=@/amdshark-dev/8b/decode_args_bs4_128_stride_32_tp8/start_positions.npy   \
+  --input=@/amdshark-dev/8b/decode_args_bs4_128_stride_32_tp8/seq_block_ids.npy   \
+  --input=@/amdshark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_0.npy   \
+  --input=@/amdshark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_1.npy   \
+  --input=@/amdshark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_2.npy   \
+  --input=@/amdshark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_3.npy   \
+  --input=@/amdshark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_4.npy   \
+  --input=@/amdshark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_5.npy   \
+  --input=@/amdshark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_6.npy   \
+  --input=@/amdshark-dev/8b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_7.npy \
   --benchmark_repetitions=3
 ```
 
@@ -566,15 +566,15 @@ ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
   ../iree-build-no-trace/tools/iree-benchmark-module   \
   --hip_use_streams=true   \
   --module=405b_f16_tp8.vmfb   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank0.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank1.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank2.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank3.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank4.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank5.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank6.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank7.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank0.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank1.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank2.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank3.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank4.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank5.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank6.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank7.irpa   \
   --device=hip://0   \
   --device=hip://1   \
   --device=hip://2   \
@@ -584,17 +584,17 @@ ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
   --device=hip://6   \
   --device=hip://7   \
   --function=prefill_bs4   \
-  --input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/tokens.npy   \
-  --input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/seq_lens.npy   \
-  --input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/seq_block_ids.npy   \
-  --input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_0.npy   \
-  --input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_1.npy   \
-  --input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_2.npy   \
-  --input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_3.npy   \
-  --input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_4.npy   \
-  --input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_5.npy   \
-  --input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_6.npy   \
-  --input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_7.npy \
+  --input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/tokens.npy   \
+  --input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/seq_lens.npy   \
+  --input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/seq_block_ids.npy   \
+  --input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_0.npy   \
+  --input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_1.npy   \
+  --input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_2.npy   \
+  --input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_3.npy   \
+  --input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_4.npy   \
+  --input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_5.npy   \
+  --input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_6.npy   \
+  --input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_7.npy \
   --benchmark_repetitions=3
 ```
 ### 405b tp8 decode
@@ -603,15 +603,15 @@ ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
   ../iree-build-no-trace/tools/iree-benchmark-module   \
   --hip_use_streams=true   \
   --module=405b_f16_tp8.vmfb   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank0.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank1.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank2.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank3.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank4.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank5.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank6.irpa   \
-  --parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank7.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank0.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank1.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank2.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank3.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank4.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank5.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank6.irpa   \
+  --parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank7.irpa   \
   --device=hip://0   \
   --device=hip://1   \
   --device=hip://2   \
@@ -621,18 +621,18 @@ ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
   --device=hip://6   \
   --device=hip://7   \
   --function=decode_bs4   \
-  --input=@/shark-dev/405b/decode_args_bs4_128_stride_32_tp8/next_tokens.npy   \
-  --input=@/shark-dev/405b/decode_args_bs4_128_stride_32_tp8/seq_lens.npy   \
-  --input=@/shark-dev/405b/decode_args_bs4_128_stride_32_tp8/start_positions.npy   \
-  --input=@/shark-dev/405b/decode_args_bs4_128_stride_32_tp8/seq_block_ids.npy   \
-  --input=@/shark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_0.npy   \
-  --input=@/shark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_1.npy   \
-  --input=@/shark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_2.npy   \
-  --input=@/shark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_3.npy   \
-  --input=@/shark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_4.npy   \
-  --input=@/shark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_5.npy   \
-  --input=@/shark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_6.npy   \
-  --input=@/shark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_7.npy \
+  --input=@/amdshark-dev/405b/decode_args_bs4_128_stride_32_tp8/next_tokens.npy   \
+  --input=@/amdshark-dev/405b/decode_args_bs4_128_stride_32_tp8/seq_lens.npy   \
+  --input=@/amdshark-dev/405b/decode_args_bs4_128_stride_32_tp8/start_positions.npy   \
+  --input=@/amdshark-dev/405b/decode_args_bs4_128_stride_32_tp8/seq_block_ids.npy   \
+  --input=@/amdshark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_0.npy   \
+  --input=@/amdshark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_1.npy   \
+  --input=@/amdshark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_2.npy   \
+  --input=@/amdshark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_3.npy   \
+  --input=@/amdshark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_4.npy   \
+  --input=@/amdshark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_5.npy   \
+  --input=@/amdshark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_6.npy   \
+  --input=@/amdshark-dev/405b/decode_args_bs4_128_stride_32_tp8/cs_f16_shard_7.npy \
   --benchmark_repetitions=3
 ```
 
@@ -643,28 +643,28 @@ Run tracy profile collection, replace the IP address and port as per your case o
 TRACY_PORT=8086 TRACY_NO_EXIT=1 ROCR_VISIBLE_DEVICES=0,1,2,3,4,5,6,7  \
 ~/iree-build-trace/tools/iree-run-module -run-module  --hip_use_streams=true \
 --module=artifacts/prefill_405b_tp8_tracy.vmfb  \
---parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.irpa   \
---parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank0.irpa   \
---parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank1.irpa   \
---parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank2.irpa   \
---parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank3.irpa   \
---parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank4.irpa   \
---parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank5.irpa   \
---parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank6.irpa   \
---parameters=model=/shark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank7.irpa   \
+--parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.irpa   \
+--parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank0.irpa   \
+--parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank1.irpa   \
+--parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank2.irpa   \
+--parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank3.irpa   \
+--parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank4.irpa   \
+--parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank5.irpa   \
+--parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank6.irpa   \
+--parameters=model=/amdshark-dev/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.rank7.irpa   \
 --device=hip://0  --device=hip://1  --device=hip://2  --device=hip://3   \
 --device=hip://4  --device=hip://5  --device=hip://6  --device=hip://7   \
---function=prefill_bs4  --input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/tokens.npy   \
---input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/seq_lens.npy   \
---input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/seq_block_ids.npy   \
---input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_0.npy   \
---input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_1.npy   \
---input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_2.npy   \
---input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_3.npy   \
---input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_4.npy   \
---input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_5.npy   \
---input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_6.npy   \
---input=@/shark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_7.npy  
+--function=prefill_bs4  --input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/tokens.npy   \
+--input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/seq_lens.npy   \
+--input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/seq_block_ids.npy   \
+--input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_0.npy   \
+--input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_1.npy   \
+--input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_2.npy   \
+--input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_3.npy   \
+--input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_4.npy   \
+--input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_5.npy   \
+--input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_6.npy   \
+--input=@/amdshark-dev/405b/prefill_args_bs4_128_stride_32_tp8/cs_f16_shard_7.npy  
 ```
 You can replace iree-run-module by iree-benchmark-module and add  --benchmark_repetitions=3 to run benchmark instead.
 

@@ -3,7 +3,7 @@
 ### 8B-FP16-Prefill
 
 ```
-python3 -m sharktank.examples.export_paged_llm_v1 \
+python3 -m amdsharktank.examples.export_paged_llm_v1 \
   --bs=4 \
   --irpa-file=/data/llama3.1/weights/8b/fp16/llama3.1_8b_fp16.irpa \
   --output-mlir=8b_fp16_prefill.mlir \
@@ -44,7 +44,7 @@ iree-benchmark-module \
 ### 8B-FP16-Decode
 
 ```
-python3 -m sharktank.examples.export_paged_llm_v1 \
+python3 -m amdsharktank.examples.export_paged_llm_v1 \
   --bs=4 \
   --irpa-file=/data/llama3.1/weights/8b/fp16/llama3.1_8b_fp16.irpa \
   --output-mlir=8b_fp16_decode_unsharded.mlir \
@@ -84,7 +84,7 @@ iree-benchmark-module \
 ### 70B-FP16-Prefill
 
 ```
-python3 -m sharktank.examples.export_paged_llm_v1 \
+python3 -m amdsharktank.examples.export_paged_llm_v1 \
   --bs=4 \
   --irpa-file=/data/llama3.1/weights/70b/fp16/llama3.1_70b_f16.irpa \
   --output-mlir=prefill_70b_unsharded.mlir \
@@ -124,7 +124,7 @@ iree-benchmark-module \
 ### 70B-FP16-Decode-Unsharded
 
 ```
-python3 -m sharktank.examples.export_paged_llm_v1 \
+python3 -m amdsharktank.examples.export_paged_llm_v1 \
   --bs=4 \
   --irpa-file=/data/llama3.1/weights/70b/fp16/llama3.1_70b_f16.irpa \
   --output-mlir=70b_fp16_decode_unsharded.mlir \
@@ -165,7 +165,7 @@ iree-benchmark-module \
 ### 8B-FP16-Prefill-Sharded-TP8
 
 ```
-python3 -m sharktank.examples.export_paged_llm_v1 \
+python3 -m amdsharktank.examples.export_paged_llm_v1 \
   --bs=4 \
   --irpa-file=/data/llama3.1/weights/8b/fp16/tp8/llama3.1_8b_fp16_tp8_parameters.irpa \
   --output-mlir=8b_prefill_sharded.mlir \
@@ -236,7 +236,7 @@ iree-benchmark-module \
 ### 8B-FP16-Decode-Sharded
 
 ```
-python3 -m sharktank.examples.export_paged_llm_v1 \
+python3 -m amdsharktank.examples.export_paged_llm_v1 \
   --bs=4 \
   --irpa-file=/data/llama3.1/weights/8b/fp16/tp8/llama3.1_8b_fp16_tp8_parameters.irpa \
   --output-mlir=8b_decode_sharded.mlir \
@@ -308,7 +308,7 @@ iree-benchmark-module \
 ### 70B-FP16-Prefill-Sharded
 
 ```
-python3 -m sharktank.examples.export_paged_llm_v1 \
+python3 -m amdsharktank.examples.export_paged_llm_v1 \
   --bs=4 \
   --irpa-file=/data/llama3.1/weights/70b//fp16/tp8/llama3.1_70b_fp16_tp8_parameters.irpa \
   --output-mlir=70b_prefill_sharded.mlir \
@@ -379,7 +379,7 @@ iree-benchmark-module \
 ### 70B-FP16-Decode-Sharded
 
 ```
-python3 -m sharktank.examples.export_paged_llm_v1 \
+python3 -m amdsharktank.examples.export_paged_llm_v1 \
   --bs=4 \
   --irpa-file=/data/llama3.1/weights/70b//fp16/tp8/llama3.1_70b_fp16_tp8_parameters.irpa \
   --output-mlir=70b_decode_sharded.mlir \
@@ -448,7 +448,7 @@ iree-benchmark-module \
 ### 405B-FP16-Decode-Sharded
 
 ```
-python3 -m sharktank.examples.export_paged_llm_v1 \
+python3 -m amdsharktank.examples.export_paged_llm_v1 \
   --bs=4 \
   --irpa-file=/data/llama3.1/weights/405b/fp16/tp8/llama3.1_405b_fp16_tp8_parameters.irpa \
   --output-mlir=405b_f16_decode_tp8_nondecomposed.mlir \

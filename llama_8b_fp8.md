@@ -1,5 +1,5 @@
 # Llama 8B FP8
-Irpa file: `/sharedfile/llama3_8b_fp8.irpa` on SharkMi300X
+Irpa file: `/sharedfile/llama3_8b_fp8.irpa` on AMD-SharkMi300X
 
 ## Attention and Activation dtype configs
 | Attention-dtype | Activation-dtype | Eager Prefill | Eager Decode | IREE Prefill | IREE Decode | Tracy Profile | Comments|
@@ -14,7 +14,7 @@ Instructions to run perplexity tests for 8B fp8 model (non-fp8 attention)
 Eager ppl:
 
 ```
-python -m sharktank.evaluate.perplexity_torch \
+python -m amdsharktank.evaluate.perplexity_torch \
   --irpa-file=fp8_attn.irpa \
   --tokenizer-config-json=/sharedfile/tokenizer_config.json \
   --attention-kernel=torch \
@@ -28,7 +28,7 @@ python -m sharktank.evaluate.perplexity_torch \
 
 IREE ppl:
 ```
-python -m sharktank.evaluate.perplexity_iree \
+python -m amdsharktank.evaluate.perplexity_iree \
   --irpa-file=/sharedfile/llama3_8b_fp8.irpa \
   --tokenizer-config-json=/sharedfile/tokenizer_config.json \
   --attention-kernel torch \
@@ -44,7 +44,7 @@ python -m sharktank.evaluate.perplexity_iree \
 
 ## Eager mode:
 ```
-python -m sharktank.examples.paged_llm_v1 \
+python -m amdsharktank.examples.paged_llm_v1 \
   "The capitol of Texas is" \
   --irpa-file=/sharedfile/llama3_8b_fp8.irpa \
   --tokenizer-config-json=/sharedfile/tokenizer_config.json \
@@ -56,7 +56,7 @@ python -m sharktank.examples.paged_llm_v1 \
 
 ## Export IR:
 ```
-python3 -m sharktank.examples.export_paged_llm_v1 --irpa-file=/sharedfile/llama3_8b_fp8.irpa \
+python3 -m amdsharktank.examples.export_paged_llm_v1 --irpa-file=/sharedfile/llama3_8b_fp8.irpa \
 --output-mlir=fp8_dan1.mlir \
 --output-config=config1.json \
 --bs=1 --attention-kernel torch \
